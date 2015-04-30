@@ -13,22 +13,26 @@ namespace CB.Util
     {
         internal static async Task<Dictionary<string, Object>> GET(string url)
         {
+            CloudApp.Validate();
+
             var request = (HttpWebRequest)WebRequest.Create(CloudApp.ApiUrl + url);
             var response = await request.GetResponseAsync();
             var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
             return Util.Serializer.Deserialize(JObject.Parse(responseString));
         }
 
-        internal static async Task<Dictionary<string, Object>> POST(string url, Dictionary<string, Object> postData)
+        internal static async Task<Object> POST(string url, Dictionary<string, Object> postData)
         {
+
+            CloudApp.Validate();
+
+            postData.Add("key", CloudApp.AppKey);
             var jsonObj = Util.Serializer.Serialize(postData);
-            var parentJsonObj = new JObject();
-            parentJsonObj["document"] = parentJsonObj;
-            parentJsonObj["key"] = CloudApp.AppKey;
+            
 
             var request = (HttpWebRequest)WebRequest.Create(CloudApp.ApiUrl + "/" + CloudApp.AppID + "/"+ url);
 
-            var data = Encoding.ASCII.GetBytes(parentJsonObj.ToString());
+            var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
 
             request.Method = "POST";
             request.ContentType = "application/json";

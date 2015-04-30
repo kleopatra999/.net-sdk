@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EngineIoClientDotNet">
+      <HintPath>..\packages\EngineIoClientDotNet.0.9.17\lib\net45\EngineIoClientDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -39,19 +42,30 @@
     <Reference Include="Parse.NetFx45">
       <HintPath>..\packages\Parse.1.4.1\lib\net45\Parse.NetFx45.dll</HintPath>
     </Reference>
+    <Reference Include="SocketIoClientDotNet">
+      <HintPath>..\packages\SocketIoClientDotNet.0.9.10\lib\net45\SocketIoClientDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebSocket4Net">
+      <HintPath>..\packages\WebSocket4Net.0.11\lib\net45\WebSocket4Net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACL.cs" />
     <Compile Include="CloudApp.cs" />
+    <Compile Include="CloudNotification.cs" />
     <Compile Include="CloudObject.cs" />
     <Compile Include="CloudQuery.cs" />
+    <Compile Include="CloudRole.cs" />
+    <Compile Include="CloudSearch.cs" />
+    <Compile Include="CloudUser.cs" />
     <Compile Include="Exception\CloudBoostException.cs" />
     <Compile Include="Meta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
