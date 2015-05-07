@@ -18,7 +18,6 @@ namespace CB
             dictionary["size"] = 10;
             dictionary["sort"] = new ArrayList();
         }
-
         public CloudSearch(ArrayList tableNames)
         {
             dictionary["collectionNames"] = tableNames;

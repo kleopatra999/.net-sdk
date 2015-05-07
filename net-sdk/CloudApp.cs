@@ -6,25 +6,36 @@ using System.Threading.Tasks;
 
 namespace CB
 {
+
+    public delegate void Callback(Object result);
+
     public class CloudApp
     {
-        private static string apiUrl;
-
+        private static string serverUrl;
+        
+        public static string ServerUrl
+        {
+            get
+            {
+                if (serverUrl != null)
+                {
+                    return serverUrl;
+                }
+                else
+                {
+                    return @"https://api.cloudboost.io";
+                }
+            }
+            set { serverUrl = value; }
+        }
         public static string AppID { get; set; }
         public static string AppKey { get; set; }
         public static string ApiUrl
         {
             get
             {
-                if (apiUrl != null)
-                {
-                    return apiUrl;
-                }
-                else {
-                    return @"https://api.cloudboost.io/api";
-                }
+                return serverUrl+"/api";
             }
-            set { apiUrl = value; }
         }
 
         public static void init(string appId, string appKey)
@@ -33,14 +44,14 @@ namespace CB
             AppKey = appKey;
         }
 
-        public static void init(string apiUrl, string appId, string appKey)
+        public static void init(string serverUrl, string appId, string appKey)
         {
-            if (apiUrl.EndsWith("/"))
+            if (serverUrl.EndsWith("/"))
             {
-                apiUrl = apiUrl.TrimEnd('/');
+                serverUrl = serverUrl.TrimEnd('/');
             }
 
-            ApiUrl = apiUrl+"/api";
+            ServerUrl = serverUrl;
             AppID = appId;
             AppKey = appKey;
         }
