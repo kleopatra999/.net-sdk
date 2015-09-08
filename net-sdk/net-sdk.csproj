@@ -65,7 +65,9 @@
     <Compile Include="CloudQuery.cs" />
     <Compile Include="CloudRole.cs" />
     <Compile Include="CloudSearch.cs" />
+    <Compile Include="CloudTable.cs" />
     <Compile Include="CloudUser.cs" />
+    <Compile Include="Column.cs" />
     <Compile Include="Exception\CloudBoostException.cs" />
     <Compile Include="Meta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,7 +77,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include=".gitignore" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

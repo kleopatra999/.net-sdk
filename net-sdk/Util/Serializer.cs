@@ -9,9 +9,9 @@ namespace CB.Util
 {
     class Serializer
     {
-        internal static JObject Serialize(Dictionary<string,Object> value)
+        internal static JObject Serialize(Object value)
         {
-            return null;
+            throw new System.Exception();
         }
 
         internal static Dictionary<string,Object> Deserialize(JObject value)

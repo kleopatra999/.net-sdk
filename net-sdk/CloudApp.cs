@@ -11,32 +11,44 @@ namespace CB
 
     public class CloudApp
     {
-        private static string serverUrl;
+        private static string apiUrl;
         
-        public static string ServerUrl
+        public static string ApiUrl
         {
             get
             {
-                if (serverUrl != null)
+                if (apiUrl != null)
                 {
-                    return serverUrl;
+                    return apiUrl;
                 }
                 else
                 {
                     return @"https://api.cloudboost.io";
                 }
             }
-            set { serverUrl = value; }
+            set { apiUrl = value; }
         }
-        public static string AppID { get; set; }
-        public static string AppKey { get; set; }
-        public static string ApiUrl
+
+        private static string serviceUrl;
+
+        public static string ServiceURL
         {
             get
             {
-                return serverUrl+"/api";
+                if (serviceUrl != null)
+                {
+                    return serviceUrl;
+                }
+                else
+                {
+                    return @"https://service.cloudboost.io";
+                }
             }
+            set { serviceUrl = value; }
         }
+
+        public static string AppID { get; set; }
+        public static string AppKey { get; set; }
 
         public static void init(string appId, string appKey)
         {
@@ -44,14 +56,14 @@ namespace CB
             AppKey = appKey;
         }
 
-        public static void init(string serverUrl, string appId, string appKey)
+        public static void init(string apiUrl, string serviceUrl, string appId, string appKey)
         {
-            if (serverUrl.EndsWith("/"))
+            if (apiUrl.EndsWith("/"))
             {
-                serverUrl = serverUrl.TrimEnd('/');
+                apiUrl = apiUrl.TrimEnd('/');
             }
 
-            ServerUrl = serverUrl;
+            ApiUrl = apiUrl;
             AppID = appId;
             AppKey = appKey;
         }

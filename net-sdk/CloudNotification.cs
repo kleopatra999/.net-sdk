@@ -11,7 +11,7 @@ namespace CB
     public class CloudNotification
     {
 
-        private static Socket _socket = IO.Socket(CloudApp.ServerUrl);
+        private static Socket _socket = IO.Socket(CloudApp.ApiUrl);
 
         public static void On(string channelName, Callback callback)
         {

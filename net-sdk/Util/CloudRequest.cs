@@ -11,7 +11,7 @@ namespace CB.Util
 {
     class CloudRequest
     {
-        internal static async Task<Dictionary<string, Object>> GET(string url)
+        internal static async Task<Dictionary<string, Object>> GET(string url, bool isServiceURL = false)
         {
             CloudApp.Validate();
 
@@ -21,7 +21,7 @@ namespace CB.Util
             return Util.Serializer.Deserialize(JObject.Parse(responseString));
         }
 
-        internal static async Task<Object> POST(string url, Dictionary<string, Object> postData)
+        internal static async Task<Object> POST(string url, Dictionary<string, Object> postData, bool isServiceURL = false, string method = "POST")
         {
 
             CloudApp.Validate();
@@ -34,7 +34,7 @@ namespace CB.Util
 
             var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
 
-            request.Method = "POST";
+            request.Method = method;
             request.ContentType = "application/json";
             request.ContentLength = data.Length;
 
