@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,9 @@ namespace CB
     public class CloudApp
     {
         private static string apiUrl;
-        
+
+        internal static ILog log;
+
         public static string ApiUrl
         {
             get
@@ -52,6 +55,7 @@ namespace CB
 
         public static void init(string appId, string appKey)
         {
+            log = LogManager.GetLogger(typeof(CloudApp));
             AppID = appId;
             AppKey = appKey;
         }
@@ -71,9 +75,14 @@ namespace CB
 
         public static bool Validate()
         {
-            if (String.IsNullOrEmpty(AppID) || String.IsNullOrEmpty(AppKey) || String.IsNullOrEmpty(ApiUrl))
+            if (String.IsNullOrEmpty(AppID) || String.IsNullOrEmpty(AppKey) )
             {
-                throw new Exception.CloudBoostException("AppID / AppKey OR API URL is missing.");
+                throw new Exception.CloudBoostException("AppID / AppKey is missing.");
+            }
+
+            if(String.IsNullOrEmpty(ApiUrl))
+            {
+                throw new Exception.CloudBoostException("API URL is missing.");
             }
 
             return true;

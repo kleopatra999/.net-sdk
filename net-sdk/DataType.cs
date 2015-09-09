@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CB
 {
-    class Meta
+    public enum DataType
     {
-        public const string Version = "1.0.0";
+        Text = 1, Number, EncryptedText, File, GeoPoint, URL, Email, Boolean, DateTime, Object, Relation, List, Id,ACL
     }
 }

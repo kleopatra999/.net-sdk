@@ -120,6 +120,24 @@ namespace CB
 
         public void DeleteColumn(CB.Column column)
         {
+            if (!column.IsDeleteable)
+                throw new CloudBoostException(column.Name + " cannot be deleted.");
+
+                if (CB.Column._columnValidation(column, this))
+            {
+                this.Columns.Remove(column);
+            }
+
+            
+        }   
+
+        public void DeleteColumn(string columnName)
+        {
+            var column = this.Columns.Where(o => o.Name == columnName).FirstOrDefault();
+
+            if (column == null)
+                throw new CB.Exception.CloudBoostException("Column with name " + columnName + " cannot be found.");
+
             if (CB.Column._columnValidation(column, this))
             {
                 this.Columns.Remove(column);
@@ -164,6 +182,13 @@ namespace CB
             return table;
         }
 
+        public static async Task<CB.CloudTable> GetAsync(CB.CloudTable table)
+        {
+            var result = await Util.CloudRequest.POST(CB.CloudApp.ServiceURL + '/' + CB.CloudApp.AppID + "/table/" + table.Name, null, true);
+            table.dictionary = (Dictionary<string, Object>)result;
+            return table;
+        }
+
         public async Task<CB.CloudTable> DeleteAsync()
         {
             var result = await Util.CloudRequest.POST(CB.CloudApp.ServiceURL + '/' + CB.CloudApp.AppID + " /table/ " +this.dictionary["name"].ToString(), null, true,"DELETE");
@@ -183,32 +208,32 @@ namespace CB
             List<CB.Column> list = new List<Column>();
 
             var id = new CB.Column("id");
-            id.DataType = "Id";
+            id.DataType = DataType.Id;
             id.Required = true;
             id.Unique = true;
             id.IsDeleteable = false;
             id.IsEditable = false;
 
             var expires = new CB.Column("expires");
-            expires.DataType = "Number";
+            expires.DataType = DataType.Number;
             expires.IsDeleteable = false;
             expires.IsEditable = false;
 
 
             var createdAt = new CB.Column("createdAt");
-            createdAt.DataType = "DateTime";
+            createdAt.DataType = DataType.DateTime;
             createdAt.Required = true;
             createdAt.IsRenamable = false;
             createdAt.IsEditable = false;
 
             var updatedAt = new CB.Column("updatedAt");
-            updatedAt.DataType = "DateTime";
+            updatedAt.DataType = DataType.DateTime;
             updatedAt.Required = true;
             updatedAt.IsDeleteable = false;
             updatedAt.IsEditable = false;
 
             var ACL = new CB.Column("ACL");
-            ACL.DataType = "ACL";
+            ACL.DataType = DataType.ACL;
             ACL.Required = true;
             ACL.IsDeleteable = false;
             ACL.IsEditable = false;
@@ -221,26 +246,26 @@ namespace CB
             if (tableType == "user")
             {
                 var username = new CB.Column("username");
-                username.DataType = "Text";
+                username.DataType = DataType.Text;
                 username.Required = true;
                 username.Unique = true;
                 username.IsDeleteable = false;
                 username.IsEditable = false;
 
                 var email = new CB.Column("email");
-                email.DataType = "Email";
+                email.DataType =DataType.Email;
                 email.Unique = true;
                 email.IsDeleteable = false;
                 email.IsEditable = false;
 
                 var password = new CB.Column("password");
-                password.DataType = "Password";
+                password.DataType = DataType.EncryptedText;
                 password.Required = true;
                 password.IsDeleteable = false;
                 password.IsEditable = false;
 
                 var roles = new CB.Column("roles");
-                roles.DataType = "List";
+                roles.DataType = DataType.List;
                 roles.RelatedTo = "Role";
                 roles.IsDeleteable = false;
                 roles.IsEditable = false;
@@ -253,7 +278,7 @@ namespace CB
             else if (tableType == "role")
             {
                 var name = new CB.Column("name");
-                name.DataType = "Text";
+                name.DataType = DataType.Text;
                 name.Unique = true;
                 name.Required = true;
                 name.IsDeleteable = false;

@@ -10,7 +10,7 @@ namespace CB
     public class Column
     {
         public string Name { get; set; }
-        public string DataType { get; set; }
+        public CB.DataType DataType { get; set; }
         public bool Required { get; set; }
         public bool Unique { get; set; }
         internal bool IsRenamable { get; set; }
@@ -18,7 +18,7 @@ namespace CB
         internal bool IsEditable { get; set; }
         public string RelatedTo { get; set; }
 
-        public Column(string columnName, string dataType, bool required, bool unique)
+        public Column(string columnName, CB.DataType dataType, bool required, bool unique)
         {
             if (String.IsNullOrWhiteSpace(columnName))
             {
@@ -26,14 +26,13 @@ namespace CB
                 this.Name = columnName;
             }
 
-            if (String.IsNullOrWhiteSpace(dataType))
+            if (dataType != null)
             {
-                CB.Column._columnDataTypeValidation(dataType);
                 this.DataType = dataType;
             }
             else
             {
-                this.DataType = "Text";
+                this.DataType = CB.DataType.Text;
             }
 
             this.Required = required;
@@ -52,7 +51,7 @@ namespace CB
                 this.Name = columnName;
             }
 
-            this.DataType = "Text";
+            this.DataType = CB.DataType.Text;
             this.Required = false;
             this.Unique = false;
 
@@ -92,7 +91,6 @@ namespace CB
 
         internal static void _columnNameValidation (string columnName)
         {
-
             var defaultColumn = new string[] { "id", "_id", "createdAt", "updatedAt", "ACL", "expires" };
 
             if (String.IsNullOrWhiteSpace(columnName)) //if table name is empty
@@ -112,19 +110,6 @@ namespace CB
             var regexItem = new Regex("^[a-zA-Z0-9 ]*");
             if (regexItem.IsMatch(columnName))
                 throw new CB.Exception.CloudBoostException("Column name should not contain special characters");
-        }
-
-        internal static void _columnDataTypeValidation(string dataType)
-        {
-            if (String.IsNullOrWhiteSpace(dataType))
-                throw new CB.Exception.CloudBoostException("Column dataType cannot be empty");
-
-            var dataTypeArray = new string[] { "Text", "Email", "URL", "Number", "Boolean", "DateTime", "GeoPoint", "File", "List", "Relation", "Object" };
-            var dataTypeList = new List<string>(dataTypeArray);
-            var index = dataTypeList.IndexOf(dataType);
-            if (index < 0)
-                throw new CB.Exception.CloudBoostException("Invalid Datatype.");
-
         }
     }
 }

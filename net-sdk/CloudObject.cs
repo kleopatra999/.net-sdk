@@ -31,7 +31,6 @@ namespace CB
                 else
                     throw new Exception.CloudBoostException("Value is not of type ACL");
             }
-
         }
 
         public string ID
