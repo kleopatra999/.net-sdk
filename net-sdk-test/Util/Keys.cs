@@ -9,8 +9,6 @@ namespace CB.Test.Util
 {
     class Keys
     {
-       
-
         public static void InitWithMasterKey()
         {
             InitAppID();

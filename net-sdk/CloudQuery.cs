@@ -11,7 +11,7 @@ namespace CB
     {
         Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public CloudQuery(string tableName)
-        { //constructor for the class CloudQuery
+        { //constructor for the class CloudQueryfd
             dictionary["tableName"] = tableName;
             dictionary["query"] = new Dictionary<string, Object>();
             dictionary["$include"] = new ArrayList();
@@ -388,7 +388,7 @@ namespace CB
         }
         public async Task<int> Count()
         {
-            var result = await Util.CloudRequest.POST("/ " + this.dictionary["tableName"] + "/count", this.dictionary);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", this.dictionary, false);
             return (int)result;
         }
 
@@ -396,17 +396,17 @@ namespace CB
         {
             var dic = this.dictionary;
             dic["onKey"] = key;
-            var result = await Util.CloudRequest.POST("/ " + this.dictionary["tableName"] + "/distinct", dic);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/" + this.dictionary["tableName"] + "/distinct", dic, false);
             return (List<CloudObject>)result;
         }
         public async Task<List<CloudObject>> Find()
         {
-            var result = await Util.CloudRequest.POST("/ " + this.dictionary["tableName"] + "/find", this.dictionary);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary, false);
             return (List<CloudObject>)result;
         }
         public async Task<CloudObject> Get(string objectId)
         {
-            var result = await Util.CloudRequest.POST("/ " + this.dictionary["tableName"] + "/get/"+ objectId, null);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/get/"+ objectId, null, false);
             return (CloudObject)result;
         }
 

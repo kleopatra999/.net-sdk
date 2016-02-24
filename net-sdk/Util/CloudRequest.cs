@@ -12,39 +12,38 @@ namespace CB.Util
 {
     class CloudRequest
     {
-        internal static async Task<Dictionary<string, Object>> GET(string url, bool isServiceURL = false)
+        public enum Method
         {
-            CloudApp.Validate();
-
-            var request = (HttpWebRequest)WebRequest.Create(CloudApp.ApiUrl + url);
-            var response = await request.GetResponseAsync();
-            var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
-            return Util.Serializer.Deserialize(JObject.Parse(responseString));
+            GET,
+            POST,
+            PUT,
+            DELETE
         }
 
-        internal static async Task<Object> POST(string url, Dictionary<string, Object> postData, bool isServiceURL = false, string method = "POST")
+        internal static async Task<Dictionary<string, Object>> Send(Method method, string url, Dictionary<string, Object> postData, Boolean isServiceUrl)
         {
             try
             {
                 CloudApp.Validate();
 
-                if (postData == null)
-                    postData = new Dictionary<string, object>();
+                var request = (HttpWebRequest)WebRequest.Create(url);
 
-                postData.Add("key", CloudApp.AppKey);
-                var jsonObj = Util.Serializer.Serialize(postData);
-
-                var request = (HttpWebRequest)WebRequest.Create(CloudApp.ApiUrl + "/" + CloudApp.AppID + "/" + url);
-
-                var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
-
-                request.Method = method;
-                request.ContentType = "application/json";
-                request.ContentLength = data.Length;
-
-                using (var stream = request.GetRequestStream())
+                if (method == Method.POST || method == Method.PUT || method == Method.DELETE)
                 {
-                    stream.Write(data, 0, data.Length);
+                    if (postData == null)
+                        postData = new Dictionary<string, object>();
+
+                    postData.Add("key", CloudApp.AppKey);
+                    var jsonObj = Util.Serializer.Serialize(postData);
+                    var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
+
+                    request.Method = method.ToString();
+                    request.ContentType = "application/json";
+                    request.ContentLength = data.Length;
+                    using (var stream = request.GetRequestStream())
+                    {
+                        stream.Write(data, 0, data.Length);
+                    }
                 }
 
                 var response = await request.GetResponseAsync();
@@ -55,7 +54,7 @@ namespace CB.Util
             }
             catch (System.Exception e)
             {
-                CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Post", e);
+                CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
                 throw e;
             }
         }

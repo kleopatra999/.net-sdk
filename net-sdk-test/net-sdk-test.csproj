@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="CloudTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CloudObject.cs" />
     <Compile Include="Util\Keys.cs" />
     <Compile Include="Util\Util.cs" />
   </ItemGroup>

@@ -158,7 +158,7 @@ namespace CB
 
         public static async Task<List<CB.CloudTable>> GetAllAsync()
         {
-            var result = await Util.CloudRequest.POST(CB.CloudApp.ServiceURL + '/' + CB.CloudApp.AppID + "/table/", null, true);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/_getAll", null, true);
 
             List<CloudTable> tables = new List<CloudTable>();
 
@@ -176,7 +176,7 @@ namespace CB
 
         public static async Task<CB.CloudTable> GetAsync(string tableName)
         {
-            var result = await Util.CloudRequest.POST(CB.CloudApp.ServiceURL + '/' + CB.CloudApp.AppID + "/table/"+tableName, null, true);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), null, true);
             CB.CloudTable table = new CloudTable(tableName);
             table.dictionary = (Dictionary<string, Object>)result;
             return table;
@@ -184,21 +184,21 @@ namespace CB
 
         public static async Task<CB.CloudTable> GetAsync(CB.CloudTable table)
         {
-            var result = await Util.CloudRequest.POST(CB.CloudApp.ServiceURL + '/' + CB.CloudApp.AppID + "/table/" + table.Name, null, true);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), null, true);
             table.dictionary = (Dictionary<string, Object>)result;
             return table;
         }
 
         public async Task<CB.CloudTable> DeleteAsync()
         {
-            var result = await Util.CloudRequest.POST(CB.CloudApp.ServiceURL + '/' + CB.CloudApp.AppID + " /table/ " +this.dictionary["name"].ToString(), null, true,"DELETE");
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), null, true);
             this.dictionary = (Dictionary<string, Object>)result;
             return (CB.CloudTable)this;
         }
 
         public async Task<CB.CloudTable> SaveAsync()
         {
-            var result = await Util.CloudRequest.POST(CB.CloudApp.ServiceURL + '/' + CB.CloudApp.AppID + "/table/" + this.dictionary["name"].ToString(), null, true, "PUT");
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), null, true);
             this.dictionary = (Dictionary<string, Object>)result;
             return (CB.CloudTable)this;
         }

@@ -18,6 +18,14 @@ namespace CB
             dictionary.Add("ACL", new CB.ACL());
         }
 
+        public CloudObject(string tableName, string id)
+        {
+            dictionary.Add("_tableName", tableName);
+            dictionary.Add("_type", "custom");
+            dictionary.Add("_id", id);
+            dictionary.Add("ACL", new CB.ACL());
+        }
+
         public CB.ACL ACL
         {
             get
@@ -152,7 +160,9 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.POST("/save", postData);
+            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
+
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -165,7 +175,9 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.POST("/delete", postData);
+            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
+
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -174,12 +186,68 @@ namespace CB
 
         public async Task<CloudObject> FetchAsync()
         {
+            if (dictionary["_id"] == null)
+            {
+                //TODO : throw exception "Can't fetch an object which is not saved"
+                return this;
+            }
 
+            var query = new CloudQuery(dictionary["_tableName"].ToString());
+
+            if (dictionary["_type"] == "file")
+            {
+                query = new CloudQuery("_File");
+            }
+
+            CloudObject obj = await query.Get(dictionary["_id"].ToString());
+
+            return obj;
+        }
+
+        public static async Task<List<CloudObject>> SaveAllAsync(CloudObject[] objectArray)
+        {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", this);
-            var result = await Util.CloudRequest.POST("/" + dictionary["_tableName"]+" /get/" + dictionary["_id"], postData);
-            this.dictionary = (Dictionary<string, Object>)result;
-            return this;
+            postData.Add("document", objectArray);
+
+            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
+
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
+
+            List<CloudObject> objects = new List<CloudObject>();
+
+            var objectList = (List<Dictionary<string, Object>>)result;
+
+            for (int i = 0; i < objectList.Count; i++)
+            {
+                var obj = new CloudObject(objectList[i]["_tableName"].ToString(), objectList[i]["_id"].ToString());
+                obj.dictionary = objectList[i];
+                objects.Add(obj);
+            }
+
+            return objects;
+        }
+
+        public static async Task<List<CloudObject>> DeleteAllAsync(CloudObject[] objectArray)
+        {
+            Dictionary<string, Object> postData = new Dictionary<string, object>();
+            postData.Add("document", objectArray);
+
+            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
+
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
+
+            List<CloudObject> objects = new List<CloudObject>();
+
+            var objectList = (List<Dictionary<string, Object>>)result;
+
+            for (int i = 0; i < objectList.Count; i++)
+            {
+                var obj = new CloudObject(objectList[i]["_tableName"].ToString(), objectList[i]["_id"].ToString());
+                obj.dictionary = objectList[i];
+                objects.Add(obj);
+            }
+
+            return objects;
         }
     }
 }
