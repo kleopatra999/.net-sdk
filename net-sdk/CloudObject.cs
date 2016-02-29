@@ -188,7 +188,8 @@ namespace CB
         {
             if (dictionary["_id"] == null)
             {
-                //TODO : throw exception "Can't fetch an object which is not saved"
+                throw new Exception.CloudBoostException("Can't fetch an object which is not saved");
+             
                 return this;
             }
 
@@ -211,7 +212,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData);
 
             List<CloudObject> objects = new List<CloudObject>();
 

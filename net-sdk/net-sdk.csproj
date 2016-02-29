@@ -67,10 +67,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACL.cs" />
+    <Compile Include="CloudCache.cs" />
     <Compile Include="CloudApp.cs" />
+    <Compile Include="CloudFile.cs" />
+    <Compile Include="CloudGeoPoint.cs" />
     <Compile Include="CloudNotification.cs" />
     <Compile Include="CloudObject.cs" />
     <Compile Include="CloudQuery.cs" />
+    <Compile Include="CloudQueue.cs" />
     <Compile Include="CloudRole.cs" />
     <Compile Include="CloudSearch.cs" />
     <Compile Include="CloudTable.cs" />
