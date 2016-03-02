@@ -8,7 +8,7 @@ namespace CB
 {
     class CloudCache
     {
-        protected Dictionary<string, Object> dictionary = new Dictionary<string, object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, object>();
         protected List<Object> items = new List<Object>();
         public CloudCache(string cacheName)
         {
@@ -179,9 +179,10 @@ namespace CB
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID;
 
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, true);
-
-            CloudCache obj = (Dictionary<string, Object>)result;
-
+             
+            Dictionary<string, object> dictionary = (Dictionary<string, Object>)result;
+            var obj = new CloudCache(dictionary["name"].ToString());
+            obj.dictionary = dictionary;
             return obj;
         }
 
@@ -194,7 +195,9 @@ namespace CB
 
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, true);
 
-            CloudCache obj = (Dictionary<string, Object>)result;
+            Dictionary<string, object> dictionary = (Dictionary<string, Object>)result;
+            var obj = new CloudCache(dictionary["name"].ToString());
+            obj.dictionary = dictionary;
 
             return obj;
         }

@@ -86,7 +86,7 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.POST("/user/signup", postData);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/signup", postData, false);
             this.dictionary = (Dictionary<string, Object>)result;
             return this;
         }
@@ -106,7 +106,7 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.POST("/user/login", postData);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData, false);
             this.dictionary = (Dictionary<string, Object>)result;
             CloudUser.Current = this; //set this user as current logged in user.
             return this;
@@ -132,7 +132,7 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.POST("/user/login", postData);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData, false);
             this.dictionary = (Dictionary<string, Object>)result;
             CloudUser.Current = null; //set this user as current logged in user.
             return this;
@@ -159,7 +159,7 @@ namespace CB
             postData.Add("user", this);
             postData.Add("role", role);
 
-            var result = await Util.CloudRequest.POST("/user/addToRole", postData);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/addToRole", postData, false);
             this.dictionary = (Dictionary<string, Object>)result;
             return this;
 
@@ -176,12 +176,10 @@ namespace CB
             postData.Add("user", this);
             postData.Add("role", role);
 
-            var result = await Util.CloudRequest.POST("/user/removeFromRole", postData);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/removeFromRole", postData, false);
             this.dictionary = (Dictionary<string, Object>)result;
             return this;
-
         }
-
     }
 }
 

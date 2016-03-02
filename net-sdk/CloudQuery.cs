@@ -388,7 +388,7 @@ namespace CB
         }
         public async Task<int> Count()
         {
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", this.dictionary, false);
+            var result = await Util.CloudRequest.SendObject(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", this.dictionary, false);
             return (int)result;
         }
 
@@ -396,24 +396,30 @@ namespace CB
         {
             var dic = this.dictionary;
             dic["onKey"] = key;
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/" + this.dictionary["tableName"] + "/distinct", dic, false);
-            return (List<CloudObject>)result;
+            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, "/" + this.dictionary["tableName"] + "/distinct", dic, false);
+            List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
+            return list;
         }
         public async Task<List<CloudObject>> Find()
         {
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary, false);
-            return (List<CloudObject>)result;
+            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary, false);
+            List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
+            return list;
         }
         public async Task<CloudObject> Get(string objectId)
         {
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/get/"+ objectId, null, false);
-            return (CloudObject)result;
+            var obj = new CloudObject(result["name"].ToString());
+            obj.dictionary = result;
+            return obj;
         }
 
         public async Task<CloudObject> FindOne()
         {
-            var result = await Util.CloudRequest.POST("/ " + this.dictionary["tableName"] + "/findOne", this.dictionary);
-            return (CloudObject)result;
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/findOne" , this.dictionary, false);
+            var obj = new CloudObject(result["name"].ToString());
+            obj.dictionary = result;
+            return obj;
         }
     }
 }

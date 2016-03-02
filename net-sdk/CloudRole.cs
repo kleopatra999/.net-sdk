@@ -32,7 +32,7 @@ namespace CB
 
         public static async Task<CloudRole> GetRole(string roleName)
         {
-            var result = await Util.CloudRequest.POST("/role/getRole/" + roleName, null);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/role/getRole/" + roleName, null, false);
             var role = new CloudRole(roleName);
             role.dictionary = (Dictionary<string, Object>)result;
             return role;

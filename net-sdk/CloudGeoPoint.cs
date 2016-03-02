@@ -15,7 +15,7 @@ namespace CB
             
             dictionary.Add("_type", "point");
             dictionary.Add("_isModified", true);
-            if((latitude >= -90.0 && latitude <= 90.0.) &&(longitude) >= -180.0 && longitude <= 180.0)
+            if((latitude >= -90.0 && latitude <= 90.0) && (longitude >= -180.0 && longitude <= 180.0))
             {
                 coordinates[0] = longitude;
                 coordinates[1] = (latitude);

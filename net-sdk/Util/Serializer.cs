@@ -18,5 +18,10 @@ namespace CB.Util
         {
             return null;
         }
+
+        internal static List<Dictionary<string, Object>> DeserializeArrayType(JObject value)
+        {
+            return null;
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace CB
 {
     public class CloudObject
     {
-        protected Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public CloudObject(string tableName)
         {
             dictionary.Add("_tableName", tableName);
@@ -190,7 +190,7 @@ namespace CB
             {
                 throw new Exception.CloudBoostException("Can't fetch an object which is not saved");
              
-                return this;
+                //return this;
             }
 
             var query = new CloudQuery(dictionary["_tableName"].ToString());
@@ -212,7 +212,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData);
+            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.PUT, url, postData, false);
 
             List<CloudObject> objects = new List<CloudObject>();
 
@@ -235,7 +235,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
+            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.DELETE, url, postData, false);
 
             List<CloudObject> objects = new List<CloudObject>();
 
@@ -249,6 +249,69 @@ namespace CB
             }
 
             return objects;
+        }
+
+        internal static bool Modified(CB.CloudObject obj, string columnName)
+        {
+
+            List<Object> modifiedColumns = new List<Object>();
+            List<Object> col = new List<Object>();
+       
+            try
+            {
+                col = obj.dictionary.Select(_modifiedColumns => _modifiedColumns.Value).ToList();
+            }
+            catch (IndexOutOfRangeException e2)
+            {
+
+                throw e2;
+            }
+            for (int i = 0; i < col.Count; i++)
+            {
+                try
+                {
+                    modifiedColumns.Add(col.ElementAt(i));
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                    throw new IndexOutOfRangeException(e.Message);
+                }
+                catch (CB.Exception.CloudBoostException e)
+                {
+
+                    throw new CB.Exception.CloudBoostException(e.Message);
+                }
+            }
+            try
+            {
+                obj.dictionary.Add("_isModified", true);
+            }
+            catch (CB.Exception.CloudBoostException e1)
+            {
+
+                throw new CB.Exception.CloudBoostException(e1.Message); ;
+            }
+
+            if (modifiedColumns.Contains(columnName))
+            {
+                modifiedColumns.Clear();
+                modifiedColumns.Add(columnName);
+            }
+            else
+            {
+                modifiedColumns.Add(columnName);
+            }
+            try
+            {
+                obj.dictionary.Add("_modifiedColumns", modifiedColumns);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+
+                throw new IndexOutOfRangeException(e.Message);
+            }
+            return true;
         }
     }
 }

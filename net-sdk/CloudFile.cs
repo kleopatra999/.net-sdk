@@ -59,7 +59,7 @@ namespace CB
             dictionary.Add(name, data);
         }
 
-        public async Task SaveAsync()
+        public async Task<CloudFile> SaveAsync()
         {
 
             Dictionary<string, Object> postData = new Dictionary<string, object>();
@@ -74,7 +74,7 @@ namespace CB
             return this;
         }
 
-        public async Task DeleteAsync()
+        public async Task<CloudFile> DeleteAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
 

@@ -11,7 +11,7 @@ namespace CB
 {
     public class CloudTable
     {
-        Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
 
         private static void _tableValidation(string tableName)
         {
@@ -158,25 +158,18 @@ namespace CB
 
         public static async Task<List<CB.CloudTable>> GetAllAsync()
         {
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/_getAll", null, true);
+            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/_getAll", null, true);
 
-            List<CloudTable> tables = new List<CloudTable>();
+            List<CloudTable> tables = CB.PrivateMethods.ToCloudTableList(result);
 
             var tableDictionaries = (List<Dictionary<string, Object>>)result;
-
-            for (int i = 0; i < tableDictionaries.Count; i++)
-            {
-                CB.CloudTable table = new CloudTable(tableDictionaries[i]["name"].ToString());
-                table.dictionary = tableDictionaries[i];
-                tables.Add(table);
-            }
 
             return tables;
         }
 
         public static async Task<CB.CloudTable> GetAsync(string tableName)
         {
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), null, true);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + tableName, null, true);
             CB.CloudTable table = new CloudTable(tableName);
             table.dictionary = (Dictionary<string, Object>)result;
             return table;
@@ -184,7 +177,7 @@ namespace CB
 
         public static async Task<CB.CloudTable> GetAsync(CB.CloudTable table)
         {
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), null, true);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + table, null, true);
             table.dictionary = (Dictionary<string, Object>)result;
             return table;
         }

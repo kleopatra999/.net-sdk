@@ -8,7 +8,7 @@ namespace CB
 {
     class CloudQueue
     {
-        protected Dictionary<string, Object> dictionary = new Dictionary<string, object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, object>();
         public CloudQueue(string queueName, string queueType = null)
         {
             dictionary.Add("ACL", new CB.ACL());
@@ -237,7 +237,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -250,9 +250,9 @@ namespace CB
 
             postData.Add("document", this);
 
-            var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/create;
+            var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/create";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -266,9 +266,9 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/subscriber/";
+            var Url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/subscriber/";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, Url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -282,9 +282,9 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/peekMessage";
+            var Url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/peekMessage";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, Url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -299,7 +299,7 @@ namespace CB
 
             var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/subscriber/";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -314,7 +314,7 @@ namespace CB
 
             var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -329,7 +329,7 @@ namespace CB
 
             var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/clear";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -347,7 +347,7 @@ namespace CB
 
             var url =  CB.CloudApp.ApiUrl+ "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/" + id +"/refresh-message-timeout";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -361,9 +361,9 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             
 
-            var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/clear";
+            var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message/"+id;
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false)
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -480,6 +480,69 @@ namespace CB
                 dictionary["timeout"] = value;
                 //TODO: modified
             }
+        }
+
+         internal static bool Modified(CB.CloudQueue obj, string columnName)
+        {
+
+            List<Object> modifiedColumns = new List<Object>();
+            List<Object> col = new List<Object>();
+       
+            try
+            {
+                col = obj.dictionary.Select(_modifiedColumns => _modifiedColumns.Value).ToList();
+            }
+            catch (IndexOutOfRangeException e2)
+            {
+
+                throw e2;
+            }
+            for (int i = 0; i < col.Count; i++)
+            {
+                try
+                {
+                    modifiedColumns.Add(col.ElementAt(i));
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                    throw new IndexOutOfRangeException(e.Message);
+                }
+                catch (CB.Exception.CloudBoostException e)
+                {
+
+                    throw new CB.Exception.CloudBoostException(e.Message);
+                }
+            }
+            try
+            {
+                obj.dictionary.Add("_isModified", true);
+            }
+            catch (CB.Exception.CloudBoostException e1)
+            {
+
+                throw new CB.Exception.CloudBoostException(e1.Message); ;
+            }
+
+            if (modifiedColumns.Contains(columnName))
+            {
+                modifiedColumns.Clear();
+                modifiedColumns.Add(columnName);
+            }
+            else
+            {
+                modifiedColumns.Add(columnName);
+            }
+            try
+            {
+                obj.dictionary.Add("_modifiedColumns", modifiedColumns);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+
+                throw new IndexOutOfRangeException(e.Message);
+            }
+            return true;
         }
     }
 }

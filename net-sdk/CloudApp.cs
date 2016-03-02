@@ -12,6 +12,8 @@ namespace CB
 
     public class CloudApp
     {
+        internal static String SESSION_ID = null;
+
         private static string apiUrl;
 
         internal static ILog log;
@@ -70,22 +72,6 @@ namespace CB
             ApiUrl = apiUrl;
             AppID = appId;
             AppKey = appKey;
-        }
-
-
-        public static bool Validate()
-        {
-            if (String.IsNullOrEmpty(AppID) || String.IsNullOrEmpty(AppKey) )
-            {
-                throw new Exception.CloudBoostException("AppID / AppKey is missing.");
-            }
-
-            if(String.IsNullOrEmpty(ApiUrl))
-            {
-                throw new Exception.CloudBoostException("API URL is missing.");
-            }
-
-            return true;
         }
     }
 }
