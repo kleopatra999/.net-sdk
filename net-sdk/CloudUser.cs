@@ -15,6 +15,12 @@ namespace CB
         public CloudUser() : base("User")
         {
             this.dictionary["_type"] = "user";
+            this.dictionary["_modifiedColumns"] = new ArrayList();
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("createdAt");
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("updatedAt");
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("ACL");
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("expires");
+            dictionary.Add("_isModified", true);
         }
 
         public string Username
@@ -26,7 +32,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(string))
+                {
                     dictionary["username"] = value;
+                    _IsModified(this, "username");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type string");
             }
@@ -43,7 +52,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(string))
+                {
                     dictionary["password"] = value;
+                    _IsModified(this, "password");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type string");
             }
@@ -59,7 +71,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(string))
+                {
                     dictionary["email"] = value;
+                    _IsModified(this, "email");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type string");
             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CB
 {
-    class CloudQuery
+    public class CloudQuery
     {
         Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public CloudQuery(string tableName)
@@ -49,13 +49,13 @@ namespace CB
             return this;
         }
 
-        public CloudQuery Include(string columnName, Object data)
+        public CloudQuery Include(string columnName)
         {
             if (columnName == "ID")
             {
                 columnName = "_id";
             }
-            ((ArrayList)((Dictionary<string, Object>)(this.dictionary["query"]))["$include"]).Add(data);
+            ((ArrayList)((Dictionary<string, Object>)(this.dictionary["query"]))["$include"]).Add(columnName);
 
             return this;
         }
@@ -235,7 +235,7 @@ namespace CB
             return this;
         }
 
-        public CloudQuery ContainedIn(string columnName, string data)
+        public CloudQuery ContainedIn(string columnName, object data)
         {
             if (columnName == "ID")
             {
@@ -386,6 +386,85 @@ namespace CB
 
             return this;
         }
+
+        //GeoPoint near query
+        public CloudQuery near(string columnName, CB.CloudGeoPoint geoPoint, double maxDistance, double minDistance)
+        {
+            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null)
+            {
+                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
+                Dictionary<string, object> near = new Dictionary<string,object>();
+                Dictionary<string, object> geometry = new Dictionary<string,object>();
+                double[] coordinates = (double[])geoPoint.dictionary["coordinates"];
+                geometry.Add("coordinates", coordinates);
+                geometry.Add("type", "Point");
+                near.Add("$geometry", geometry);
+                near.Add("$maxDistance", maxDistance);
+                near.Add("$minDistance", minDistance);
+                ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$near"] = near;
+            }
+            return this;
+        }
+
+        public CloudQuery Near(string columnName, CB.CloudGeoPoint geoPoint, double maxDistance)
+        {
+            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null)
+            {
+                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
+                Dictionary<string, object> near = new Dictionary<string,object>();
+                Dictionary<string, object> geometry = new Dictionary<string,object>();
+                double[] coordinates = (double[])geoPoint.dictionary["coordinates"];
+                geometry.Add("coordinates", coordinates);
+                geometry.Add("type", "Point");
+                near.Add("$geometry", geometry);
+                near.Add("$maxDistance", maxDistance);
+                near.Add("$minDistance", null);
+                ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$near"] = near;
+            }
+            return this;
+        }
+
+        //GeoPoint geoWithin query
+        public CloudQuery GeoWithin(string columnName, CloudGeoPoint[] geoPoint)
+        {
+            double[][] coordinates = {};
+            for(int i=0; i<geoPoint.Length; i++)
+            {
+                coordinates[i] = (double[])geoPoint[i].dictionary["coordinates"];
+            }
+            string type = "Polygon";
+            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null)
+            {
+                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
+                Dictionary<string, object> geoWithin = new Dictionary<string,object>();
+                Dictionary<string, object> geometry = new Dictionary<string,object>();
+                geometry.Add("coordinates", coordinates);
+                geometry.Add("type", type);
+                geoWithin.Add("$geometry", geometry);
+                ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$geoWithin"] = geoWithin;
+            }
+
+            return this;
+        }
+
+        public CloudQuery GeoWithin(string columnName, CloudGeoPoint geoPoint, double radius)
+        {
+            double[] coordinates = (double[])geoPoint.dictionary["coordinates"];
+            
+            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null)
+            {
+                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
+                Dictionary<string, object> geoWithin = new Dictionary<string,object>();
+                Dictionary<string, object> centerSphere = new Dictionary<string,object>();
+                centerSphere.Add("coordinates", coordinates);
+                centerSphere.Add("radius", radius/3963.2);
+                geoWithin.Add("$geometry", centerSphere);
+                ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$geoWithin"] = geoWithin;
+            }
+
+            return this;
+        }
+
         public async Task<int> Count()
         {
             var result = await Util.CloudRequest.SendObject(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", this.dictionary, false);

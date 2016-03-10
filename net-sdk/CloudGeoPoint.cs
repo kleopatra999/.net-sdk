@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CB
 {
-    class CloudGeoPoint
+    public class CloudGeoPoint
     {
-        protected Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         protected double[] coordinates = new double[2];
         public CloudGeoPoint(double longitude, double latitude)
         {

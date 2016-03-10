@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 
 namespace CB
 {
-    class SearchFilter
+    public class SearchFilter
     {
-        Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
-        List<object> include = new List<object>();
-        List<Object> must = new List<Object>();
-        List<Object> should = new List<Object>();
-        List<Object> must_not = new List<Object>();
-
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public SearchFilter()
         {
-            dictionary.Add("must", must);
-            dictionary.Add("should", should);
-            dictionary.Add("must_not", must_not);
+            
         }
 
         public SearchFilter NotEqualTo(string columnName, Object data)
@@ -29,7 +22,6 @@ namespace CB
                 columnName = "_" + columnName;
             }
 
-            //data can bean array too!
             var term = new Dictionary<string, Object>();
 
             if (data.GetType() == typeof(ArrayList))
@@ -47,6 +39,23 @@ namespace CB
 
             return this;
         }
+
+        public SearchFilter NotEqualTo(string columnName, Object[] data)
+        {
+            if (columnName.Equals("id") || columnName.Equals("isSearchable") || columnName.Equals("expires"))
+            {
+                columnName = "_" + columnName;
+            }
+
+            var term = new Dictionary<string, Object>();
+
+            term["terms"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)term["terms"])[columnName] = data;
+            
+            this._PushInMustNotFilter(term);
+
+            return this;
+        }
         
         public SearchFilter EqualTo(string columnName, Object data)
         {
@@ -55,19 +64,27 @@ namespace CB
                 columnName = "_" + columnName;
             }
 
-            //data can bean array too!
             var term = new Dictionary<string, Object>();
 
-            if (data.GetType() == typeof(ArrayList))
+            term["term"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)term["term"])[columnName] = data;
+
+            this._PushInMustFilter(term);
+
+            return this;
+        }
+
+        public SearchFilter EqualTo(string columnName, Object[] data)
+        {
+            if (columnName.Equals("id") || columnName.Equals("isSearchable") || columnName.Equals("expires"))
             {
-                term["terms"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)term["terms"])[columnName] = data;
+                columnName = "_" + columnName;
             }
-            else
-            {
-                term["term"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)term["term"])[columnName] = data;
-            }
+
+            var term = new Dictionary<string, Object>();
+
+            term["terms"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)term["terms"])[columnName] = data;
 
             this._PushInMustFilter(term);
 
@@ -81,7 +98,6 @@ namespace CB
                 columnName = "_" + columnName;
             }
 
-            //data can bean array too!
             var obj = new Dictionary<string, Object>();
             obj["exists"] = new Dictionary<string, Object>();
             ((Dictionary<string, Object>)obj["exists"])["field"] = columnName;
@@ -98,7 +114,6 @@ namespace CB
                 columnName = "_" + columnName;
             }
 
-            //data can bean array too!
             var obj = new Dictionary<string, Object>();
             obj["missing"] = new Dictionary<string, Object>();
             ((Dictionary<string, Object>)obj["missing"])["field"] = columnName;
@@ -108,6 +123,23 @@ namespace CB
             return this;
         }
 
+        public SearchFilter GreaterThan(string columnName, Object data)
+        {
+            if (columnName.Equals("id") || columnName.Equals("isSearchable") || columnName.Equals("expires"))
+            {
+                columnName = "_" + columnName;
+            }
+
+            var obj = new Dictionary<string, Object>();
+            obj["range"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["range"])[columnName] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["range"])[columnName])["gt"] = data;
+            this._PushInMustFilter(obj);
+
+            return this;
+
+        }
+
         public SearchFilter GreaterThanEqualTo(string columnName, Object data)
         {
             if (columnName.Equals("id") || columnName.Equals("isSearchable") || columnName.Equals("expires"))
@@ -115,7 +147,6 @@ namespace CB
                 columnName = "_" + columnName;
             }
 
-            //data can bean array too!
             var obj = new Dictionary<string, Object>();
             obj["range"] = new Dictionary<string, Object>();
             ((Dictionary<string, Object>)obj["range"])[columnName] = new Dictionary<string, Object>();
@@ -133,7 +164,6 @@ namespace CB
                 columnName = "_" + columnName;
             }
 
-            //data can bean array too!
             var obj = new Dictionary<string, Object>();
             obj["range"] = new Dictionary<string, Object>();
             ((Dictionary<string, Object>)obj["range"])[columnName] = new Dictionary<string, Object>();
@@ -150,7 +180,6 @@ namespace CB
                 columnName = "_" + columnName;
             }
 
-            //data can bean array too!
             var obj = new Dictionary<string, Object>();
             obj["range"] = new Dictionary<string, Object>();
             ((Dictionary<string, Object>)obj["range"])[columnName] = new Dictionary<string, Object>();
@@ -160,9 +189,20 @@ namespace CB
             return this;
         }
 
-        public SearchFilter And(SearchFilter obj)
+        public void Near(string columnName, CloudGeoPoint geoPoint, double distance)
         {
-            if (obj.include.Count() > 0)
+            var obj = new Dictionary<string, Object>();
+            obj["geo_distance"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["geo_distance"])["distance"] = distance;
+            ((Dictionary<string, Object>)obj["geo_distance"])["columnName"] = geoPoint.dictionary["coordinates"];
+
+            this._PushInMustFilter(obj);
+
+        }
+
+        public void And(SearchFilter obj)
+        {
+            if (obj._GetIncludeSize() > 0)
             {
                 throw new Exception.CloudBoostException("You cannot have an include over AND. Have an CloudSearch Include over parent SearchFilter instead");
             }
@@ -171,162 +211,101 @@ namespace CB
 
         }
 
-        public SearchFilter Or(SearchFilter obj)
+        public void Or(SearchFilter obj)
         {
-            if (obj.include.Count() > 0)
+            if (obj._GetIncludeSize() > 0)
             {
                 throw new Exception.CloudBoostException("You cannot have an include over OR. Have an CloudSearch Include over parent SearchFilter instead");
             }
 
         }
 
-        public SearchFilter Not(SearchFilter obj)
+        public void Not(SearchFilter obj)
         {
-            if (obj.include.Count() > 0)
+            if (obj._GetIncludeSize() > 0)
             {
                 throw new Exception.CloudBoostException("You cannot have an include over OR. Have an CloudSearch Include over parent SearchFilter instead");
             }
         }
 
-        public SearchFilter include(string columnName)
+        public void include(string columnName)
         {
             if (columnName.Equals("id") || columnName.Equals("isSearchable") || columnName.Equals("expires"))
             {
                 columnName = "_" + columnName;
             }
 
-            this.include.Add(columnName);
+            this._PushInInclude(columnName);
         }
 
+        
         /* PRIVATE FUNCTIONS */
-
-        private bool _IsFilteredQuery;
-
-        private void _PushInMustFilter(Object obj)
+        private void _PushInInclude(Object obj)
         {
-            this._MakeFilteredQuery();
+            ((ArrayList)((Dictionary<string, Object>)dictionary["filter"])["$include"]).Add(obj);
+        }
 
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"]) != null && ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] != null)
-            {
-                //attach this term to an array of 'must'.
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"]).Add(obj);
-            }
-            else if (this._GetFilterItem() != null)
-            {
-                //if I already have a exists, then :
-                //create a bool and and all of these.
-                this._AppendPrevFilterToBool();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"]).Add(obj);
+        private int _GetIncludeSize()
+        {
+            return ((ArrayList)((Dictionary<string, Object>)dictionary["filter"])["$include"]).Count;
+        }
 
-            }
-            else
+        private void _CreateInclude()
+        {
+            if (((Dictionary<string, Object>)dictionary["filter"])["$include"] == null)
             {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"] = obj;
+                ((Dictionary<string, Object>)dictionary["filter"])["$include"] = new ArrayList();
             }
         }
 
-        private void _PushInShouldFilter(Object obj)
+        private void _ClearInclude()
         {
-            this._MakeFilteredQuery();
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"]) != null && ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] != null)
-            {
-                //attach this term to an array of 'must'.
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);
-            }
-            else if (this._GetFilterItem() != null)
-            {
-                //if I already have a exists, then :
-                //create a bool and and all of these.
-                this._AppendPrevFilterToBool();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);
-
-            }
-            else
-            {
-                this._CreateBoolFilter();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);
-            }
+            ((ArrayList)((Dictionary<string, Object>)dictionary["filter"])["$include"]).Clear();
         }
 
-        private void _PushInMustNotFilter(Object obj)
+        private void _PushInMustFilter(object obj)
         {
-            this._MakeFilteredQuery();
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"]) != null && ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] != null)
-            {
-                //attach this term to an array of 'must'.
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"]).Add(obj);
-            }
-            else if (this._GetFilterItem() != null)
-            {
-                //if I already have a exists, then :
-                //create a bool and and all of these.
-                this._AppendPrevFilterToBool();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"]).Add(obj);
-
-            }
-            else
-            {
-                this._CreateBoolFilter();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"]).Add(obj);
-            }
+            _createBoolFilter();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["must"]).Add(obj);
         }
 
-        private void _MakeFilteredQuery()
+        private void _PushInMustNotFilter(object obj)
         {
-            if (((Dictionary<string, Object>)dictionary["query"])["filtered"] == null)
-            {
-                var prevQuery = (Dictionary<string, Object>)dictionary["query"];
-                dictionary["query"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)dictionary["query"])["filtered"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"] = prevQuery;
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"] = new Dictionary<string, Object>();
-            }
-
-            _IsFilteredQuery = true;
+            _createBoolFilter();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["must_not"]).Add(obj);
         }
 
-        private Dictionary<string, Object> _GetFilterItem()
+        private void _PushInShouldFilter(object obj)
         {
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"]).Count > 0)
-            {
-                return (Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"];
-            }
-
-            return null;
+            _createBoolFilter();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["should"]).Add(obj);
         }
 
-        private void _DeleteFilterItem()
+        private void _createBoolFilter()
         {
-            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"] = new Dictionary<string, Object>();
-        }
-
-        private void _CreateBoolFilter()
-        {
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"] == null)
+            if (((Dictionary<string, Object>)dictionary["filter"])["bool"] == null)
             {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"] = new Dictionary<string, Object>();
+                ((Dictionary<string, Object>)dictionary["filter"])["bool"] = new Dictionary<string, Object>();
             }
 
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] == null)
+            if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filtet"])["bool"])["must"] == null)
             {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] = new ArrayList();
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["must"] = new ArrayList();
             }
 
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] == null)
+            if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["should"] == null)
             {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] = new ArrayList();
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["should"] = new ArrayList();
             }
 
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] == null)
+            if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["must_not"] == null)
             {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] = new ArrayList();
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["filter"])["bool"])["must_not"] = new ArrayList();
             }
         }
     }
 
-    class SearchQuery
+    public class SearchQuery
     {
         Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public SearchQuery()
@@ -334,33 +313,268 @@ namespace CB
 
         }
 
-        public Dictionary<string, Object> _buildSearchPhrase(string columnName, string query, string slop, string boost)
+        public Dictionary<string, Object> _buildSearchPhrase(string columnName, object query, string slop, string boost)
         { 
-            Dictionary<string, Object> obj = this._buildSearchOn(columnName, query, null, null, null, boost);
-            //TODO: check columnName is object or array of object
+            var obj = this._buildSearchOn(columnName, query, null, null, null, boost);
+            obj["match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["match"])[columnName] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[columnName])["type"] = "phrase";
+            if (slop != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[columnName])["slop"] = slop;
+            }
             return obj;
         }
 
-        public Dictionary<string, Object> _buildBestColumns(string columnName, string query, string fuzziness, string _operator, string match_percent, string boost)
+        public Dictionary<string, Object> _buildSearchPhrase(string[] columnName, object query, string slop, string boost)
         {
-            Dictionary<string, Object> obj = this._buildSearchOn(columnName, query, null, null, null, boost);
-            //TODO: check columnName is object or array of object
+            var obj = this._buildSearchOn(columnName, query, null, null, null, boost);
+            obj["multi_match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["multi_match"])["type"] = "phrase";
+            if (slop != null)
+            {
+                ((Dictionary<string, Object>)obj["multi_match"])["slop"] = slop;
+            }
             return obj;
         }
 
-        public Dictionary<string, Object> _buildMostColumns(string columnName, string query, string fuzziness,  string _operator, string match_percent, string boost)
+        public Dictionary<string, Object> _buildBestColumns(string columnName, object query, string fuzziness, string _operator, string match_percent, string boost)
         {
-            Dictionary<string, Object> obj = this._buildSearchOn(columnName, query, null, null, null, boost);
-            //TODO: check columnName is object or array of object
+            var obj = this._buildSearchOn(columnName, query, null, null, null, boost);
+            obj["match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["match"])[columnName] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[columnName])["type"] = "best_fields";
+            
             return obj;
         }
 
+        public Dictionary<string, Object> _buildBestColumns(string[] columnName, object query, string fuzziness, string _operator, string match_percent, string boost)
+        {
+            var obj = this._buildSearchOn(columnName, query, null, null, null, boost);
+            obj["multi_match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["multi_match"])["type"] = "best_fields";
+            return obj;
+        }
 
+        public Dictionary<string, Object> _buildMostColumns(string columnName, object query, string fuzziness,  string _operator, string match_percent, string boost)
+        {
+            var obj = this._buildSearchOn(columnName, query, null, null, null, boost);
+            obj["match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["match"])[columnName] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[columnName])["type"] = "most_fields";
+            return obj;
+        }
+
+        public Dictionary<string, Object> _buildMostColumns(string[] columnName, object query, string fuzziness, string _operator, string match_percent, string boost)
+        {
+            var obj = this._buildSearchOn(columnName, query, null, null, null, boost);
+            obj["multi_match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["multi_match"])["type"] = "most_fields";
+            return obj;
+        }
+
+        public Dictionary<string, Object> _buildSearchOn(string column, object query, string fuzziness, string _operator, string match_percent, string boost)
+        {
+            var obj = new Dictionary<string, Object>();
+            obj["match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["match"])[column] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[column])["query"] = query;
+
+            if (_operator != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[column])["operator"] = _operator;
+            }
+
+            if (match_percent != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[column])["minimum_should_match"] = match_percent;
+            }
+
+            if (boost != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[column])["boost"] = boost;
+            }
+
+            if (fuzziness != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["match"])[column])["fuzziness"] = fuzziness;
+            }
+            return obj;
+        }
+
+        public Dictionary<string, Object> _buildSearchOn(string[] column, object query, string fuzziness, string _operator, string match_percent, string boost)
+        {
+            var obj = new Dictionary<string, Object>();
+            obj["multi_match"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["multi_match"])["query"] = query;
+
+            if (_operator != null)
+            {
+                ((Dictionary<string, Object>)obj["multi_match"])["operator"] = _operator;
+            }
+
+            if (match_percent != null)
+            {
+                ((Dictionary<string, Object>)obj["multi_match"])["minimum_should_match"] = match_percent;
+            }
+
+            if (boost != null)
+            {
+                ((Dictionary<string, Object>)obj["multi_match"])["boost"] = boost;
+            }
+
+            if (fuzziness != null)
+            {
+                ((Dictionary<string, Object>)obj["multi_match"])["fuzziness"] = fuzziness;
+            }
+            return obj;
+        }
+
+        public CB.SearchQuery SearchOn(string columns, object query, string fuzziness, string all_words, string match_percent, string priority)
+        {
+            if (all_words != null)
+            {
+                all_words = "and";
+            }
+            var obj = this._buildSearchOn(columns, query, fuzziness, all_words, match_percent, priority);
+            this._PushInShouldQuery(obj);
+            return this;
+        }
+
+        public CB.SearchQuery Phrase(string columns, object query, string fuzziness, string priority)
+        {
+            var obj = this._buildSearchPhrase(columns, query, fuzziness, priority);
+            this._PushInShouldQuery(obj);
+            return this;
+        }
+
+        public CB.SearchQuery BestColumns(string[] columns, object query, string fuzziness, string all_words, string match_percent, string priority)
+        {
+            if (all_words != null)
+            {
+                all_words = "and";
+            }
+            var obj = this._buildBestColumns(columns, query, fuzziness, all_words, match_percent, priority);
+            this._PushInShouldQuery(obj);
+            return this;
+        }
+
+        public CB.SearchQuery MostColumns(string[] columns, object query, string fuzziness, string all_words, string match_percent, string priority)
+        {
+            if (all_words != null)
+            {
+                all_words = "and";
+            }
+            var obj = this._buildMostColumns(columns, query, fuzziness, all_words, match_percent, priority);
+            this._PushInShouldQuery(obj);
+            return this;
+        }
+
+        public void StartsWith(string column, object value, int? priority)
+        {
+            var obj = new Dictionary<string, Object>();
+            obj["prefix"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["prefix"])[column] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["prefix"])[column])["value"] = value;
+            if (priority != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["prefix"])[column])["boost"] = priority;
+
+            }
+            this._PushInMustQuery(obj);
+        }
+
+        public void WildCard(string column, object value, int? priority)
+        {
+            var obj = new Dictionary<string, Object>();
+            obj["wildcard"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["wildcard"])[column] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["wildcard"])[column])["value"] = value;
+            if (priority != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["wildcard"])[column])["boost"] = priority;
+
+            }
+            this._PushInShouldQuery(obj);
+        }
+
+        public void RegExp(string column, object value, int? priority)
+        {
+            var obj = new Dictionary<string, Object>();
+            obj["regexp"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)obj["regexp"])[column] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["regexp"])[column])["value"] = value;
+            if (priority != null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["regexp"])[column])["boost"] = priority;
+
+            }
+
+            this._PushInMustQuery(obj);
+        }
+
+        public void And(CB.SearchQuery obj)
+        {
+            this._PushInMustQuery(obj);
+        }
+
+        public void Or(CB.SearchQuery obj)
+        {
+            this._PushInShouldQuery(obj);
+        }
+
+        public void Not(CB.SearchQuery obj)
+        {
+            this._PushInMustNotQuery(obj);
+        }
+
+        private void _PushInMustQuery(object obj)
+        {
+            _createBoolQuery();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must"]).Add(obj);
+        }
+
+        private void _PushInMustNotQuery(object obj)
+        {
+            _createBoolQuery();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must_not"]).Add(obj);
+        }
+
+        private void _PushInShouldQuery(object obj)
+        {
+            _createBoolQuery();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["should"]).Add(obj);
+        }
+
+        private void _createBoolQuery()
+        {
+            if ( ((Dictionary<string, Object>)dictionary["query"])["bool"] == null )
+            {
+                ((Dictionary<string, Object>)dictionary["query"])["bool"] = new Dictionary<string, Object>();
+            }
+
+            if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must"] == null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must"] = new ArrayList();
+            }
+
+            if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["should"] == null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["should"] = new ArrayList();
+            }
+
+            if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must_not"] == null)
+            {
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must_not"] = new ArrayList();
+            }
+        }
     }
 
-    class CloudSearch
+    public class CloudSearch
     {
-        protected Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        public SearchQuery SearchQuery;
+        public SearchFilter SearchFilter;
         public CloudSearch(string tableName)
         {
             dictionary["collectionNames"] = tableName;
@@ -369,6 +583,7 @@ namespace CB
             dictionary["size"] = 10;
             dictionary["sort"] = new ArrayList();
         }
+
         public CloudSearch(ArrayList tableNames)
         {
             dictionary["collectionNames"] = tableNames;
@@ -421,357 +636,8 @@ namespace CB
 
             return this;
         }
-
-        public CloudSearch NotEqualTo(string column, Object data)
-        {
-            //data can bean array too!
-            var term = new Dictionary<string, Object>();
-
-            if (data.GetType() == typeof(ArrayList))
-            {
-                term["terms"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)term["terms"])[column] = data;
-            }
-            else
-            {
-                term["term"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)term["term"])[column] = data;
-            }
-
-            this._PushInMustNotFilter(term);
-
-            return this;
-        }
-
-        public CloudSearch EqualTo(string column, Object data)
-        {
-            //data can bean array too!
-            var term = new Dictionary<string, Object>();
-
-            if (data.GetType() == typeof(ArrayList))
-            {
-                term["terms"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)term["terms"])[column] = data;
-            }
-            else
-            {
-                term["term"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)term["term"])[column] = data;
-            }
-
-            this._PushInMustFilter(term);
-
-            return this;
-        }
-
-        public CloudSearch Exists(string column)
-        {
-            //data can bean array too!
-            var obj = new Dictionary<string, Object>();
-            obj["exists"] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)obj["exists"])["field"] = column;
-
-            this._PushInMustFilter(obj);
-
-            return this;
-        }
-
-        public CloudSearch DoesNotExist(string column)
-        {
-            //data can bean array too!
-            var obj = new Dictionary<string, Object>();
-            obj["missing"] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)obj["missing"])["field"] = column;
-
-            this._PushInMustFilter(obj);
-
-            return this;
-        }
-
-        public CloudSearch GreaterThanOrEqual(string column, Object data)
-        {
-            //data can bean array too!
-            var obj = new Dictionary<string, Object>();
-            obj["range"] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)obj["range"])[column] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["range"])[column])["gte"] = data;
-            this._PushInMustFilter(obj);
-
-            return this;
-        }
-
-
-
-        public CloudSearch GreaterThan(string column, Object data)
-        {
-            //data can bean array too!
-            var obj = new Dictionary<string, Object>();
-            obj["range"] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)obj["range"])[column] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["range"])[column])["gt"] = data;
-            this._PushInMustFilter(obj);
-
-            return this;
-        }
-
-        public CloudSearch LessThan(string column, Object data)
-        {
-            //data can bean array too!
-            var obj = new Dictionary<string, Object>();
-            obj["range"] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)obj["range"])[column] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["range"])[column])["lt"] = data;
-            this._PushInMustFilter(obj);
-
-            return this;
-        }
-
-        public CloudSearch LessThanOrEqual(string column, Object data)
-        {
-            //data can bean array too!
-            var obj = new Dictionary<string, Object>();
-            obj["range"] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)obj["range"])[column] = new Dictionary<string, Object>();
-            ((Dictionary<string, Object>)((Dictionary<string, Object>)obj["range"])[column])["lte"] = data;
-            this._PushInMustFilter(obj);
-
-            return this;
-        }
-
-
-
-        /* PRIVATE FUNCTIONS */
-
-        private bool _IsFilteredQuery;
-
-        private void _PushInMustFilter(Object obj)
-        {
-            this._MakeFilteredQuery();
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"]) != null && ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] != null)
-            {
-                //attach this term to an array of 'must'.
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"]).Add(obj);
-            }
-            else if (this._GetFilterItem() != null)
-            {
-                //if I already have a exists, then :
-                //create a bool and and all of these.
-                this._AppendPrevFilterToBool();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"]).Add(obj);
-
-            }
-            else
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"] = obj;
-            }
-        }
-
-        private void _PushInShouldFilter(Object obj)
-        {
-            this._MakeFilteredQuery();
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"]) != null && ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] != null)
-            {
-                //attach this term to an array of 'must'.
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);
-            }
-            else if (this._GetFilterItem() != null)
-            {
-                //if I already have a exists, then :
-                //create a bool and and all of these.
-                this._AppendPrevFilterToBool();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);
-
-            }
-            else
-            {
-                this._CreateBoolFilter();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);
-            }
-        }
-
-        private void _PushInMustNotFilter(Object obj)
-        {
-            this._MakeFilteredQuery();
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"]) != null && ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] != null)
-            {
-                //attach this term to an array of 'must'.
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"]).Add(obj);
-            }
-            else if (this._GetFilterItem() != null)
-            {
-                //if I already have a exists, then :
-                //create a bool and and all of these.
-                this._AppendPrevFilterToBool();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"]).Add(obj);
-
-            }
-            else
-            {
-                this._CreateBoolFilter();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"]).Add(obj);
-            }
-        }
-
-        private void _MakeFilteredQuery()
-        {
-            if (((Dictionary<string, Object>)dictionary["query"])["filtered"] == null)
-            {
-                var prevQuery = (Dictionary<string, Object>)dictionary["query"];
-                dictionary["query"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)dictionary["query"])["filtered"] = new Dictionary<string, Object>();
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"] = prevQuery;
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"] = new Dictionary<string, Object>();
-            }
-
-            _IsFilteredQuery = true;
-        }
-
-        private Dictionary<string, Object> _GetFilterItem()
-        {
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"]).Count > 0)
-            {
-                return (Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"];
-            }
-
-            return null;
-        }
-
-        private void _DeleteFilterItem()
-        {
-            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"] = new Dictionary<string, Object>();
-        }
-
-        private void _CreateBoolFilter()
-        {
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"] = new Dictionary<string, Object>();
-            }
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] = new ArrayList();
-            }
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] = new ArrayList();
-            }
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] = new ArrayList();
-            }
-        }
-
-
-
-        private void _CreateBoolQuery()
-        {
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"] = new Dictionary<string, Object>();
-            }
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"] = new ArrayList();
-            }
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"] = new ArrayList();
-            }
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] == null)
-            {
-                ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"] = new ArrayList();
-            }
-
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"]) == null)
-            {
-                if (((Dictionary<string, Object>)dictionary["query"])["bool"] == null)
-                {
-                    ((Dictionary<string, Object>)dictionary["query"])["bool"] = new Dictionary<string, object>();
-                }
-
-                if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must"] == null)
-                {
-                    ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must"] = new ArrayList();
-                }
-
-                if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["should"] == null)
-                {
-                    ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["should"] = new ArrayList();
-                }
-
-
-                if (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must_not"] == null)
-                {
-                    ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["bool"])["must_not"] = new ArrayList();
-                }
-            }
-            else
-            {
-                if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"] == null)
-                {
-                    ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"] = new Dictionary<string, Object>();
-                }
-
-                if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"])["must"] == null)
-                {
-                    ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"])["must"] = new ArrayList();
-                }
-
-                if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"])["should"] == null)
-                {
-                    ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"])["should"] = new ArrayList();
-                }
-
-                if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"])["must_not"] == null)
-                {
-                    ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["query"])["bool"])["must_not"] = new ArrayList();
-                }
-            }
-        }
-
-        private void _AppendPrevFilterToBool()
-        {
-            var prevTerm = this._GetFilterItem();
-            this._DeleteFilterItem();
-            this._CreateBoolFilter();
-            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must"]).Add(prevTerm);
-        }
-
-        private void _PushInShouldQuery(Object obj)
-        {
-            this._MakeFilteredQuery();
-
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"] !=null  && ((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]!=null) 
-            {
-                //attach this term to an array of 'must'.
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);   
-            } 
-            else if (this._GetFilterItem()!=null)
-            {
-                //if I already have a exists, then :
-                //create a bool and and all of these.
-                this._AppendPrevFilterToBool();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["should"]).Add(obj);   
-
-            }
-            else
-            {
-                this._CreateBoolFilter();
-                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["filtered"])["filter"])["bool"])["must_not"]).Add(obj);
-            }
-        }
-        public CloudSearch SearchOn(ArrayList columns, string query)
+     
+        public CloudSearch SearchOn(ArrayList columns, object query)
         {
             if (this._IsFilteredQuery)
             {

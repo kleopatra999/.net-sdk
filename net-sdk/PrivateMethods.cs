@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -77,7 +78,23 @@ namespace CB
             return true;
         }
 
-        
+        internal static void _tableValidation(string tableName)
+        {
+            if (String.IsNullOrWhiteSpace(tableName)) //if table name is empty
+                throw new CB.Exception.CloudBoostException("Table name cannot be empty");
+
+            int temp; //JUNK
+
+            if (int.TryParse(tableName[0].ToString(), out temp))
+                throw new CB.Exception.CloudBoostException("Table name cannot start with a number");
+
+            if (tableName.Contains(" "))
+                throw new CB.Exception.CloudBoostException("Table name should not contain spaces");
+
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*");
+            if (regexItem.IsMatch(tableName))
+                throw new CB.Exception.CloudBoostException("Table name should not contain special characters");
+        }
 
         public static bool TrimStart()
         {
@@ -148,22 +165,23 @@ namespace CB
        
         }
         
-        public static bool FileCheck(CloudObject obj)
+        internal static bool FileCheck(CloudObject obj)
         {
             //SaveAsync call for each object of CloudObject Array 
             return true;
         }
 
-        public static bool BulkFileCheck()
+        internal static bool BulkFileCheck()
         {
             return true;
         }
 
-        public static string GenerateHash()
+        internal static string GenerateHash()
         {
             return null;
         }
 
+        
         internal static List<CloudObject> ToCloudObjectList(List<Dictionary<string, object>> result){
 
             List<CloudObject> objList = new List<CloudObject>();

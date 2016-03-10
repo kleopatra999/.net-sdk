@@ -53,6 +53,15 @@
     <Compile Include="CloudTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CloudObject.cs" />
+    <Compile Include="CloudCache.cs" />
+    <Compile Include="CloudQuery.cs" />
+    <Compile Include="CloudSearch.cs" />
+    <Compile Include="CloudFile.cs" />
+    <Compile Include="CloudNotification.cs" />
+    <Compile Include="CloudQueue.cs" />
+    <Compile Include="CloudRole.cs" />
+    <Compile Include="CloudUser.cs" />
+    <Compile Include="CloudGeoPoint.cs" />
     <Compile Include="Util\Keys.cs" />
     <Compile Include="Util\Util.cs" />
   </ItemGroup>

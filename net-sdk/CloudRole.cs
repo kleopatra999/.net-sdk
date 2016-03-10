@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,13 @@ namespace CB
         {
             this.dictionary["_type"] = "role";
             this.dictionary["name"] = roleName;
+            this.dictionary["_modifiedColumns"] = new ArrayList();
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("createdAt");
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("updatedAt");
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("ACL");
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("expires");
+            ((ArrayList)this.dictionary["_modifiedColumns"]).Add("name");
+            dictionary.Add("_isModified", true);
         }
 
         public string Name
@@ -23,7 +31,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(string))
+                {
                     dictionary["name"] = value;
+                    _IsModified(this, "name");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type string");
             }

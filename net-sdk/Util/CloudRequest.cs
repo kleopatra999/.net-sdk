@@ -7,7 +7,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
-
 namespace CB.Util
 {
     class CloudRequest

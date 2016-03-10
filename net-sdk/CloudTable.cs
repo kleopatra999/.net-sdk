@@ -13,24 +13,6 @@ namespace CB
     {
         internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
 
-        private static void _tableValidation(string tableName)
-        {
-            if (String.IsNullOrWhiteSpace(tableName)) //if table name is empty
-                throw new CB.Exception.CloudBoostException("Table name cannot be empty");
-
-            int temp; //JUNK
-
-            if (int.TryParse(tableName[0].ToString(), out temp))
-                throw new CB.Exception.CloudBoostException("Table name cannot start with a number");
-
-            if (tableName.Contains(" "))
-                throw new CB.Exception.CloudBoostException("Table name should not contain spaces");
-
-            var regexItem = new Regex("^[a-zA-Z0-9 ]*");
-            if (regexItem.IsMatch(tableName))
-                throw new CB.Exception.CloudBoostException("Table name should not contain special characters");
-        }
-
         public string Name
         {
             get { return dictionary["name"].ToString(); }
@@ -78,8 +60,7 @@ namespace CB
         public CloudTable(string tableName)
         {  //new table constructor
 
-            CB.CloudTable._tableValidation(tableName);
-
+            CB.PrivateMethods._tableValidation(tableName);
             this.Name = tableName;
             this.dictionary["appId"] = CB.CloudApp.AppID;
 

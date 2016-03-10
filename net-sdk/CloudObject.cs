@@ -16,6 +16,13 @@ namespace CB
             dictionary.Add("_type", "custom");
             dictionary.Add("_id", null);
             dictionary.Add("ACL", new CB.ACL());
+            dictionary["_modifiedColumns"] = new ArrayList();
+            ((ArrayList)dictionary["_modifiedColumns"]).Add("createdAt");
+            ((ArrayList)dictionary["_modifiedColumns"]).Add("updatedAt");
+            ((ArrayList)dictionary["_modifiedColumns"]).Add("ACL");
+            ((ArrayList)dictionary["_modifiedColumns"]).Add("expires");
+            dictionary.Add("_isModified", true);
+
         }
 
         public CloudObject(string tableName, string id)
@@ -24,6 +31,8 @@ namespace CB
             dictionary.Add("_type", "custom");
             dictionary.Add("_id", id);
             dictionary.Add("ACL", new CB.ACL());
+            dictionary["_modifiedColumns"] = new ArrayList();
+            dictionary.Add("_isModified", false);
         }
 
         public CB.ACL ACL
@@ -35,7 +44,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(CB.ACL))
+                {
                     dictionary["ACL"] = value;
+                    _IsModified(this, "ACL");
+                }    
                 else
                     throw new Exception.CloudBoostException("Value is not of type ACL");
             }
@@ -50,7 +62,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(string))
+                {
                     dictionary["_id"] = value;
+                    _IsModified(this, "_id");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type string");
             }
@@ -66,7 +81,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(DateTime))
+                {
                     dictionary["createdAt"] = value;
+                    _IsModified(this, "createdAt");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type DateTime");
             }
@@ -82,7 +100,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(string))
+                {
                     dictionary["_tableName"] = value;
+                    _IsModified(this, "_tableName");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type string");
             }
@@ -98,7 +119,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(DateTime))
+                {
                     dictionary["updatedAt"] = value;
+                    _IsModified(this, "updatedAt");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type DateTime");
             }
@@ -114,7 +138,10 @@ namespace CB
             set
             {
                 if (value.GetType() == typeof(bool))
+                {
                     dictionary["_isSearchable"] = value;
+                    _IsModified(this, "_isSearchable");
+                }
                 else
                     throw new Exception.CloudBoostException("Value is not of type bool");
             }
@@ -148,11 +175,13 @@ namespace CB
             }
 
             dictionary[columnName] = value;
+            _IsModified(this, columnName);
         }
 
         public void Unset(string columnName)
         { 
             dictionary[columnName] = null;
+            _IsModified(this, columnName);
         }
 
         public async Task<CloudObject> SaveAsync()
@@ -249,6 +278,22 @@ namespace CB
             }
 
             return objects;
+        }
+
+        protected static void _IsModified(CB.CloudObject cbObj, string columnName)
+        {
+            cbObj.dictionary["_isModified"] = true;
+
+            if (cbObj.dictionary["_modifiedColumns"] == null)
+            {
+                cbObj.dictionary["_modifiedColumns"] = new ArrayList();
+                ((ArrayList)cbObj.dictionary["_modifiedColumns"]).Add(columnName);
+            }
+            else if (((ArrayList)cbObj.dictionary["_modifiedColumns"]).Contains(columnName) == false)
+            {
+                ((ArrayList)cbObj.dictionary["_modifiedColumns"]).Add(columnName);
+            }
+
         }
 
         internal static bool Modified(CB.CloudObject obj, string columnName)
