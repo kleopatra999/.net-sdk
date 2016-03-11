@@ -222,7 +222,6 @@ namespace CB
         {
             var thisObj = this;
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("count", count);
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/getMessage";
 

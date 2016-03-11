@@ -307,10 +307,10 @@ namespace CB
 
     public class SearchQuery
     {
-        Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public SearchQuery()
         {
-
+            
         }
 
         public Dictionary<string, Object> _buildSearchPhrase(string columnName, object query, string slop, string boost)
@@ -573,8 +573,27 @@ namespace CB
     public class CloudSearch
     {
         internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
-        public SearchQuery SearchQuery;
-        public SearchFilter SearchFilter;
+        public SearchQuery SearchQuery{
+            get
+            {
+                return (SearchQuery)((Dictionary<string, Object>)((Dictionary<string, Object>)this.dictionary["query"])["filttered"])["query"];
+            }
+            set
+            {
+                ((Dictionary<string, Object>)this.dictionary["query"])["filttered"] = ((SearchQuery)value).dictionary;
+            }
+        }
+        public SearchFilter SearchFilter
+        {
+            get
+            {
+                return (SearchFilter)((Dictionary<string, Object>)((Dictionary<string, Object>)this.dictionary["query"])["filttered"])["query"];
+            }
+            set
+            {
+                ((Dictionary<string, Object>)this.dictionary["query"])["filttered"] = ((SearchFilter)value).dictionary;
+            }
+        }
         public CloudSearch(string tableName)
         {
             dictionary["collectionNames"] = tableName;
@@ -617,6 +636,18 @@ namespace CB
             }
         }
 
+        public int Sort
+        {
+            get
+            {
+                return (int)dictionary["sort"];
+            }
+            set
+            {
+                dictionary["sort"] = value;
+            }
+        }
+
         public CloudSearch OrderByAsc(string column)
         {
             Dictionary<string, Object> temp = new Dictionary<string, object>();
@@ -637,118 +668,24 @@ namespace CB
             return this;
         }
      
-        public CloudSearch SearchOn(ArrayList columns, object query)
+        
+        public async Task<List<CB.CloudObject>> Search()
         {
-            if (this._IsFilteredQuery)
+            var collectionObj = this.dictionary["collectionNames"];
+            string collectionName = null;
+            if (collectionObj.GetType() == typeof(ArrayList))
             {
-                //if columns is an array.
-                (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["query"])["multi_match"]) = new Dictionary<string, object>();
-                (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["query"])["multi_match"])["query"]) = query;
-                (((Dictionary<string, Object>)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["query"])["multi_match"])["fields"]) = columns;
+                collectionName = ((ArrayList)collectionObj).ToString();
             }
             else
             {
-                //if columns is an array.
-                ((((Dictionary<string, Object>)dictionary["query"]))["multi_match"]) = new Dictionary<string, object>();
-                (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["multi_match"])["query"]) = query;
-                (((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["query"])["multi_match"])["fields"]) = columns;
+                collectionName = this.dictionary["collectionNames"].ToString();
             }
-
-            return this;
-        }
-
-
-        public async Task<ArrayList> Search()
-        {
-            var result = await Util.CloudRequest.Send("/search", dictionary);
-            return (ArrayList)result;
-        }
-        public static CloudSearch Or(CloudSearch searchObj1, CloudSearch searchObj2)
-        {
-
-            var collectionNames = new ArrayList();
-
-            if (searchObj1.dictionary["collectionNames"].GetType() == typeof(ArrayList))
-            {
-                collectionNames.AddRange((ArrayList)searchObj1.dictionary["collectionNames"]);
-            }
-            else
-            {
-                collectionNames.Add((ArrayList)searchObj1.dictionary["collectionNames"]);
-            }
-
-            if (searchObj2.dictionary["collectionNames"].GetType() == typeof(ArrayList))
-            {
-                //check for duplicates.
-                for (var i = 0; i < ((ArrayList)searchObj2.dictionary["collectionNames"]).Count; i++)
-                {
-                    if (collectionNames.IndexOf(((ArrayList)searchObj2.dictionary["collectionNames"])[i]) < 0)
-                        collectionNames.Add(((ArrayList)searchObj2.dictionary["collectionNames"])[i]);
-                }
-            }
-            else
-            {
-                if (collectionNames.IndexOf(((string)searchObj2.dictionary["collectionNames"])) < 0)
-                    collectionNames.Add(((ArrayList)searchObj2.dictionary["collectionNames"]));
-            }
-
-            var obj3 = new CB.CloudSearch(collectionNames);
-            //merge both of the objects.
-
-            Dictionary<string, Object> q1 = null;
-            Dictionary<string, Object> q2 = null;
-            Dictionary<string, Object> f1 = null;
-            Dictionary<string, Object> f2 = null;
-
-            if (((((Dictionary<string, Object>)searchObj1.dictionary["query"])["filteredQuery"])) != null && (((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj1.dictionary["query"])["filteredQuery"])["query"]) != null)
-            {
-                q1 = (Dictionary<string, Object>)(((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj1.dictionary["query"])["filteredQuery"])["query"]);
-            }
-            else if (searchObj1.dictionary["query"] != null && ((((Dictionary<string, Object>)searchObj1.dictionary["query"])["filteredQuery"])) == null)
-            {
-                q1 = (Dictionary<string, Object>)searchObj1.dictionary["query"];
-            }
-
-            if (((((Dictionary<string, Object>)searchObj2.dictionary["query"])["filteredQuery"])) != null && (((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj2.dictionary["query"])["filteredQuery"])["query"]) != null)
-            {
-                q2 = (Dictionary<string, Object>)(((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj2.dictionary["query"])["filteredQuery"])["query"]);
-            }
-            else if (searchObj2.dictionary["query"] != null && ((((Dictionary<string, Object>)searchObj2.dictionary["query"])["filteredQuery"])) == null)
-            {
-                q2 = (Dictionary<string, Object>)searchObj2.dictionary["query"];
-            }
-
-
-            if (((((Dictionary<string, Object>)searchObj1.dictionary["query"])["filteredQuery"])) != null && (((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj1.dictionary["query"])["filteredQuery"])["filter"]) != null)
-                f1 = (Dictionary<string, Object>)(((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj1.dictionary["query"])["filteredQuery"])["filter"]);
-
-            if (((((Dictionary<string, Object>)searchObj2.dictionary["query"])["filteredQuery"])) != null && (((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj2.dictionary["query"])["filteredQuery"])["filter"]) != null)
-                f2 = (Dictionary<string, Object>)(((Dictionary<string, Object>)((Dictionary<string, Object>)searchObj2.dictionary["query"])["filteredQuery"])["filter"]);
-
-            if (f1.Count > 0 || f2.Count > 0)
-            { //if any of the filters exist, then...
-                obj3._MakeFilteredQuery();
-                if (f1.Count > 0 && f2.Count == 0)
-                    (((Dictionary<string, Object>)((Dictionary<string, Object>)obj3.dictionary["query"])["filteredQuery"])["filter"]) = f1;
-                else if (f2.Count > 0 && f1.Count == 0)
-                    (((Dictionary<string, Object>)((Dictionary<string, Object>)obj3.dictionary["query"])["filteredQuery"])["filter"]) = f2;
-                else
-                {
-                    //if both exists.
-                    obj3._PushInShouldFilter(f1);
-                    obj3._PushInShouldFilter(f2);
-                }
-            }
-            else
-            {
-                //only query exists.
-                obj3._CreateBoolQuery();
-                obj3._PushInShouldQuery(q1);
-                obj3._PushInShouldQuery(q2);
-            }
-
-            return obj3;
-
+            
+            var url = CB.CloudApp.ApiUrl + "/data/" + CB.CloudApp.AppID + "/" + collectionName + "/search"; ;
+            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, url, this.dictionary, false);
+            List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
+            return list;
         }
     }
 }

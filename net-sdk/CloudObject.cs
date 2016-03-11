@@ -184,6 +184,58 @@ namespace CB
             _IsModified(this, columnName);
         }
 
+        public static void On(string tableName, string eventType, Callback callback)
+        {
+            tableName = tableName.ToLower();
+            eventType = eventType.ToUpper();
+            if (eventType == "created" || eventType == "updated" || eventType == "deleted")
+            {
+                string str = (CloudApp.AppID + "table" + tableName + eventType).ToLower();
+                Dictionary<string, object> payload = new Dictionary<string, object>();
+                payload.Add("room", str);
+                payload.Add("sessionId", CB.PrivateMethods._getSessionId());
+                CloudApp._socket.Emit("join-object-channel", payload);
+                CloudApp._socket.On(str, (data) =>
+                {
+                    var result = (Dictionary<string, Object>)data;
+                    var cbObj = new CB.CloudObject(result["_tableName"].ToString());
+                    cbObj.dictionary = result;
+                    callback(result);
+                });
+            }
+        }
+
+        public static void On(string tableName, string[] eventType, Callback callback)
+        {
+            for (int i = 0; i < eventType.Length; i++)
+            {
+                CloudObject.On(tableName, eventType[i], callback);
+            }
+        }
+
+        public static void Off(string tableName, string eventType)
+        {
+            tableName = tableName.ToLower();
+            eventType = eventType.ToUpper();
+            if (eventType == "created" || eventType == "updated" || eventType == "deleted")
+            {
+                string str = (CloudApp.AppID + "table" + tableName + eventType).ToLower();
+                Dictionary<string, object> payload = new Dictionary<string, object>();
+                payload.Add("room", str);
+                payload.Add("sessionId", CB.PrivateMethods._getSessionId());
+                CloudApp._socket.Emit("leave-object-channel", payload);
+                CloudApp._socket.Off(str);
+            }
+        }
+
+        public static void Off(string tableName, string[] eventType)
+        {
+            for (int i = 0; i < eventType.Length; i++)
+            {
+                CloudObject.Off(tableName, eventType[i]);
+            }
+        }
+
         public async Task<CloudObject> SaveAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();

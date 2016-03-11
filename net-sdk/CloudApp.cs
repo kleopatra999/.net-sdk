@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace CB
 {
@@ -17,6 +18,8 @@ namespace CB
         private static string apiUrl;
 
         internal static ILog log;
+
+        internal static Socket _socket = IO.Socket(CloudApp.ApiUrl);
 
         public static string ApiUrl
         {
@@ -73,5 +76,33 @@ namespace CB
             AppID = appId;
             AppKey = appKey;
         }
+
+        public static void onConnect()
+        {
+            _socket.On(Socket.EVENT_CONNECT, () =>
+            {
+                _socket.Emit("connected");
+
+            });
+		}	
+		
+	    public static void connect()
+        {
+            _socket.Connect();
+	    }
+
+	    public static void disconnect()
+        {
+            _socket.Disconnect();
+	    }
+
+	    public static void onDisconnect()
+        {
+            _socket.On(Socket.EVENT_DISCONNECT, () =>
+            {
+                _socket.Emit("disconnected");
+
+            });
+	    }
     }
 }

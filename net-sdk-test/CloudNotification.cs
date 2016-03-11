@@ -23,6 +23,7 @@ namespace CB.Test
         {
             CB.CloudNotification.On("sample", new Callback(anotherAction));
         }
+
         void anotherAction(Object result)
         {
             if (result == "data")
@@ -35,6 +36,7 @@ namespace CB.Test
                 throw new CB.Exception.CloudBoostException("Error wrong data received");
             }
         }
+
         [TestMethod]
         public void shouldStopListeningChannel()
         {

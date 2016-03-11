@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -288,7 +289,7 @@ namespace CB.Test
             var obj1 = new CB.CloudObject("Sample");
             obj1.Set("name", "sample");
             obj1 = await obj1.SaveAsync();
-            obj.relate("sameRelation", "Sample", obj1.Get("id"));
+            obj.Relate("sameRelation", "Sample", obj1.Get("id"));
             obj = await obj.SaveAsync();
             Assert.IsTrue(true);
         }
@@ -550,7 +551,7 @@ namespace CB.Test
             obj.Set("newColumn2", obj3);
             CB.CloudObject[] arr = { obj, obj3 };
             List<CB.CloudObject> objects = await CB.CloudObject.SaveAllAsync(arr);
-            if (objects[0].Get("id") == objects[0].Get("newColumn2").Get("id"))
+            if (objects[0].Get("id") == ((CB.CloudObject)objects[0].Get("newColumn2")).Get("id"))
             {
                 Assert.IsTrue(true);
             }
@@ -568,7 +569,7 @@ namespace CB.Test
             var obj = new CB.CloudObject("sample");
             obj.Set("expires",0);
             obj.Set("name","ranjeet");
-            if(obj.Get("_modifiedColumns").length > 0) {
+            if(((ArrayList)obj.Get("_modifiedColumns")).Count > 0) {
                 Assert.IsTrue(true);
             }else{
                 Assert.IsFalse(true);
@@ -624,7 +625,7 @@ namespace CB.Test
         {
             var roleName1 = "Admin";
             var role = new CB.CloudRole(roleName1);
-            role = await role.SaveAsync();
+            role = (CB.CloudRole)await role.SaveAsync();
             if ((int)role.Get("_version") >= 0)
                 Assert.IsTrue(true);
 
@@ -689,7 +690,7 @@ namespace CB.Test
         {
             var obj = new CB.CloudObject("student1");
             obj.Set("name", "ranjeet");
-            obj.set("age", 10);
+            obj.Set("age", 10);
             obj = await obj.SaveAsync();
             Assert.IsTrue(true);
         }
