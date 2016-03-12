@@ -9,13 +9,13 @@ namespace CB.Test
     public class UnitTest1
     {
         [TestMethod]
-        public async Task saveFileDataAndName()
+        public void saveFileDataAndName()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
-            await file.SaveAsync();
+            var file = new CB.CloudFile(data, name, type);
+            var rsponse = file.SaveAsync();
             Assert.IsTrue(true);
         }
 
@@ -25,7 +25,7 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
             if (file.Url != null)
             {
@@ -50,7 +50,7 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
             if (file.Url != null)
             {
@@ -68,7 +68,7 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
             if (file.Url != null)
             {
@@ -95,12 +95,11 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
             if (file.Url != null)
             {
-                var response = await file.FetchAsync();
-                await response.GetFileContentAsync();
+                await file.GetFileContentAsync();
                 Assert.IsTrue(true);
             }
             else
@@ -115,7 +114,7 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
             var obj = new CB.CloudObject("Sample");
             obj.Set("file", file);
@@ -135,14 +134,13 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
             var obj = new CB.CloudObject("Sample");
             obj.Set("file", file);
             obj.Set("name", "abcd");
             await obj.SaveAsync();
             var fileObj = (CB.CloudFile)obj.Get("file");
-            await fileObj.FetchAsync();
             if (fileObj.Url != null)
             {
                 Assert.IsTrue(true);
@@ -163,7 +161,7 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
             var obj = new CB.CloudObject("Sample");
             obj2.Set("File", file);
@@ -182,11 +180,10 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             file.ACL.SetPublicReadAccess(false);
             await file.SaveAsync();
-            var response = await file.FetchAsync();
-            if (response == null)
+            if (file == null)
             {
                 Assert.IsTrue(true);
             }
@@ -202,11 +199,11 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             file.ACL.SetPublicReadAccess(false);
             var response = await file.SaveAsync();
-            response = await response.GetFileContentAsync();
-            if (response != null)
+            var result = await response.GetFileContentAsync();
+            if (result != null)
             {
                 throw new CB.Exception.CloudBoostException("Should not retrieve file");
             }
@@ -222,7 +219,7 @@ namespace CB.Test
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
             string name = "sample.txt";
             string type = "txt";
-            var file = new CB.CloudFile(name, data, type);
+            var file = new CB.CloudFile(data, name, type);
             file.ACL.SetPublicReadAccess(false);
             var response = await file.SaveAsync();
             response = await response.DeleteAsync();

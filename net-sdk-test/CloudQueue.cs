@@ -378,7 +378,7 @@ namespace CB.Test
         [TestMethod]
         public async Task shouldAddSubscriberToQueue()
         {
-            var queue = new CB.CloudQueue(util.makeString());
+            var queue = new CB.CloudQueue(Util.Methods._makeString());
             var url = "http://sample.sample.com";
             List<object> list = new List<object>();
             list.Add(url);
@@ -396,7 +396,7 @@ namespace CB.Test
         [TestMethod]
         public async Task shouldMultipleSubscriberToTheQueue()
         {
-            var queue = new CB.CloudQueue(util.makeString());
+            var queue = new CB.CloudQueue(Util.Methods._makeString());
             var url = "http://sample.sample.com";
             List<object> list = new List<object>();
             list.Add(url);

@@ -289,7 +289,7 @@ namespace CB.Test
             var obj1 = new CB.CloudObject("Sample");
             obj1.Set("name", "sample");
             obj1 = await obj1.SaveAsync();
-            obj.Relate("sameRelation", "Sample", obj1.Get("id"));
+            obj.Relate("sameRelation", "Sample", obj1.Get("id").ToString());
             obj = await obj.SaveAsync();
             Assert.IsTrue(true);
         }

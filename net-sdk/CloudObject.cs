@@ -236,6 +236,25 @@ namespace CB
             }
         }
 
+        public void Relate(string columnName, string objectTableName, string objectId)
+        {
+            ArrayList keywords = new ArrayList();
+            keywords.Add("_tableName");
+            keywords.Add("_type");
+            keywords.Add("operator");
+            if (columnName == "id" || columnName == "_id")
+            {
+                throw new CB.Exception.CloudBoostException("You cannot link an object to this column");
+            }
+
+            if (keywords.Contains(columnName))
+            {
+                throw new CB.Exception.CloudBoostException(columnName + " is a keyword. Please choose a different column name.");
+            }
+
+            this.dictionary[columnName] = new CB.CloudObject(objectTableName, objectId);
+            _IsModified(this, columnName);
+        }
         public async Task<CloudObject> SaveAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();

@@ -128,18 +128,15 @@ namespace CB
 
         public static String _getSessionId()
         {
-            //TODO: SQLLite for keeping session data
             String session = CloudApp.SESSION_ID;
             return session;
         }
         public static void _setSessionId(String session)
         {
-            //TODO: SQLLite for keeping session data
             CloudApp.SESSION_ID = session;
         }
         public static void _deleteSessionId()
         {
-            //TODO: SQLLite for keeping session data
             CloudApp.SESSION_ID = null;
         }
 
@@ -164,24 +161,7 @@ namespace CB
                 throw new CB.Exception.CloudBoostException("Invalid data type");
        
         }
-        
-        internal static bool FileCheck(CloudObject obj)
-        {
-            //SaveAsync call for each object of CloudObject Array 
-            return true;
-        }
-
-        internal static bool BulkFileCheck()
-        {
-            return true;
-        }
-
-        internal static string GenerateHash()
-        {
-            return null;
-        }
-
-        
+                
         internal static List<CloudObject> ToCloudObjectList(List<Dictionary<string, object>> result){
 
             List<CloudObject> objList = new List<CloudObject>();
