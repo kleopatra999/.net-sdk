@@ -9,13 +9,15 @@ namespace CB
 {
     public class CloudObject
     {
-        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal Dictionary<string, Object> dictionary { set; get; }
+
         public CloudObject(string tableName)
         {
+            this.dictionary = new Dictionary<string, Object>();
             dictionary.Add("_tableName", tableName);
             dictionary.Add("_type", "custom");
-            dictionary.Add("_id", null);
-            dictionary.Add("ACL", new CB.ACL());
+            dictionary.Add("expires", null);
+            dictionary.Add("ACL", (new CB.ACL()).dictionary);
             dictionary["_modifiedColumns"] = new ArrayList();
             ((ArrayList)dictionary["_modifiedColumns"]).Add("createdAt");
             ((ArrayList)dictionary["_modifiedColumns"]).Add("updatedAt");
@@ -29,8 +31,7 @@ namespace CB
         {
             dictionary.Add("_tableName", tableName);
             dictionary.Add("_type", "custom");
-            dictionary.Add("_id", id);
-            dictionary.Add("ACL", new CB.ACL());
+            dictionary.Add("ACL", (new CB.ACL()).dictionary.ToString());
             dictionary["_modifiedColumns"] = new ArrayList();
             dictionary.Add("_isModified", false);
         }
@@ -258,10 +259,10 @@ namespace CB
         public async Task<CloudObject> SaveAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", this);
+            postData.Add("document", this.dictionary);
 
-            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
-
+            string url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
+            string abc;
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
 
             this.dictionary = (Dictionary<string, Object>)result;

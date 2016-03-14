@@ -60,10 +60,10 @@ namespace CB
         public CloudTable(string tableName)
         {  //new table constructor
 
-            CB.PrivateMethods._tableValidation(tableName);
+            //CB.PrivateMethods._tableValidation(tableName);
             this.Name = tableName;
             this.dictionary["appId"] = CB.CloudApp.AppID;
-
+            this.dictionary["_type"] = "table";
             if (tableName.ToLower() == "user")
             {
                 this.Type = "user";
@@ -85,7 +85,7 @@ namespace CB
 
         public void AddColumn(CB.Column column)
         {
-            if (CB.Column._columnValidation(column, this))
+            //if (CB.Column._columnValidation(column, this))
                 this.Columns.Add(column);
         }
 
@@ -101,8 +101,8 @@ namespace CB
 
         public void DeleteColumn(CB.Column column)
         {
-            if (!column.IsDeleteable)
-                throw new CloudBoostException(column.Name + " cannot be deleted.");
+            if (!column.isDeletable)
+                throw new CloudBoostException(column.name + " cannot be deleted.");
 
                 if (CB.Column._columnValidation(column, this))
             {
@@ -114,7 +114,7 @@ namespace CB
 
         public void DeleteColumn(string columnName)
         {
-            var column = this.Columns.Where(o => o.Name == columnName).FirstOrDefault();
+            var column = this.Columns.Where(o => o.name == columnName).FirstOrDefault();
 
             if (column == null)
                 throw new CB.Exception.CloudBoostException("Column with name " + columnName + " cannot be found.");
@@ -172,7 +172,9 @@ namespace CB
 
         public async Task<CB.CloudTable> SaveAsync()
         {
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), null, true);
+            Dictionary<string, Object> postData = new Dictionary<string, Object>();
+            postData.Add("data", this.dictionary);
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/" + this.dictionary["name"].ToString(), postData, true);
             this.dictionary = (Dictionary<string, Object>)result;
             return (CB.CloudTable)this;
         }
@@ -182,35 +184,36 @@ namespace CB
             List<CB.Column> list = new List<Column>();
 
             var id = new CB.Column("id");
-            id.DataType = DataType.Id;
-            id.Required = true;
-            id.Unique = true;
-            id.IsDeleteable = false;
-            id.IsEditable = false;
+            id.dataType = DataType.Id.ToString();
+            id.required = true;
+            id.unique = true;
+            id.isDeletable = false;
+            id.isEditable = false;
 
             var expires = new CB.Column("expires");
-            expires.DataType = DataType.Number;
-            expires.IsDeleteable = false;
-            expires.IsEditable = false;
+            expires.dataType = DataType.Number.ToString();
+            expires.isDeletable = false;
+            expires.isEditable = false;
 
 
             var createdAt = new CB.Column("createdAt");
-            createdAt.DataType = DataType.DateTime;
-            createdAt.Required = true;
-            createdAt.IsRenamable = false;
-            createdAt.IsEditable = false;
+            createdAt.dataType = DataType.DateTime.ToString();
+            createdAt.required = true;
+            createdAt.isRenamable = false;
+            createdAt.isEditable = false;
+            createdAt.isDeletable = false;
 
             var updatedAt = new CB.Column("updatedAt");
-            updatedAt.DataType = DataType.DateTime;
-            updatedAt.Required = true;
-            updatedAt.IsDeleteable = false;
-            updatedAt.IsEditable = false;
+            updatedAt.dataType = DataType.DateTime.ToString();
+            updatedAt.required = true;
+            updatedAt.isDeletable = false;
+            updatedAt.isEditable = false;
 
             var ACL = new CB.Column("ACL");
-            ACL.DataType = DataType.ACL;
-            ACL.Required = true;
-            ACL.IsDeleteable = false;
-            ACL.IsEditable = false;
+            ACL.dataType = DataType.ACL.ToString();
+            ACL.required = true;
+            ACL.isDeletable = false;
+            ACL.isEditable = false;
 
             list.Add(id);
             list.Add(ACL);
@@ -220,29 +223,29 @@ namespace CB
             if (tableType == "user")
             {
                 var username = new CB.Column("username");
-                username.DataType = DataType.Text;
-                username.Required = true;
-                username.Unique = true;
-                username.IsDeleteable = false;
-                username.IsEditable = false;
+                username.dataType = DataType.Text.ToString();
+                username.required = true;
+                username.unique = true;
+                username.isDeletable = false;
+                username.isEditable = false;
 
                 var email = new CB.Column("email");
-                email.DataType =DataType.Email;
-                email.Unique = true;
-                email.IsDeleteable = false;
-                email.IsEditable = false;
+                email.dataType =DataType.Email.ToString();
+                email.unique = true;
+                email.isDeletable = false;
+                email.isEditable = false;
 
                 var password = new CB.Column("password");
-                password.DataType = DataType.EncryptedText;
-                password.Required = true;
-                password.IsDeleteable = false;
-                password.IsEditable = false;
+                password.dataType = DataType.EncryptedText.ToString();
+                password.required = true;
+                password.isDeletable = false;
+                password.isEditable = false;
 
                 var roles = new CB.Column("roles");
-                roles.DataType = DataType.List;
-                roles.RelatedTo = "Role";
-                roles.IsDeleteable = false;
-                roles.IsEditable = false;
+                roles.dataType = DataType.List.ToString();
+                roles.relatedTo = "Role";
+                roles.isDeletable = false;
+                roles.isEditable = false;
 
                 list.Add(username);
                 list.Add(email);
@@ -252,11 +255,11 @@ namespace CB
             else if (tableType == "role")
             {
                 var name = new CB.Column("name");
-                name.DataType = DataType.Text;
-                name.Unique = true;
-                name.Required = true;
-                name.IsDeleteable = false;
-                name.IsDeleteable = false;
+                name.dataType = DataType.Text.ToString();
+                name.unique = true;
+                name.required = true;
+                name.isDeletable = false;
+                name.isDeletable = false;
                 list.Add(name);
             }
 

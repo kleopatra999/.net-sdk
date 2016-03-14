@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace CB.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class CloudFile
     {
         [TestMethod]
         public void saveFileDataAndName()

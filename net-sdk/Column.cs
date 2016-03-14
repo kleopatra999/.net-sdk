@@ -9,55 +9,57 @@ namespace CB
 {
     public class Column
     {
-        public string Name { get; set; }
-        public CB.DataType DataType { get; set; }
-        public bool Required { get; set; }
-        public bool Unique { get; set; }
-        internal bool IsRenamable { get; set; }
-        internal bool IsDeleteable { get; set; }
-        internal bool IsEditable { get; set; }
-        public string RelatedTo { get; set; }
+        public string name { get; set; }
+        public string dataType { get; set;}
+       
+        public bool required { get; set; }
+        public bool unique { get; set; }
+        public bool isRenamable { get; set; }
+        public bool isDeletable { get; set; }
+        public bool isEditable { get; set; }
+        public string relatedTo { get; set; }
+        public string relationType { get; set; }
+        public string _type { get; set; }
 
-        public Column(string columnName, CB.DataType dataType, bool required, bool unique)
+        public Column(string columnName, string dataType, bool required, bool unique)
         {
+            this.name = columnName;
+            this._type = "column";
             if (String.IsNullOrWhiteSpace(columnName))
             {
                 CB.Column._columnNameValidation(columnName);
-                this.Name = columnName;
+                this.name = columnName;
             }
 
-            if (dataType != null)
-            {
-                this.DataType = dataType;
-            }
-            else
-            {
-                this.DataType = CB.DataType.Text;
-            }
-
-            this.Required = required;
-            this.Unique = unique;
+             this.dataType = CB.DataType.Text.ToString();
             
-            this.IsDeleteable = true;
-            this.IsEditable = true;
-            this.IsRenamable = true;
+            this.required = required;
+            this.unique = unique;
+            this.relatedTo = null;
+            this.relationType = null;
+            this.isEditable = true;
+            this.isDeletable = true;
+            this.isRenamable = false;
         }
 
         public Column(string columnName)
         {
+            this.name = columnName;
+            this._type = "column";
             if (String.IsNullOrWhiteSpace(columnName))
             {
                 CB.Column._columnNameValidation(columnName);
-                this.Name = columnName;
+                this.name = columnName;
             }
 
-            this.DataType = CB.DataType.Text;
-            this.Required = false;
-            this.Unique = false;
-
-            this.IsDeleteable = true;
-            this.IsEditable = true;
-            this.IsRenamable = true;
+            this.dataType = CB.DataType.Text.ToString();
+            this.required = false;
+            this.unique = false;
+            this.relatedTo = null;
+            this.relationType = null;
+            this.isEditable = true;
+            this.isEditable = true;
+            this.isRenamable = false;
         }
 
         internal static bool _columnValidation(CB.Column column, CB.CloudTable cloudtable) 
@@ -82,7 +84,7 @@ namespace CB
                 defaultColumn.Add("name");
             }
 
-            var index = defaultColumn.IndexOf(column.Name.ToLower());
+            var index = defaultColumn.IndexOf(column.name.ToLower());
             if (index == -1)
                 return true;
             else

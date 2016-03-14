@@ -12,7 +12,7 @@ namespace CB.Test
     public class CloudObject
     {
         [TestMethod]
-        public void x001_InitAppWithMasterKey()
+        public void x001_InitAppWithClientKey()
         {
             CB.Test.Util.Keys.InitWithClientKey();
             Assert.IsTrue(true);
@@ -21,6 +21,7 @@ namespace CB.Test
         [TestMethod]
         public async Task saveDataInDateField()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj = new CB.CloudObject("Employee");
             obj.Set("dob", new DateTime());
             obj = await obj.SaveAsync();
@@ -31,7 +32,7 @@ namespace CB.Test
         public async Task doNotSaveIncorrectEmail()
         {
             var obj = new CB.CloudObject("Custom");
-            obj.Set("newColumn", "email");
+            obj.Set("email", "email");
             try
             {
                 obj = await obj.SaveAsync();
@@ -89,7 +90,7 @@ namespace CB.Test
         }
 
         [TestMethod]
-        public async Task doNotSetTheId()
+        public void doNotSetTheId()
         {
             var obj = new CB.CloudObject("Sample");
             try
@@ -168,6 +169,7 @@ namespace CB.Test
         [TestMethod]
         public async Task deleteObject()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj = new CB.CloudObject("Sample");
             obj.Set("name", "sample");
             obj = await obj.SaveAsync();
@@ -412,6 +414,7 @@ namespace CB.Test
         [TestMethod]
         public async Task saveJsonObjectInColumn()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             Dictionary<string, Object> json = new Dictionary<string,object>();
             json.Add("name", "ranjeet");
             json.Add("location", "uoh");
@@ -419,9 +422,7 @@ namespace CB.Test
             var obj = new CB.CloudObject("Custom");
             obj.Set("newColumn6",json);
             obj = await obj.SaveAsync();
-            if(obj.Get("name") == "ranjeet" && obj.Get("location") == "uoh" && (int)obj.Get("age") == 10){
-                Assert.IsTrue(true);
-            }
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -513,55 +514,7 @@ namespace CB.Test
             }
             Assert.IsFalse(true);
         }
-
-        //Bulk API Test
-        [TestMethod]
-        public async Task bulkApiSave()
-        {
-            var obj = new CB.CloudObject("Student");
-            obj.Set("name","Ranjeet");
-            var obj1 = new CB.CloudObject("Student");
-            obj1.Set("name","ABCD");
-            CB.CloudObject[] arr = {obj, obj1};
-            List<CB.CloudObject> objects = await CB.CloudObject.SaveAllAsync(arr);
-            Assert.IsTrue(true);
-        }
-
-        [TestMethod]
-        public async Task saveThenDeleteBulkApi()
-        {
-            var obj = new CB.CloudObject("Student");
-            obj.Set("name", "Ranjeet");
-            var obj1 = new CB.CloudObject("Student");
-            obj1.Set("name", "ABCD");
-            CB.CloudObject[] arr = { obj, obj1 };
-            List<CB.CloudObject> objects = await CB.CloudObject.SaveAllAsync(arr);
-            objects = await CB.CloudObject.DeleteAllAsync(arr);
-            Assert.IsTrue(true);
-        }
-
-       
-        [TestMethod]
-        public async Task saveRelationInBulkApi()
-        {
-            var obj = new CB.CloudObject("Custom2");
-            obj.Set("newColumn1", "Course");
-            var obj3 = new CB.CloudObject("Custom3");
-            obj3.Set("address", "progress");
-            obj.Set("newColumn2", obj3);
-            CB.CloudObject[] arr = { obj, obj3 };
-            List<CB.CloudObject> objects = await CB.CloudObject.SaveAllAsync(arr);
-            if (objects[0].Get("id") == ((CB.CloudObject)objects[0].Get("newColumn2")).Get("id"))
-            {
-                Assert.IsTrue(true);
-            }
-            else
-            {
-                Assert.IsFalse(true);
-            }
-            
-        }
-
+      
         //Version Test
         [TestMethod]
         public void setModifiedArray()
@@ -589,18 +542,6 @@ namespace CB.Test
                 Assert.IsFalse(true);
             }
             Assert.IsTrue(true);
-        }
-
-        [TestMethod]
-        public void getObjectWithVersion()
-        {
-            //TODO: After Find By Implementation
-        }
-
-        [TestMethod]
-        public void updateVersionOfSavedObject()
-        {
-            //TODO: After Find By Implementation
         }
 
         [TestMethod]
@@ -645,12 +586,6 @@ namespace CB.Test
         }
 
         [TestMethod]
-        public void retrieveSaveUserObject()
-        {
-            //TODO: After FindById
-        }
-
-        [TestMethod]
         public async Task saveRelationWithoutChildObject()
         {
             var obj = new CB.CloudObject("Sample");
@@ -678,12 +613,7 @@ namespace CB.Test
                 Assert.IsFalse(false);
         }
 
-        [TestMethod]
-        public async Task encryptEncryptedPassword()
-        {
-            //TODO: FindById
-        }
-
+       
         //Expire Test
         [TestMethod]
         public async Task saveObjectAfterExpireIsSet()
@@ -694,40 +624,6 @@ namespace CB.Test
             obj = await obj.SaveAsync();
             Assert.IsTrue(true);
         }
-
-        [TestMethod]
-        public async Task doNotFetchExpiredObjects()
-        {
-            //TODO: After CloudQuery
-        }
-
-        [TestMethod]
-        public async Task doNotSearchExpiredObjects()
-        {
-            //TODO: After CloudSearch
-        }
-
-        //File Test
-        /*
-         * TODO: After CloudFile
-        public async Task saveFileInsideObject()
-        {
-            
-        }
-
-        [TestMethod]
-        public async Task saveFileWithObjectAndUpdate()
-        {
-            
-
-        }
-
-        [TestMethod]
-        public async Task saveArrayOfFiles()
-        {
-
-        }
-        */
 
      }
 }

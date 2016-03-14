@@ -4,31 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 namespace CB.Util
 {
     class Serializer
     {
-        internal static JObject Serialize(Object data)
+        internal static string Serialize(Dictionary<string, Object> data)
         {
             if (data == null)
             {
                 return null;
 
             }
-            throw new System.Exception();
+            string response = JsonConvert.SerializeObject(data);
+
+            return response;
         }
 
-        internal static Dictionary<string,Object> Deserialize(JObject value)
+        internal static Dictionary<string,Object> Deserialize(string response)
         {
-
-            return null;
+            Dictionary<string, Object> obj = JsonConvert.DeserializeObject<Dictionary<string, Object>>(response);
+            return obj;
         }
 
-        internal static List<Dictionary<string, Object>> DeserializeArrayType(JObject value)
+        internal static List<Dictionary<string, Object>> DeserializeArrayType(string response)
         {
-
-            return null;
+            List<Dictionary<string, Object>> obj = JsonConvert.DeserializeObject<List<Dictionary<string, Object>>>(response);
+            return obj;
         }
     }
 }

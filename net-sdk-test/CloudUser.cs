@@ -148,7 +148,7 @@ namespace CB.Test
         }
 
         [TestMethod]
-        public async Task createNewUser()
+        public async Task createNewUserSave()
         {
             var obj = new CB.CloudUser();
             obj.Set("username", username);

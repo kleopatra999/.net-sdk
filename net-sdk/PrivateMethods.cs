@@ -44,7 +44,7 @@ namespace CB
                 defaultColumns.Add("name");
             }
 
-            string colName = column.Name.ToLower();
+            string colName = column.name.ToLower();
             int index = defaultColumns.IndexOf(colName);
             
             if(index > -1)

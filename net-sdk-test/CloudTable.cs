@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace CB.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class CloudTable
     {
         string tableName = "";
 
         [TestMethod]
         public void x001_InitAppWithMasterKey()
         {
-            tableName = CB.Test.Util.Util.MakeRandomString();
+            tableName = CB.Test.Util.Methods._makeString();
 
             CB.Test.Util.Keys.InitWithMasterKey();
             Assert.IsTrue(true);
@@ -24,6 +24,8 @@ namespace CB.Test
         [TestMethod]
         public async Task x0_GetAllTables()
         {
+            Util.Keys.InitWithMasterKey();
+
             List<CB.CloudTable> tables = await CB.CloudTable.GetAllAsync();
 
             if (tables.Count > 1)
@@ -55,10 +57,10 @@ namespace CB.Test
         public async Task x003_CreateEmployeeTable()
         {
             var age = new CB.Column("Age");
-            age.DataType = CB.DataType.Number;
+            age.dataType = CB.DataType.Number.ToString();
 
             var name = new CB.Column("Name");
-            name.DataType = CB.DataType.Text;
+            name.dataType = CB.DataType.Text.ToString();
 
             CB.CloudTable obj = new CB.CloudTable("Employee");
 
@@ -74,11 +76,10 @@ namespace CB.Test
         public async Task x004_CreateCompanyTable()
         {
             var obj = new CB.CloudTable("Company");
-
             var Revenue = new CB.Column("Revenue");
-            Revenue.DataType = CB.DataType.Number;
+            Revenue.dataType = CB.DataType.Number.ToString();
             var Name = new CB.Column("Name");
-            Name.DataType =CB.DataType.Text;
+            Name.dataType =CB.DataType.Text.ToString();
             obj.AddColumn(Revenue);
             obj.AddColumn(Name);
            
@@ -90,11 +91,12 @@ namespace CB.Test
         [TestMethod]
         public async Task x005_CreateAddressTable()
         {
+            Util.Keys.InitWithMasterKey();
             var obj = new CB.CloudTable("Address");
             var City = new CB.Column("City");
-            City.DataType = CB.DataType.Text;
+            City.dataType = CB.DataType.Text.ToString();
             var PinCode = new CB.Column("PinCode");
-            PinCode.DataType = CB.DataType.Number;
+            PinCode.dataType = CB.DataType.Number.ToString();
             obj.AddColumn(City);
             obj.AddColumn(PinCode);
             obj = await obj.SaveAsync();
@@ -105,8 +107,8 @@ namespace CB.Test
         public async Task x005_ShouldUpdateANewColumnInATable()
         {
 
-            var tableName1 = CB.Test.Util.Util.MakeRandomString();
-            var tableName2 = CB.Test.Util.Util.MakeRandomString();
+            var tableName1 = CB.Test.Util.Methods._makeString();
+            var tableName2 = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName1);
             var obj1 = new CB.CloudTable(tableName2);
@@ -115,8 +117,8 @@ namespace CB.Test
             obj1 = await obj1.SaveAsync();
             obj = await CB.CloudTable.GetAsync(obj);
 
-            var column1 = new CB.Column("Name11", CB.DataType.Relation, true, false);
-            column1.RelatedTo = tableName2;
+            var column1 = new CB.Column("Name11", CB.DataType.Relation.ToString(), true, false);
+            column1.relatedTo = tableName2;
 
             obj.AddColumn(column1);
 
@@ -132,7 +134,8 @@ namespace CB.Test
         [TestMethod]
         public async Task x006_CreateDeleteTable()
         {
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            Util.Keys.InitWithMasterKey();
+            var tableName = CB.Test.Util.Methods._makeString();
             var obj = new CB.CloudTable(tableName);
             obj = await obj.SaveAsync();
             obj = await obj.DeleteAsync();
@@ -144,11 +147,11 @@ namespace CB.Test
         public async Task x007_CreateDeleteTable()
         {
 
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName);
             var table = await CB.CloudTable.GetAsync(obj);
-            var column1 = new CB.Column("city", CB.DataType.Text, true, false);
+            var column1 = new CB.Column("city", CB.DataType.Text.ToString(), true, false);
             table.AddColumn(column1);
             obj = await obj.SaveAsync();
             Assert.IsTrue(true);
@@ -158,11 +161,11 @@ namespace CB.Test
         public async Task x008_AddColumnToTableAfterSave()
         {
 
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName);
             var table = await CB.CloudTable.GetAsync(obj);
-            var column1 = new CB.Column("Name1", CB.DataType.Text, true, false);
+            var column1 = new CB.Column("Name1", CB.DataType.Text.ToString(), true, false);
             table.AddColumn(column1);
             obj = await obj.SaveAsync();
             obj = await obj.DeleteAsync();
@@ -203,15 +206,15 @@ namespace CB.Test
 
         public async Task x009_ShouldNotRenameAColumn()
         {
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName);
             var table = await CB.CloudTable.GetAsync(obj);
-            var column1 = new CB.Column("Name1", CB.DataType.Text, true, false);
+            var column1 = new CB.Column("Name1", CB.DataType.Text.ToString(), true, false);
             table.AddColumn(column1);
             obj = await obj.SaveAsync();
 
-            obj.Columns.FirstOrDefault().Name = "Sample";
+            obj.Columns.FirstOrDefault().name = "Sample";
 
             try
             {
@@ -227,15 +230,15 @@ namespace CB.Test
 
         public async Task x009_ShouldNotChangeTheDataTypeOfAColumn()
         {
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName);
             var table = await CB.CloudTable.GetAsync(obj);
-            var column1 = new CB.Column("Name1", CB.DataType.Text, true, false);
+            var column1 = new CB.Column("Name1", CB.DataType.Text.ToString(), true, false);
             table.AddColumn(column1);
             obj = await obj.SaveAsync();
 
-            obj.Columns.FirstOrDefault().DataType = CB.DataType.Number;
+            obj.Columns.FirstOrDefault().dataType = CB.DataType.Number.ToString();
 
             try
             {
@@ -250,11 +253,11 @@ namespace CB.Test
 
         public async Task x010_ShouldNotChangeTheUniquePropertyOfDefaultColumn()
         {
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName);
 
-            obj.Columns.First(o => o.Name == "id").Unique = false;
+            obj.Columns.First(o => o.name == "id").unique = false;
 
             try
             {
@@ -270,15 +273,15 @@ namespace CB.Test
 
         public async Task x010_ShouldNotChangeTheRequiredPropertyOfDefaultColumn()
         {
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName);
-            var column1 = new CB.Column("Name1", CB.DataType.Text, true, false);
+            var column1 = new CB.Column("Name1", CB.DataType.Text.ToString(), true, false);
             obj.AddColumn(column1);
 
             obj = await obj.SaveAsync();
 
-            obj.Columns.First(o => o.Name == "Name1").Required = false;
+            obj.Columns.First(o => o.name == "Name1").required = false;
 
             try
             {
@@ -294,15 +297,15 @@ namespace CB.Test
 
         public async Task x011_ShouldChangeTheUniquePropertyOfUserDefinedColumn()
         {
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString();
 
             var obj = new CB.CloudTable(tableName);
-            var column1 = new CB.Column("Name1", CB.DataType.Text, true, false);
+            var column1 = new CB.Column("Name1", CB.DataType.Text.ToString(), true, false);
             obj.AddColumn(column1);
 
             obj = await obj.SaveAsync();
 
-            obj.Columns.First(o => o.Name == "Name1").Unique = true;
+            obj.Columns.First(o => o.name == "Name1").unique = true;
 
             try
             {
@@ -319,7 +322,7 @@ namespace CB.Test
         
         public async Task x012_ShouldNotDeleteTheDefaultColumnOfTheTable()
         {
-            var tableName = CB.Test.Util.Util.MakeRandomString();
+            var tableName = CB.Test.Util.Methods._makeString(); 
 
             var obj = new CB.CloudTable(tableName);
             obj = await obj.SaveAsync();

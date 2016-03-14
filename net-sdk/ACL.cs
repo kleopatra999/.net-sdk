@@ -10,17 +10,26 @@ namespace CB
     public class ACL
     {
 
-        Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public ACL()
-        { //constructor for ACL class
-            ArrayList readList = new ArrayList();
-            readList.Add("all");
+        { 
+            dictionary["read"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)dictionary["read"])["allow"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"] = new ArrayList();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Add("all");
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["role"] = new ArrayList();
+            ((Dictionary<string, Object>)dictionary["read"])["deny"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["deny"])["user"] = new ArrayList();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["deny"])["role"] = new ArrayList();
 
-            ArrayList writeList = new ArrayList();
-            writeList.Add("all");
-
-            dictionary.Add("read", readList);
-            dictionary.Add("write", writeList);
+            dictionary["write"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)dictionary["write"])["allow"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"] = new ArrayList();
+            ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Add("all");
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["role"] = new ArrayList();
+            ((Dictionary<string, Object>)dictionary["write"])["deny"] = new Dictionary<string, Object>();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["deny"])["user"] = new ArrayList();
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["deny"])["role"] = new ArrayList();
 
         }
         public void SetPublicWriteAccess(bool value)

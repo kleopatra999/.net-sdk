@@ -36,13 +36,20 @@ namespace CB.Util
                     postData.Add("key", CloudApp.AppKey);
                     var jsonObj = Util.Serializer.Serialize(postData);
                     var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
-
+                    Console.WriteLine(data);
                     request.Method = method.ToString();
                     request.ContentType = "application/json";
                     request.ContentLength = data.Length;
-                    using (var stream = request.GetRequestStream())
+                    /*using (var stream = request.GetRequestStream())
                     {
                         stream.Write(data, 0, data.Length);
+                    }*/
+                    using (Stream stream = await request.GetRequestStreamAsync())
+                    {
+                        byte[] byteArray = ASCIIEncoding.UTF8.GetBytes(jsonObj);
+                        await stream.WriteAsync(byteArray, 0, byteArray.Length);
+                        await stream.FlushAsync();
+                        //stream.Write(data, 0, data.Length);
                     }
                 }
 
@@ -50,7 +57,7 @@ namespace CB.Util
 
                 var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
 
-                return Util.Serializer.Deserialize(JObject.Parse(responseString));
+                return Util.Serializer.Deserialize(responseString);
             }
             catch (System.Exception e)
             {
@@ -75,21 +82,31 @@ namespace CB.Util
                     postData.Add("key", CloudApp.AppKey);
                     var jsonObj = Util.Serializer.Serialize(postData);
                     var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
-
+                    Console.WriteLine(data);
                     request.Method = method.ToString();
                     request.ContentType = "application/json";
                     request.ContentLength = data.Length;
-                    using (var stream = request.GetRequestStream())
+                    using (Stream stream = await request.GetRequestStreamAsync())
                     {
-                        stream.Write(data, 0, data.Length);
+                        byte[] byteArray = ASCIIEncoding.UTF8.GetBytes(jsonObj);
+                        await stream.WriteAsync(byteArray, 0, byteArray.Length);
+                        await stream.FlushAsync();
+                        //stream.Write(data, 0, data.Length);
                     }
                 }
 
                 var response = await request.GetResponseAsync();
 
-                var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
-
-                return Util.Serializer.DeserializeArrayType(JObject.Parse(responseString));
+               var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
+                /*string responseString;
+                using(var response = (HttpWebResponse)await request.GetResponseAsync());
+                using (Stream streamResponse = response.GetResponseStream())
+                using (StreamReader streamReader = new StreamReader(streamResponse))
+                {
+                    responseString = await streamReader.ReadToEndAsync();
+                }*/
+                return Util.Serializer.DeserializeArrayType(responseString);
+                 
             }
             catch (System.Exception e)
             {
@@ -114,7 +131,7 @@ namespace CB.Util
                     postData.Add("key", CloudApp.AppKey);
                     var jsonObj = Util.Serializer.Serialize(postData);
                     var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
-
+                    Console.WriteLine(data);
                     request.Method = method.ToString();
                     request.ContentType = "application/json";
                     request.ContentLength = data.Length;
@@ -151,7 +168,7 @@ namespace CB.Util
             byte[] formData = GetMultipartFormData(postData, formDataBoundary);
             var response = await PostFile(method.ToString(), url, "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0", contentType, formData);
             var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
-            return Util.Serializer.Deserialize(JObject.Parse(responseString));
+            return Util.Serializer.Deserialize(responseString);
         }
 
         internal static async Task<HttpWebResponse> PostFile(string method, string url, string userAgent, string contentType, byte[] formData)

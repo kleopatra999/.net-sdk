@@ -457,41 +457,5 @@ namespace CB.Test
         {
 
         }
-
-        [TestMethod]
-        public async Task clearTheQueue()
-        {
-
-        }
-
-        [TestMethod]
-        public async Task shouldGetTheQueue()
-        {
-
-        }
-
-        [TestMethod] //1269
-        public async Task getAllTest()
-        {
-
-        }
-
-        [TestMethod]
-        public async Task shouldNotGetTheQueueWhichDoesNotExists()
-        {
-
-        }
-
-        [TestMethod]
-        public async Task shouldRefreshMessageTimeoutSpecified()
-        {
-
-        }
-
-        [TestMethod] //1410
-        public async Task updateQueue()
-        {
-
-        }
     }
 }
