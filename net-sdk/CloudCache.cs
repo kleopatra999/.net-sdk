@@ -23,7 +23,17 @@ namespace CB
             dictionary.Add("items", items);
 
         }
-
+        public string Name
+        {
+            get
+            {
+                return dictionary["name"].ToString();
+            }
+            set
+            {
+                dictionary["name"] = value;
+            }
+        }
         public Object Get(string name)
         { 
             return dictionary[name];

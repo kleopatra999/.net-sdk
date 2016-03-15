@@ -20,7 +20,7 @@ namespace CB.Util
             DELETE
         }
 
-        internal static async Task<Dictionary<string,object>> Send(Method method, string url, Dictionary<string, Object> postData, Boolean isServiceUrl)
+        internal static async Task<Dictionary<string, Object>> Send(Method method, string url, Dictionary<string, Object> postData, Boolean isServiceUrl)
         {
             try
             {

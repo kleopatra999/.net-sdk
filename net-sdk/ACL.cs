@@ -34,166 +34,153 @@ namespace CB
         }
         public void SetPublicWriteAccess(bool value)
         { //for setting the public write access
-            if (dictionary["write"] == null || value)
+            if (value)
             {
-                ArrayList writeList = new ArrayList();
-                writeList.Add("all");
-                dictionary["write"] = writeList; //if the "write" property does not exist, create one with default value
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"] = new ArrayList();
+                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Add("all");
             }
-           
-            if(!value)
+            else
             {
-                var index = ((ArrayList)(dictionary["write"])).IndexOf("all");
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).IndexOf("all");
                 if (index > -1)
                 {
-                    ((ArrayList)(dictionary["write"])).Remove("all"); //remove the "all" value from the "write" array of "this" object
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Remove("all");
                 }
             }
         }
         public void SetPublicReadAccess(bool value)
         {   //for setting the public read access
-            if (dictionary["read"] == null || value)
+            if (value)
             {
-                ArrayList readList = new ArrayList();
-                readList.Add("all");
-                dictionary["read"] = readList; //if the "read" property does not exist, create one with default value
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"] = new ArrayList();
+                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Add("all");
             }
-
-            if (!value)
+            else
             {
-                var index = ((ArrayList)(dictionary["read"])).IndexOf("all");
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).IndexOf("all");
                 if (index > -1)
                 {
-                    ((ArrayList)(dictionary["read"])).Remove("all"); //remove the "all" value from the "read" array of "this" object
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Remove("all");
                 }
             }
         }
         public void SetUserWriteAccess(string userId, bool value)
         { //for setting the user write access
-            if (dictionary["write"] == null)
-            {
-                ArrayList readList = new ArrayList();
-                readList.Add("all");
-                dictionary["write"] = readList; //if the "write" property does not exist, create one with default value
-            }
-
-            if (value)
-            { //If asked to allow user write access
-              //remove public write access.
-
-                var index = ((ArrayList)(dictionary["write"])).IndexOf("all");
+            if (value) { //If asked to allow user write access
+                //remove public write access.
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).IndexOf("all");
                 if (index > -1)
                 {
-                    ((ArrayList)(dictionary["write"])).Remove("all"); //remove the "all" value from the "read" array of "this" object
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Remove("all");
                 }
 
-                if (((ArrayList)(dictionary["write"])).IndexOf(userId) == -1)
+                index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).IndexOf(userId);
+                if (index <= -1)
                 {
-                    ((ArrayList)(dictionary["write"])).Add(userId);
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Add(userId);
                 }
-            }
-            else
-            {
-                if (((ArrayList)(dictionary["write"])).IndexOf(userId) > -1)
+                
+            } else {
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).IndexOf(userId);
+                if (index > -1)
                 {
-                    ((ArrayList)(dictionary["write"])).Remove(userId);
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Remove(userId);
                 }
+                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["deny"])["user"]).Add(userId);
+                
             }
         }
         public void SetUserReadAccess(string userId, bool value)
-        { //for setting the user read access
-            if (dictionary["read"] == null)
-            {
-                ArrayList readList = new ArrayList();
-                readList.Add("all");
-                dictionary["read"] = readList; //if the "read" property does not exist, create one with default value
-            }
-
+        {
             if (value)
-            { //If asked to allow user read access
-              //remove public read access.
-
-                var index = ((ArrayList)(dictionary["read"])).IndexOf("all");
+            { //If asked to allow user write access
+                //remove public write access.
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).IndexOf("all");
                 if (index > -1)
                 {
-                    ((ArrayList)(dictionary["read"])).Remove("all"); //remove the "all" value from the "read" array of "this" object
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Remove("all");
                 }
 
-                if (((ArrayList)(dictionary["read"])).IndexOf(userId) == -1)
+                index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).IndexOf(userId);
+                if (index <= -1)
                 {
-                    ((ArrayList)(dictionary["read"])).Add(userId);
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Add(userId);
                 }
+
             }
             else
             {
-                if (((ArrayList)(dictionary["read"])).IndexOf(userId) > -1)
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).IndexOf(userId);
+                if (index > -1)
                 {
-                    ((ArrayList)(dictionary["read"])).Remove(userId);
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Remove(userId);
                 }
+                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["deny"])["user"]).Add(userId);
+
             }
         }
         public void SetRoleWriteAccess(string roleId, bool value)
         { //for setting the user write access
-            if (dictionary["write"] == null)
-            {
-                ArrayList readList = new ArrayList();
-                readList.Add("all");
-                dictionary["write"] = readList; //if the "write" property does not exist, create one with default value
-            }
 
-            if (value)
-            { //If asked to allow user write access
-              //remove public write access.
-
-                var index = ((ArrayList)(dictionary["write"])).IndexOf("all");
+            if (value) {
+                //remove public write access.
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).IndexOf("all");
                 if (index > -1)
                 {
-                    ((ArrayList)(dictionary["write"])).Remove("all"); //remove the "all" value from the "read" array of "this" object
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Remove("all");
+                }
+                index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["role"]).IndexOf(roleId);
+                if (index <= -1)
+                {
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["role"]).Add(roleId);
+                }
+            } else {
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["role"]).IndexOf(roleId);
+                if (index > -1)
+                {
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["role"]).Remove("all");
                 }
 
-                if (((ArrayList)(dictionary["write"])).IndexOf(roleId) == -1)
+                index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).IndexOf("all");
+                if (index > -1)
                 {
-                    ((ArrayList)(dictionary["write"])).Add(roleId);
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["allow"])["user"]).Remove("all");
                 }
-            }
-            else
-            {
-                if (((ArrayList)(dictionary["write"])).IndexOf(roleId) > -1)
-                {
-                    ((ArrayList)(dictionary["write"])).Remove(roleId);
-                }
+                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["write"])["deny"])["role"]).IndexOf(roleId);
+           
             }
         }
         public void SetRoleReadAccess(string roleId, bool value)
         { //for setting the user read access
-            if (dictionary["read"] == null)
-            {
-                ArrayList readList = new ArrayList();
-                readList.Add("all");
-                dictionary["read"] = readList; //if the "read" property does not exist, create one with default value
-            }
-
             if (value)
-            { //If asked to allow user read access
-              //remove public read access.
-
-                var index = ((ArrayList)(dictionary["read"])).IndexOf("all");
+            {
+                //remove public write access.
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).IndexOf("all");
                 if (index > -1)
                 {
-                    ((ArrayList)(dictionary["read"])).Remove("all"); //remove the "all" value from the "read" array of "this" object
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Remove("all");
                 }
-
-                if (((ArrayList)(dictionary["read"])).IndexOf(roleId) == -1)
+                index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["role"]).IndexOf(roleId);
+                if (index <= -1)
                 {
-                    ((ArrayList)(dictionary["read"])).Add(roleId);
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["role"]).Add(roleId);
                 }
             }
             else
             {
-                if (((ArrayList)(dictionary["read"])).IndexOf(roleId) > -1)
+                var index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["role"]).IndexOf(roleId);
+                if (index > -1)
                 {
-                    ((ArrayList)(dictionary["read"])).Remove(roleId);
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["role"]).Remove("all");
                 }
+
+                index = ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).IndexOf("all");
+                if (index > -1)
+                {
+                    ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["allow"])["user"]).Remove("all");
+                }
+                ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)dictionary["read"])["deny"])["role"]).IndexOf(roleId);
+
             }
         }
     }

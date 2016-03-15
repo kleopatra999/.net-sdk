@@ -10,14 +10,18 @@ namespace CB
     public class CloudObject
     {
         internal Dictionary<string, Object> dictionary { set; get; }
+        public CloudObject()
+        {
+
+        }
 
         public CloudObject(string tableName)
         {
             this.dictionary = new Dictionary<string, Object>();
             dictionary.Add("_tableName", tableName);
             dictionary.Add("_type", "custom");
+            dictionary.Add("ACL", new CB.ACL());
             dictionary.Add("expires", null);
-            dictionary.Add("ACL", (new CB.ACL()).dictionary);
             dictionary["_modifiedColumns"] = new ArrayList();
             ((ArrayList)dictionary["_modifiedColumns"]).Add("createdAt");
             ((ArrayList)dictionary["_modifiedColumns"]).Add("updatedAt");
@@ -31,7 +35,7 @@ namespace CB
         {
             dictionary.Add("_tableName", tableName);
             dictionary.Add("_type", "custom");
-            dictionary.Add("ACL", (new CB.ACL()).dictionary.ToString());
+            dictionary.Add("ACL", (new CB.ACL()));
             dictionary["_modifiedColumns"] = new ArrayList();
             dictionary.Add("_isModified", false);
         }
@@ -92,6 +96,7 @@ namespace CB
 
         }
 
+
         public string TableName
         {
             get
@@ -130,6 +135,27 @@ namespace CB
 
         }
 
+        public DateTime Expires
+        {
+            get
+            {
+                return (DateTime)dictionary["expires"];
+            }
+            set
+            {
+                if (value != null)
+                {
+                    if (value.GetType() == typeof(DateTime))
+                    {
+                        dictionary["expires"] = value;
+                        _IsModified(this, "expires");
+                    }
+                    else
+                        throw new Exception.CloudBoostException("Value is not of type DateTime");
+                }                
+            }
+
+        }
         public bool IsSearchable
         {
             get
@@ -138,13 +164,17 @@ namespace CB
             }
             set
             {
-                if (value.GetType() == typeof(bool))
+                if (value != null)
                 {
-                    dictionary["_isSearchable"] = value;
-                    _IsModified(this, "_isSearchable");
+                    if (value.GetType() == typeof(bool))
+                    {
+                        dictionary["_isSearchable"] = value;
+                        _IsModified(this, "_isSearchable");
+                    }
+                    else
+                        throw new Exception.CloudBoostException("Value is not of type bool");
                 }
-                else
-                    throw new Exception.CloudBoostException("Value is not of type bool");
+                
             }
 
         }
@@ -259,24 +289,21 @@ namespace CB
         public async Task<CloudObject> SaveAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", this.dictionary);
-
+            postData.Add("document", CB.CloudObject.Serialize(this.dictionary));
             string url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
-            string abc;
+            
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
 
-            this.dictionary = (Dictionary<string, Object>)result;
-
-            return this;
+            return CB.CloudObject.DeSerialize(result, this);
         }
 
         public async Task<CloudObject> DeleteAsync()
         {
 
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", this);
+            postData.Add("document", CB.CloudObject.Serialize(this.dictionary));
 
-            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
+            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
 
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
 
@@ -306,12 +333,17 @@ namespace CB
             return obj;
         }
 
-        public static async Task<List<CloudObject>> SaveAllAsync(CloudObject[] objectArray)
+        public static async Task<List<CloudObject>> SaveAllAsync(ArrayList objectArray)
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", objectArray);
+            var array = new ArrayList();
+            for (int i = 0; i < objectArray.Count; i++)
+            {
+                array.Add(CB.CloudObject.Serialize(((CB.CloudObject)objectArray[i]).dictionary));
+            }
+            postData.Add("document", array);
 
-            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
+            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + ((CB.CloudObject)array[0]).TableName;
 
             var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.PUT, url, postData, false);
 
@@ -329,12 +361,17 @@ namespace CB
             return objects;
         }
 
-        public static async Task<List<CloudObject>> DeleteAllAsync(CloudObject[] objectArray)
+        public static async Task<List<CloudObject>> DeleteAllAsync(ArrayList objectArray)
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", objectArray);
+            var array = new ArrayList();
+            for (int i = 0; i < objectArray.Count; i++)
+            {
+                array.Add(CB.CloudObject.Serialize(((CB.CloudObject)objectArray[i]).dictionary));
+            }
+            postData.Add("document", array);
 
-            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + postData["_tableName"];
+            var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + ((CB.CloudObject)array[0]).TableName;
 
             var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.DELETE, url, postData, false);
 
@@ -352,6 +389,65 @@ namespace CB
             return objects;
         }
 
+        protected static Dictionary<string, Object> Serialize(Dictionary<string, Object> data){
+            Dictionary<string, Object> dic = new Dictionary<string, object>();
+
+            foreach (var param in data)
+            {
+                if (param.Key == "ACL")
+                {
+                    dic["ACL"] = ((CB.ACL)param.Value).dictionary; 
+                }
+                else if (param.Key == "expires")
+                {
+                    dic["expires"] = null;
+                }
+                else if (param.Key == "isSearchable")
+                {
+                }
+                else if ((param.Value).GetType() == typeof(CB.CloudObject))
+                {
+                    dic[param.Key] = CB.CloudObject.Serialize(((CB.CloudObject)param.Value).dictionary);
+                }
+                else
+                {
+                    dic[param.Key] = param.Value;
+                }
+
+            }
+            return dic;
+        }
+
+        internal static CB.CloudObject DeSerialize(Dictionary<string, Object> data, CB.CloudObject obj)
+        {
+            Dictionary<string, Object> dic = new Dictionary<string, object>();
+
+            foreach (var param in data)
+            {
+                if (param.Key == "ACL")
+                {
+                    var acl = new CB.ACL();
+                    //acl.dictionary = ((CB.ACL)param.Value).dictionary;
+                    obj.dictionary[param.Key] = acl;
+                }
+                else if (param.Key == "expires")
+                {
+
+                }
+                else if ((param.Value).GetType() == typeof(CB.CloudObject))
+                {
+                    var cbObj = new CB.CloudObject(((CB.CloudObject)param.Value).TableName);
+                    obj.dictionary[param.Key] = CB.CloudObject.DeSerialize(((CB.CloudObject)param.Value).dictionary, cbObj);
+                }
+                else
+                {
+                    obj.dictionary[param.Key] = param.Value;
+                }
+
+            }
+            
+            return obj;
+        }
         protected static void _IsModified(CB.CloudObject cbObj, string columnName)
         {
             cbObj.dictionary["_isModified"] = true;

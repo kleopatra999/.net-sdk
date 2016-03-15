@@ -165,19 +165,30 @@ namespace CB
             return this;
         }
 
-
-        //Limit and skip
-        public CloudQuery Limit(int data)
+        public int Limit
         {
-            dictionary["limit"] = data;
-            return this;
-        }
-        public CloudQuery Skip(int data)
-        {
-            dictionary["skip"] = data;
-            return this;
+            get
+            {
+                return (int)dictionary["limit"];
+            }
+            set
+            {
+                dictionary["limit"] = value;
+            }
         }
 
+        public int Skip
+        {
+            get
+            {
+                return (int)dictionary["skip"];
+            }
+            set
+            {
+                dictionary["skip"] = value;
+            }
+        }
+        
         //select/deselect columns to show
         public CloudQuery SelectColumn(string columnName)
         {
@@ -479,12 +490,64 @@ namespace CB
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
             return list;
         }
+
         public async Task<List<CloudObject>> Find()
         {
             var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary, false);
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
             return list;
         }
+
+        public async Task<Dictionary<string, Object>> Paginate(int pageNo, int totalItemsInPage)
+        {
+            if (pageNo > 0)
+            {
+                if (totalItemsInPage > 0)
+                {
+                    int skip = (pageNo * totalItemsInPage) - totalItemsInPage;
+                    this.Skip = skip;
+                    this.Limit = totalItemsInPage;
+                }
+
+
+            }
+
+            if (totalItemsInPage > 0)
+            {
+                this.Limit = totalItemsInPage;
+            }
+
+            var findTask = Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary, false);
+            var countObj = new CB.CloudQuery(this.dictionary["tableName"].ToString());
+            countObj.dictionary = this.dictionary;
+            var countTask = Util.CloudRequest.SendObject(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", countObj.dictionary, false);
+            await Task.WhenAll(findTask, countTask);
+            var findResult = await findTask;
+            List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(findResult);
+            var countResult = await countTask;
+            var count = (int)countResult;
+            int totalPages = 0;
+            if (count != null)
+            {
+                count = 0;
+                totalPages = 0;
+            }
+            else
+            {
+                totalPages = (int)(count / this.Limit);
+            }
+            if (totalPages < 0)
+            {
+                totalPages = 0;
+            }
+
+            var resultObject = new Dictionary<string, Object>();
+            resultObject.Add("objectsList", findResult);
+            resultObject.Add("count", count);
+            resultObject.Add("totalPages", totalPages);
+            return resultObject;
+        }
+
         public async Task<CloudObject> Get(string objectId)
         {
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/get/"+ objectId, null, false);

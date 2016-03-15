@@ -532,7 +532,8 @@ namespace CB.Test
         [TestMethod]
         public async Task save()
         {
-            var obj = new CB.CloudObject("sample"); 
+            CB.Test.Util.Keys.InitWithClientKey();
+            var obj = new CB.CloudObject("Sample"); 
             obj.Set("name", "sample");
             obj = await obj.SaveAsync();
             if(obj.Get("name") != "sample"){

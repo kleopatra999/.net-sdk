@@ -68,7 +68,7 @@ namespace CB.Test
             var loc2 = new CB.CloudGeoPoint(17.4, 78.4);
             var loc3 = new CB.CloudGeoPoint(17.7, 80.4);
             CB.CloudGeoPoint[] loc = { loc1, loc2, loc3 };
-            query.Limit(4);
+            query.Limit = 4;
             query.GeoWithin("location", loc);
             var response = (List<CB.CloudObject>)await query.Find();
             if (response.Count > 0)
@@ -85,7 +85,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("Custom5");
             var loc = new CB.CloudGeoPoint(17.3, 78.3);
-            query.Limit(4);
+            query.Limit = 4;
             query.GeoWithin("location", loc, 1000);
             var response = (List<CB.CloudObject>)await query.Find();
             if (response.Count > 0)

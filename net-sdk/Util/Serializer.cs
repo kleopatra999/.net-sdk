@@ -21,6 +21,7 @@ namespace CB.Util
             return response;
         }
 
+
         internal static Dictionary<string,Object> Deserialize(string response)
         {
             Dictionary<string, Object> obj = JsonConvert.DeserializeObject<Dictionary<string, Object>>(response);
@@ -32,5 +33,7 @@ namespace CB.Util
             List<Dictionary<string, Object>> obj = JsonConvert.DeserializeObject<List<Dictionary<string, Object>>>(response);
             return obj;
         }
+
+        
     }
 }

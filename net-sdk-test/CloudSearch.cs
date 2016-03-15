@@ -501,8 +501,8 @@ namespace CB.Test
         {
             var obj = new CB.CloudObject("Custom5");
             var loc = new CB.CloudGeoPoint(18.19, 79.3);
-            loc.SetLatitude(78);
-            loc.SetLongitude(17);
+            loc.Latitude = 78;
+            loc.Longitude = 17;
             obj.Set("location", loc);
             await obj.SaveAsync();
         }

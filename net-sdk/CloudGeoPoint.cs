@@ -29,32 +29,50 @@ namespace CB
             }
         }
 
-        public void SetLongitude(double longitude)
+        public double Longitude
         {
-            if (longitude >= -180 && longitude <= -180)
+            get
             {
-                dictionary.Add("longitude", longitude);
-                coordinates[0] = longitude;
-                dictionary.Add("_isModified", true);
+                return (double)dictionary["longitude"];
             }
-            else
+            set
             {
-                throw new Exception.CloudBoostException("Longitude is not in Range");
+                var longitude = value;
+                if (longitude >= -180 && (longitude <= -180))
+                {
+                    dictionary.Add("longitude", longitude);
+                    coordinates[0] = longitude;
+                    dictionary.Add("_isModified", true);
+                }
+                else
+                {
+                    throw new Exception.CloudBoostException("Longitude is not in Range");
+                }
             }
+            
         }
 
-        public void SetLatitude(double latitude)
+        public double Latitude
         {
-            if (latitude >= -90 && latitude <= -90)
+            get
             {
-                dictionary.Add("latitude", latitude);
-                coordinates[1] = latitude;
-                dictionary.Add("_isModified", true);
+                return (double)dictionary["latitude"];
             }
-            else
+            set
             {
-                throw new Exception.CloudBoostException("Latitude is not in Range");
+                var latitude = value;
+                if (latitude >= -90 && latitude <= -90)
+                {
+                    dictionary.Add("latitude", latitude);
+                    coordinates[1] = latitude;
+                    dictionary.Add("_isModified", true);
+                }
+                else
+                {
+                    throw new Exception.CloudBoostException("Latitude is not in Range");
+                }
             }
+            
         }
 
         public Object Get(string columnName)
