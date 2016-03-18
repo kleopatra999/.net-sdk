@@ -5,4 +5,6 @@ install:
   - nuget restore net-sdk.sln
   
 script:
+  - /p:DebugSymbols=False
   - xbuild net-sdk.sln
+  
