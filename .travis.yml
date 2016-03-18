@@ -5,6 +5,6 @@ install:
   - nuget restore net-sdk.sln
   
 script:
-  - /p:DebugSymbols=False
+  - /p:TargetFrameworkVersion="v4.5"
   - xbuild net-sdk.sln
   
