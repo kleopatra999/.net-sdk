@@ -328,7 +328,7 @@ namespace CB
                 query = new CloudQuery("_File");
             }
 
-            CloudObject obj = await query.Get(dictionary["_id"].ToString());
+            CB.CloudObject obj = await query.GetAsync(dictionary["_id"].ToString());
 
             return obj;
         }

@@ -170,7 +170,7 @@ namespace CB.Test
             var query = new CB.CloudQuery("Employee");
             query.Include("Company.File");
             query.EqualTo("id", obj1.ID);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             Assert.IsTrue(true);
         }
 

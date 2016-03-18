@@ -31,7 +31,7 @@ namespace CB.Test
             }
             var query = new CB.CloudQuery("Role");
             query.EqualTo("id", response.ID);
-            var result = (List<CB.CloudObject>)await query.Find();
+            var result = (List<CB.CloudObject>)await query.FindAsync();
             if (result == null)
             {
                 throw new CB.Exception.CloudBoostException("Should retrieve the cloud role");

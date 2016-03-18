@@ -9,6 +9,12 @@ namespace CB.Test
     [TestClass]
     public class CloudQuery
     {
+        [TestMethod]
+        public void x001_InitAppWithClientKey()
+        {
+            CB.Test.Util.Keys.InitWithClientKey();
+            Assert.IsTrue(true);
+        }
        
         [TestMethod]
         public async Task saveObject()
@@ -27,6 +33,7 @@ namespace CB.Test
         [TestMethod]
         public async Task find()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj = new CB.CloudObject("Custom1");
             obj.Set("newColumn", "sample");
             obj.Set("description", "sample2");
@@ -363,7 +370,7 @@ namespace CB.Test
             var obj2 = new CB.CloudQuery("student4");
             obj2.EqualTo("age", 12);
             var obj = CB.CloudQuery.Or(obj1, obj2);
-            var response = (List<CB.CloudObject>)await obj.Find();
+            var response = (List<CB.CloudObject>)await obj.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -628,7 +635,7 @@ namespace CB.Test
 
                 var query = CB.CloudQuery.Or(query1, query2);
                 query.EqualTo("username", username);
-                var response = (List<CB.CloudObject>)await query.FindAsync();
+                List<CB.CloudObject> response = await query.FindAsync();
                 if (response.Count > 0)
                 {
                     Assert.IsTrue(true);

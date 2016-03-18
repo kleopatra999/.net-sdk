@@ -156,7 +156,7 @@ namespace CB.Test
             obj.Set("email", Util.Methods._makeEmail());
             await obj.SaveAsync();
             var query = new CB.CloudQuery("User");
-            var response = await query.Get(obj.ID);
+            var response = await query.GetAsync(obj.ID);
             if (response != null)
             {
                 Assert.IsTrue(true);

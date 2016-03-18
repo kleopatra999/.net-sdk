@@ -486,7 +486,7 @@ namespace CB
             return (int)result;
         }
 
-        public async Task<List<CloudObject>> DistinctAsync(string key)
+        public async Task<List<CB.CloudObject>> DistinctAsync(string key)
         {
             var postData = new Dictionary<string, Object>();
             postData["onKey"] = key;
@@ -500,7 +500,7 @@ namespace CB
             return list;
         }
 
-        public async Task<List<CloudObject>> FindAsync()
+        public async Task<List<CB.CloudObject>> FindAsync()
         {
             var postData = new Dictionary<string, Object>();
             postData["query"] = this.dictionary["query"];
@@ -564,7 +564,7 @@ namespace CB
             return resultObject;
         }
 
-        public async Task<CloudObject> GetAsync(string objectId)
+        public async Task<CB.CloudObject> GetAsync(string objectId)
         {
             var postData = new Dictionary<string, Object>();
             postData["query"] = this.dictionary["query"];
