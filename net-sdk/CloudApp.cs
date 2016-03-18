@@ -77,6 +77,13 @@ namespace CB
             AppKey = appKey;
         }
 
+        public static void init(string appId, string appKey)
+        {
+           
+            AppID = appId;
+            AppKey = appKey;
+        }
+
         public static void onConnect()
         {
             _socket.On(Socket.EVENT_CONNECT, () =>

@@ -164,29 +164,6 @@ namespace CB.Test
             }
         }
 
-        public async Task deleteCacheFromAnApp()
-        {
-
-        }
-
-        public async Task shouldThrewErrorWhileDeletingWrongData()
-        {
-
-        }
-
-        public async Task shouldThrowErrorWhileClearingWrongData()
-        {
-
-        }
-
-        public async Task clearCacheFromApp()
-        {
-
-        }
-
-        public async Task deleteEntireCacheFromApp()
-        {
-
-        }
+       
     }
 }

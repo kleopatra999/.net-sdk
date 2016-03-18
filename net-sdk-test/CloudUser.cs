@@ -66,7 +66,7 @@ namespace CB.Test
             if (obj.Username == username && (int)obj.Get("_version") >= 0)
             {
                 var query = new CB.CloudQuery("User");
-                var response = await query.Get(obj.ID);
+                var response = await query.GetAsync(obj.ID);
                 Assert.IsTrue(true);
             }
             else

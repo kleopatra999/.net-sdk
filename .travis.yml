@@ -1,0 +1,8 @@
+language: csharp
+solution: net-sdk.sln
+
+install:
+  - nuget restore net-sdk.sln
+  
+script:
+  - xbuild net-sdk.sln

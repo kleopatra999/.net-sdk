@@ -34,7 +34,7 @@ namespace CB.Test
             var query = new CB.CloudQuery("Custom1");
             query.EqualTo("id", obj.ID);
             query.SelectColumn("newColumn");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 if (response[0].Get("description") == null)
@@ -69,7 +69,7 @@ namespace CB.Test
             list.Add(obj3);
             query.ContainedIn("id", list);
             query.SelectColumn("newColumn");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count == 2)
             {
                 Assert.IsTrue(true);
@@ -87,7 +87,7 @@ namespace CB.Test
             var query = new CB.CloudQuery("Custom1");
             query.EqualTo("id", obj.ID);
             query.SelectColumn("newColumn");
-            var response = (List<CB.CloudObject>)await query.Distinct("id");
+            var response = (List<CB.CloudObject>)await query.DistinctAsync("id");
             if (response.Count > 0)
             {
                 if (response[0].Get("description") == null)
@@ -107,7 +107,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
             query.NotEqualTo("name", null);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             for(int i=0; i<response.Count; i++){
                 if(response[i].Get("name") == null){
                     throw new CB.Exception.CloudBoostException("Name does not exists");
@@ -127,7 +127,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
             query.EqualTo("id", obj.ID);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 Assert.IsTrue(true);
@@ -146,7 +146,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
             query.EqualTo("id", obj.ID);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 Assert.IsTrue(true);
@@ -165,7 +165,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
             query.EqualTo("name", "sampleName");
-            var response = await query.FindOne();
+            var response = await query.FindOneAsync();
             if (response.Get("name") == "sampleName")
             {
                 Assert.IsTrue(true);
@@ -184,7 +184,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
             query.EqualTo("name", "sampleName");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -211,7 +211,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student4");
             query.ContainsAll("subject", list);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -238,7 +238,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student1");
             query.StartsWith("name", "s");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -263,7 +263,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.GreaterThan("age", 10);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -287,7 +287,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.GreaterThanEqualTo("age", 15);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -311,7 +311,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.LessThan("age", 20);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -335,7 +335,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.LessThanEqualTo("age", 15);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -402,7 +402,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.OrderByAsc("age");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 int age = (int)response[0].Get("age");
@@ -429,7 +429,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.OrderByDesc("age");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 int age = (int)response[0].Get("age");
@@ -455,7 +455,7 @@ namespace CB.Test
         public async Task distinctTest()
         {
             var query = new CB.CloudQuery("student4");
-            var response = (List<CB.CloudObject>)await query.Distinct("age");
+            var response = (List<CB.CloudObject>)await query.DistinctAsync("age");
             List<int> age = new List<int>();
             if (response.Count > 0)
             {
@@ -484,7 +484,7 @@ namespace CB.Test
             obj.Set("name", "abcd");
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
-            var response = await query.Get(obj.ID);
+            var response = await query.GetAsync(obj.ID);
             if (response.Get("name") == "abcd")
             {
                 Assert.IsTrue(true);
@@ -500,7 +500,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.Exists("age");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -520,7 +520,7 @@ namespace CB.Test
         {
             var query = new CB.CloudQuery("student4");
             query.DoesNotExist("age");
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 for (int i = 0; i < response.Count; i++)
@@ -546,7 +546,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
             query.NotEqualTo("newColumn", obj1);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             for (int i = 0; i < response.Count; i++)
             {
                 if (response[i].Get("newColumn") != null)
@@ -570,7 +570,7 @@ namespace CB.Test
             await obj1.SaveAsync();
             var query = new CB.CloudQuery("Custom1");
             query.EqualTo("newColumn1", false);
-            var response = (List<CB.CloudObject>)await query.Find();
+            var response = (List<CB.CloudObject>)await query.FindAsync();
             if (response.Count > 0)
             {
                 Assert.IsTrue(true);
@@ -596,7 +596,7 @@ namespace CB.Test
                 var query = new CB.CloudQuery("User");
                 query.EqualTo("password", "password");
                 query.EqualTo("username", username);
-                var response = (List<CB.CloudObject>)await query.Find();
+                var response = (List<CB.CloudObject>)await query.FindAsync();
                 if (response.Count > 0)
                 {
                     Assert.IsTrue(true);
@@ -628,7 +628,7 @@ namespace CB.Test
 
                 var query = CB.CloudQuery.Or(query1, query2);
                 query.EqualTo("username", username);
-                var response = (List<CB.CloudObject>)await query.Find();
+                var response = (List<CB.CloudObject>)await query.FindAsync();
                 if (response.Count > 0)
                 {
                     Assert.IsTrue(true);
@@ -649,7 +649,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("User");
 
-            var response = await query.Get(obj.ID);
+            var response = await query.GetAsync(obj.ID);
             var obj1 = await response.SaveAsync();
             Assert.IsTrue(true);
 
