@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudGeoPoint
     {
-        [TestMethod]
+        [Test]
         public async Task saveGeoPoint()
         {
             var obj = new CB.CloudObject("Custom5");
@@ -18,13 +18,13 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public void createGeoPointWithZero()
         {
             var loc = new CB.CloudGeoPoint(0, 0);
         }
 
-        [TestMethod]
+        [Test]
         public async Task nearTest()
         {
             var query = new CB.CloudQuery("Custom5");
@@ -41,7 +41,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task geoWithinTest()
         {
             var query = new CB.CloudQuery("Custom5");
@@ -61,6 +61,8 @@ namespace CB.Test
                 throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
             }
         }
+
+        [Test]
         public async Task geoWithinTestLimit()
         {
             var query = new CB.CloudQuery("Custom5");
@@ -81,6 +83,7 @@ namespace CB.Test
             }
         }
 
+        [Test]
         public async Task geoWithinTestCircle()
         {
             var query = new CB.CloudQuery("Custom5");
@@ -98,6 +101,7 @@ namespace CB.Test
             }
         }
 
+        [Test]
         public async Task updateGeoPoint()
         {
             var obj = new CB.CloudObject("Custom5");

@@ -1,22 +1,22 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudQuery
     {
-        [TestMethod]
+        [Test]
         public void x001_InitAppWithClientKey()
         {
             CB.Test.Util.Keys.InitWithClientKey();
             Assert.IsTrue(true);
         }
        
-        [TestMethod]
+        [Test]
         public async Task saveObject()
         {
             var obj = new CB.CloudObject("student1");
@@ -30,7 +30,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task find()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -53,7 +53,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task containedInWithId()
         {
             var obj1 = new CB.CloudObject("Custom1");
@@ -84,7 +84,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task columnShouldWorkOnDistinct()
         {
             var obj = new CB.CloudObject("Custom1");
@@ -106,7 +106,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task columnNameNotEqualTo()
         {
             var obj = new CB.CloudObject("student1");
@@ -126,7 +126,7 @@ namespace CB.Test
                 throw new CB.Exception.CloudBoostException("object could not queried properly");
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task findDataWithId()
         {
             var obj = new CB.CloudObject("student1");
@@ -145,7 +145,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task findItemWithId()
         {
             var obj = new CB.CloudObject("student1");
@@ -164,7 +164,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task findOneQuery()
         {
             var obj = new CB.CloudObject("student1");
@@ -183,7 +183,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod] //273
+        [Test] //273
         public async Task retrieveDataWithValue()
         {
             var obj = new CB.CloudObject("student1");
@@ -209,7 +209,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task retrieveList()
         {
             var obj = new CB.CloudObject("student4");
@@ -240,7 +240,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task startsWithTest()
         {
             var query = new CB.CloudQuery("student1");
@@ -265,7 +265,7 @@ namespace CB.Test
         }
 
 
-        [TestMethod] 
+        [Test] 
         public async Task greaterThanTest()
         {
             var query = new CB.CloudQuery("student4");
@@ -289,7 +289,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task greaterThanEqualTo()
         {
             var query = new CB.CloudQuery("student4");
@@ -313,7 +313,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task lessThan()
         {
             var query = new CB.CloudQuery("student4");
@@ -337,7 +337,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task lessThanEqualTo()
         {
             var query = new CB.CloudQuery("student4");
@@ -361,7 +361,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task retrieveDataWithParticularValue()
         {
             var obj1 = new CB.CloudQuery("student4");
@@ -404,7 +404,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task ascendingOrder()
         {
             var query = new CB.CloudQuery("student4");
@@ -431,7 +431,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task descendingOrder()
         {
             var query = new CB.CloudQuery("student4");
@@ -458,7 +458,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task distinctTest()
         {
             var query = new CB.CloudQuery("student4");
@@ -484,7 +484,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task findByIdTest()
         {
             var obj = new CB.CloudObject("student1");
@@ -502,7 +502,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task existsTest() 
         {
             var query = new CB.CloudQuery("student4");
@@ -522,7 +522,7 @@ namespace CB.Test
             Assert.IsFalse(false);
         }
 
-        [TestMethod]
+        [Test]
         public async Task doesNotExists()
         {
             var query = new CB.CloudQuery("student4");
@@ -542,7 +542,7 @@ namespace CB.Test
             Assert.IsFalse(false);
         }
 
-        [TestMethod]
+        [Test]
         public async Task relationQueryTest()
         {
             var obj1 = new CB.CloudObject("hostel");
@@ -569,7 +569,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task queryOverBooleanDataType()
         {
             var obj1 = new CB.CloudObject("Custom1");
@@ -588,7 +588,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task getEncryptedPassword()
         {
             string username = Util.Methods._makeEmail();
@@ -616,7 +616,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task getEncryptedPasswordOverORQuery()
         {
             var username = Util.Methods._makeEmail();
@@ -644,7 +644,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task doNotEncryptAlreadyEncryptedPassword()
         {
             string username = Util.Methods._makeEmail();

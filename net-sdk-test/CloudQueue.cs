@@ -1,22 +1,22 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudQueue
     {
-        [TestMethod]
+        [Test]
         public async Task noQueueInDB()
         {
             await CB.CloudQueue.GetAllAsync();
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task getMessageForFutureExpireDate()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -31,7 +31,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task addDataIntoQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -40,7 +40,7 @@ namespace CB.Test
 
         }
 
-        [TestMethod]
+        [Test]
         public async Task createAndDeleteQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -49,7 +49,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task addExpireInQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -63,7 +63,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task addCurrentTimeAsExpireDate()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -75,7 +75,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task updateDataIntoTheQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -90,7 +90,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task addMultipleMessageInQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -104,7 +104,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task addAndGetDataFromTheQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -124,7 +124,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldPeek()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -149,7 +149,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldGetMessageInFIFO()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -182,7 +182,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldPeekTwoMessageSameTime()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -207,7 +207,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldGetTwoMessageSameTime()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -232,7 +232,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldNotGetMessageWithDelay()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -247,7 +247,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldAbleToGetMessageAfterDelay()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -268,7 +268,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldGetMessageWithId()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -289,7 +289,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldGetNullForInvalidMessageId()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -310,7 +310,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldDeleteMessageWithMessageId()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -331,7 +331,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldDeleteMessageByPassingQueueMessageToFunction()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -352,7 +352,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldNotGetMessageAfterItWasDeleted()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -375,7 +375,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldAddSubscriberToQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -393,7 +393,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldMultipleSubscriberToTheQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -411,7 +411,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldRemoveSubscriberFromTheQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
@@ -432,30 +432,6 @@ namespace CB.Test
                 }
                 Assert.IsFalse(true);
             }
-        }
-
-        [TestMethod]
-        public async Task shouldRemoveMultipleSubscriberFromQueue()
-        {
-
-        }
-
-        [TestMethod]
-        public async Task shouldNotSubscriberWithInvalidURL()
-        {
-
-        }
-
-        [TestMethod]
-        public async Task shouldAddAndRemoveSubscriber()
-        {
-
-        }
-
-        [TestMethod]
-        public async Task shouldDeleteTheQueue()
-        {
-
         }
     }
 }

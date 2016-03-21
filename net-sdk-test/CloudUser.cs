@@ -1,17 +1,17 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudUser
     {
         protected string username = Util.Methods._makeString();
         protected string password = "abcd";
-        [TestMethod]
+        [Test]
         public async Task createNewUser()
         {
             var obj = new CB.CloudUser();
@@ -29,13 +29,13 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldLogoutUser()
         {
             await CB.CloudUser.Current.Logout();
         }
 
-        [TestMethod]
+        [Test]
         public async Task createUserAndGetVersion()
         {
             username = Util.Methods._makeString();
@@ -54,7 +54,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task queryOnUser()
         {
             username = Util.Methods._makeString();
@@ -74,14 +74,14 @@ namespace CB.Test
                 throw new CB.Exception.CloudBoostException("Error Creating User");
             }
         }
-        [TestMethod]
+        [Test]
         public async Task logoutUser()
         {
             await CB.CloudUser.Current.Logout();
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task loginUser()
         {
             var obj = new CB.CloudUser();
@@ -98,7 +98,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task assignRoleToUser()
         {
             var roleName = Util.Methods._makeString();
@@ -113,7 +113,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task removeRoleAssignRoleToUser()
         {
             var obj = new CB.CloudUser();
@@ -129,7 +129,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldEncryptUserPassword()
         {
             var obj = new CB.CloudUser();
@@ -147,7 +147,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task createNewUserSave()
         {
             var obj = new CB.CloudUser();

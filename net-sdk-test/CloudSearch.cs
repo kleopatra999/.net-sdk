@@ -1,16 +1,16 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudSearch
     {
-        [TestMethod]
+        [Test]
         public void x001_InitAppWithMasterKey()
         {
             var tableName = CB.Test.Util.Methods._makeString();
@@ -19,7 +19,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task getDataFromServerNearFunction()
         {
             var custom = new CB.CloudTable("CustomGeoPoint");
@@ -45,7 +45,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task EqualToWithCloudSearchOverCloudObject()
         {
             var custom = new CB.CloudTable("CustomRelation");
@@ -74,7 +74,7 @@ namespace CB.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public async Task indexObject()
         {
             var obj = new CB.CloudObject("Custom1");
@@ -83,7 +83,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchIndexedObject()
         {
             var cs = new CB.CloudSearch("Custom1");
@@ -96,7 +96,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task indexTestData()
         {
             var obj = new CB.CloudObject("Student");
@@ -114,7 +114,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchObjectForGivenValue()
         {
             var cs = new CB.CloudSearch("Student");
@@ -128,7 +128,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchObjectWithPhrase()
         {
             var cs = new CB.CloudSearch("Student");
@@ -139,7 +139,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchObjectWithWhileCard()
         {
             var cs = new CB.CloudSearch("Student");
@@ -150,7 +150,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchForObjectWithStartWith()
         {
             var cs = new CB.CloudSearch("Student");
@@ -161,7 +161,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchObjectWithMostColumns()
         {
             var cs = new CB.CloudSearch("Student");
@@ -172,7 +172,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchForObjectWithBestColumns()
         {
             var cs = new CB.CloudSearch("Student");
@@ -183,7 +183,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldSearchWithNotEqualToValue()
         {
             var cs = new CB.CloudSearch("Student");
@@ -193,7 +193,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task setLimitTest()
         {
             var cs = new CB.CloudSearch("Student");
@@ -212,7 +212,7 @@ namespace CB.Test
 
         }
 
-        [TestMethod]
+        [Test]
         public async Task skipTest()
         {
             var obj = new CB.CloudObject("Student");
@@ -245,7 +245,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task sortAscendingOrder()
         {
             var cs = new CB.CloudSearch("Student");
@@ -261,7 +261,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task sortInDescendingOrder()
         {
             var cs = new CB.CloudSearch("Student");
@@ -277,7 +277,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task columnExistsTest()
         {
             var cs = new CB.CloudSearch("Student");
@@ -294,7 +294,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task searchRecordsWhichDoNotHaveCertainColumnTest()
         {
             var cs = new CB.CloudSearch("Student");
@@ -311,7 +311,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task recordsWithinCertainRange()
         {
             var cs = new CB.CloudSearch("Student");
@@ -330,7 +330,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task OrBetweenTables()
         {
             var obj = new CB.CloudObject("Student");
@@ -380,7 +380,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task runOperatorQueries()
         {
             var obj = new CB.CloudObject("Student");
@@ -415,7 +415,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task minimumPercentQueries()
         {
             var obj = new CB.CloudObject("Student");
@@ -449,7 +449,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task multiTableSearch()
         {
             var obj = new CB.CloudObject("Student");
@@ -486,7 +486,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldSaveLatitudeAndLongitude()
         {
             var obj = new CB.CloudObject("Custom5");
@@ -496,7 +496,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldIncludeRelationOnSearch()
         {
             var obj = new CB.CloudObject("Custom5");

@@ -1,18 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using NUnit.Framework;
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudTable
     {
         string tableName = "";
 
-        [TestMethod]
+        [Test]
         public void x001_InitAppWithMasterKey()
         {
             tableName = CB.Test.Util.Methods._makeString();
@@ -21,7 +20,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x0_GetAllTables()
         {
             Util.Keys.InitWithMasterKey();
@@ -38,7 +37,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task x002_DeleteTables()
         {
             var obj = new CB.CloudTable("Address");
@@ -53,7 +52,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x003_CreateEmployeeTable()
         {
             var age = new CB.Column("Age");
@@ -72,7 +71,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x004_CreateCompanyTable()
         {
             var obj = new CB.CloudTable("Company");
@@ -88,7 +87,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x005_CreateAddressTable()
         {
             Util.Keys.InitWithMasterKey();
@@ -103,7 +102,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x005_ShouldUpdateANewColumnInATable()
         {
 
@@ -131,7 +130,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x006_CreateDeleteTable()
         {
             Util.Keys.InitWithMasterKey();
@@ -143,7 +142,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x007_CreateDeleteTable()
         {
 
@@ -157,7 +156,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task x008_AddColumnToTableAfterSave()
         {
 

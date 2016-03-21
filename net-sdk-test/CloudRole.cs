@@ -1,15 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudRole
     {
-        [TestMethod]
+        [Test]
         public async Task createRole()
         {
             var roleName = Util.Methods._makeString();
@@ -19,7 +19,7 @@ namespace CB.Test
                 Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task retrieveRole()
         {
             var roleName = Util.Methods._makeString();

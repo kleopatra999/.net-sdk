@@ -1,22 +1,22 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudCache
     {
-        [TestMethod]
+        [Test]
         public void x001_InitAppWithMasterKey()
         {
             CB.Test.Util.Keys.InitWithMasterKey();
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task AddItemToCache()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
@@ -28,6 +28,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
+        [Test]
         public async Task addString()
         {
             var cache = new CB.CloudCache("student");
@@ -39,6 +40,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
+        [Test]
         public async Task addNumber()
         {
             var cache = new CB.CloudCache("student");
@@ -50,6 +52,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
+        [Test]
         public async Task deleteItem()
         {
             var cache = new CB.CloudCache("student");
@@ -70,6 +73,7 @@ namespace CB.Test
             }
         }
 
+        [Test]
         public async Task createCahce()
         {
             var cache = new CB.CloudCache("student");
@@ -81,6 +85,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
+        [Test]
         public async Task getItemCount()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
@@ -101,6 +106,7 @@ namespace CB.Test
             }
         }
 
+        [Test]
         public async Task getItemInTheCache()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
@@ -117,6 +123,7 @@ namespace CB.Test
             Assert.IsFalse(true);
         }
 
+        [Test]
         public async Task getAllCacheItem()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
@@ -141,6 +148,7 @@ namespace CB.Test
             }
         }
 
+        [Test]
         public async Task getInformationAboutCache()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();

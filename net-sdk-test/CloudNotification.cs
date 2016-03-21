@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudNotification
     {
-        [TestMethod]
+        [Test]
         public void subscribeToChannel()
         {
             CB.CloudNotification.On("sample", new Callback(action));
@@ -18,7 +18,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public void publishDataToChannel()
         {
             CB.CloudNotification.On("sample", new Callback(anotherAction));
@@ -37,7 +37,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public void shouldStopListeningChannel()
         {
             CB.CloudNotification.Off("sample");

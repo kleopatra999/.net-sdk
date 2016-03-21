@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace CB.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CloudFile
     {
-        [TestMethod]
+        [Test]
         public void saveFileDataAndName()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -19,7 +19,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task returnFileWithCloudObject()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -44,7 +44,7 @@ namespace CB.Test
             }
         }
         
-        [TestMethod]
+        [Test]
         public async Task shouldSaveFileAndGiveURL()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -62,7 +62,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task deleteFileWithDataAndName()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -89,7 +89,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod] 
+        [Test] 
         public async Task saveAndFetchFile()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -108,7 +108,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task includeOverFile()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -128,7 +128,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task saveFileDataAndNameThenFetch()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -151,7 +151,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task saveFileAndGetRelation()
         {
             var obj1 = new CB.CloudObject("Employee");
@@ -174,7 +174,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public async Task getFileObjectWithNotReadAccess()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -193,7 +193,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task shoudNotGetFileWithNoReadAccess()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -213,7 +213,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task shouldNotDeleteFileNoWriteAccess()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
