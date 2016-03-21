@@ -196,8 +196,9 @@ namespace CB
             keywords.Add("_tableName");
             keywords.Add("_type");
             keywords.Add("operator");
+            keywords.Add("_id");
 
-            if (columnName == "ID" || columnName == "IsSearchable")
+            if (columnName.ToUpper() == "ID" || columnName == "IsSearchable")
                 columnName = "_" + ((char)columnName.ToCharArray()[0]).ToString().ToLower() + columnName.Substring(1);
 
             if (keywords.IndexOf(columnName) > -1)

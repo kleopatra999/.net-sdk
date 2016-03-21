@@ -61,8 +61,8 @@ namespace CB.Util
             }
             catch (System.Exception e)
             {
-                CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
-                throw e;
+                //CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e.ToString);
+                throw new CB.Exception.CloudBoostException(e.ToString());
             }
         }
 
@@ -110,8 +110,8 @@ namespace CB.Util
             }
             catch (System.Exception e)
             {
-                CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
-                throw e;
+                //CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
+                throw new CB.Exception.CloudBoostException(e.ToString());
             }
         }
 
@@ -149,8 +149,8 @@ namespace CB.Util
             }
             catch (System.Exception e)
             {
-                CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
-                throw e;
+                //CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
+                throw new CB.Exception.CloudBoostException(e.ToString());
             }
         }
 
@@ -193,8 +193,8 @@ namespace CB.Util
             }
             catch (System.Exception e)
             {
-                CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
-                throw e;
+                //CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
+                throw new CB.Exception.CloudBoostException(e.ToString());
             }
         }
 

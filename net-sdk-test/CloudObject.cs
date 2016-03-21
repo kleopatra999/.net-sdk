@@ -31,11 +31,12 @@ namespace CB.Test
         [TestMethod]
         public async Task doNotSaveIncorrectEmail()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj = new CB.CloudObject("Custom");
             obj.Set("email", "email");
             try
             {
-                obj = await obj.SaveAsync();
+                await obj.SaveAsync();
                 Assert.IsFalse(true);
             }
             catch (CB.Exception.CloudBoostException e)
@@ -107,14 +108,15 @@ namespace CB.Test
         [TestMethod]
         public async Task Save()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj = new CB.CloudObject("Sample");
             obj.Set("name", "sample");
-            obj = await obj.SaveAsync();
-            if (obj.Get("name") != "sample")
+            await obj.SaveAsync();
+            if (obj.Get("name").ToString() != "sample")
             {
                 Assert.IsFalse(true);
             }
-            else if (obj.Get("id") == null)
+            else if (obj.ID == null)
             {
                 Assert.IsFalse(true);
             }
@@ -125,25 +127,26 @@ namespace CB.Test
         [TestMethod]
         public async Task updateObject()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj = new CB.CloudObject("Sample");
             obj.Set("name", "sample");
-            obj = await obj.SaveAsync();
-            if (obj.Get("name") != "sample")
+            await obj.SaveAsync();
+            if (obj.Get("name").ToString() != "sample")
             {
                 Assert.IsFalse(true);
             }
-            else if (obj.Get("id") == null)
+            else if (obj.ID == null)
             {
                 Assert.IsFalse(true);
             }
 
             obj.Set("name", "sample1");
-            obj = await obj.SaveAsync();
-            if (obj.Get("name") != "sample1")
+            await obj.SaveAsync();
+            if (obj.Get("name").ToString() != "sample1")
             {
                 Assert.IsFalse(true);
             }
-            else if (obj.Get("id") == null)
+            else if (obj.ID == null)
             {
                 Assert.IsFalse(true);
             }
@@ -184,7 +187,7 @@ namespace CB.Test
             obj.Set("name", "sample");
             try
             {
-                obj = await obj.SaveAsync();
+                await obj.SaveAsync();
                 Assert.IsFalse(true);
             }
             catch (CB.Exception.CloudBoostException e)
@@ -200,7 +203,7 @@ namespace CB.Test
             obj.Set("name", 1232);
             try
             {
-                obj = await obj.SaveAsync();
+                await obj.SaveAsync();
                 Assert.IsFalse(true);
             }
             catch (CB.Exception.CloudBoostException e)
@@ -212,15 +215,17 @@ namespace CB.Test
         [TestMethod]
         public async Task duplicationTestInUniqueField()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj = new CB.CloudObject("Sample");
             obj.Set("name", "sample");
             obj.Set("unique", "abcd");
-            obj = await obj.SaveAsync();
-            obj.Set("name", "sample");
-            obj.Set("unique", "abcd");
+            
             try
             {
-                obj = await obj.SaveAsync();
+                await obj.SaveAsync();
+                obj.Set("name", "sample");
+                obj.Set("unique", "abcd");
+                await obj.SaveAsync();
                 Assert.IsFalse(true);
             }
             catch (CB.Exception.CloudBoostException e)
@@ -316,7 +321,7 @@ namespace CB.Test
             obj.Set("sameRelation", obj1);
             try
             {
-                obj = await obj.SaveAsync();
+                await obj.SaveAsync();
                 Assert.IsFalse(true);
             }
             catch (CB.Exception.CloudBoostException e)
@@ -334,14 +339,14 @@ namespace CB.Test
             var obj1 = new CB.CloudObject("Sample");
             obj1.Set("name", "sample");
             obj.Set("uniqueRelation", obj1);
-            obj = await obj.SaveAsync();
+            await obj.SaveAsync();
             var obj2 = new CB.CloudObject("Sample");
             obj2.Set("name", "sample");
             obj2.Set("uniqueRelation", obj1);
             
             try
             {
-                obj2 = await obj2.SaveAsync();
+                await obj2.SaveAsync();
                 Assert.IsFalse(true);
             }
             catch (CB.Exception.CloudBoostException e)
@@ -461,13 +466,15 @@ namespace CB.Test
         [TestMethod]
         public async Task unsetField()
         {
+            CB.Test.Util.Keys.InitWithClientKey();
             var obj1 = new CB.CloudObject("hostel");
             obj1.Set("room",123);
             obj1 = await obj1.SaveAsync();
-            if((int)obj1.Get("room") == 123)
+            string room = obj1.Get("room").ToString();
+            if(room == "123")
             {
                 obj1.Unset("room");
-                obj1 = await obj1.SaveAsync();
+                await obj1.SaveAsync();
                 Assert.IsTrue(true);
             }
             Assert.IsFalse(true);
@@ -479,7 +486,8 @@ namespace CB.Test
             var obj1 = new CB.CloudObject("hostel");
             obj1.Set("room",123);
             obj1 = await obj1.SaveAsync();
-            if((int)obj1.Get("room") == 123)
+            int room = (int)obj1.Get("room");
+            if(room == 123)
             {
                 obj1.Unset("room");
                 obj1 = await obj1.SaveAsync();
@@ -536,10 +544,12 @@ namespace CB.Test
             var obj = new CB.CloudObject("Sample"); 
             obj.Set("name", "sample");
             obj = await obj.SaveAsync();
-            if(obj.Get("name") != "sample"){
+            string name = obj.Get("name").ToString();
+            
+            if(name != "sample"){
                 Assert.IsFalse(true);
             }
-            if(obj.Get("id") == null){
+            if(obj.ID == null){
                 Assert.IsFalse(true);
             }
             Assert.IsTrue(true);
@@ -556,7 +566,7 @@ namespace CB.Test
             user.Set("password",passwd);
             user.Set("email", email);
             user = await user.Signup();
-            if(user.Get("username") == username && (int)user.Get("_version")>=0){
+            if(user.Get("username").ToString() == username && (int)user.Get("_version")>=0){
                 Assert.IsTrue(true);
             }
             Assert.IsFalse(true);
