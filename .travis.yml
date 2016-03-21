@@ -10,5 +10,5 @@ deploy:
   script:
     - cd net-sdk && nuget pack net-sdk.nuspec -Version 1.0.3 -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg '68c4ae5d-8365-4d27-9066-ca29a9f0198d' -verbosity detailed
   on:
-    branch: master
+    branch: second-release
   
