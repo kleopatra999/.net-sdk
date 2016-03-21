@@ -10,5 +10,5 @@ deploy:
   script:
     - cd net-sdk && nuget pack net-sdk.nuspec -Version 1.0.3 -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg $NUGET_API_KEY -verbosity detailed
   on:
-    branch: master
+    branch: second-release
   
