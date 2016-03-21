@@ -1,9 +1,6 @@
 language: csharp
 solution: net-sdk.sln
 
-script:
-  - xbuild /p:Configuration=Release net-sdk.sln
-
 deploy:
   provider: script
   skip_cleanup: true
