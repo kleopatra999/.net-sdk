@@ -137,6 +137,37 @@ namespace CB
             }
         }
 
+        public CB.Column GetColumn(string columnName)
+        {
+            List<CB.Column> columns = this.Columns;
+            for (int i = 0; i < columns.Count; i++)
+            {
+                if (columns[i].name == columnName)
+                {
+                    return columns[i];
+                }
+            }
+
+            throw new CB.Exception.CloudBoostException("Column Does Not Exists");
+        }
+
+        public CB.Column UpdateColumn(CB.Column column)
+        {
+            List<CB.Column> columns = this.Columns;
+            for (int i = 0; i < columns.Count; i++)
+            {
+                if (columns[i].name == column.name)
+                {
+                    columns[i] = column;
+                }
+
+                this.Columns = columns;
+                break;
+            }
+
+            throw new CB.Exception.CloudBoostException("Invalid Column");
+        }
+
         public static async Task<List<CB.CloudTable>> GetAllAsync()
         {
             var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/_getAll", null, true);

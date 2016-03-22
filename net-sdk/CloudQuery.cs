@@ -398,6 +398,53 @@ namespace CB
             return this;
         }
 
+        public CloudQuery RegEx(string columnName, string value)
+        {
+            if (columnName.ToLower() == "id")
+            {
+                columnName = "_" + columnName;
+            }
+
+            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
+            {
+                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
+            }
+
+            if (((Dictionary<string, Object>)(this.dictionary["query"])) != null)
+            {
+                ((Dictionary<string, Object>)(this.dictionary["query"]))["$regex"] = value;
+            }
+
+            return this;
+        }
+
+        public CloudQuery SubString(string columnName, ArrayList value)
+        {
+            var list = new ArrayList();
+            list.Add(columnName);
+            return SubString(list, value);
+        }
+
+        public CloudQuery SubString(ArrayList columnName, ArrayList value)
+        {
+            for (int i = 0; i < columnName.Count; i++)
+            {
+                if (((Dictionary<string, Object>)(this.dictionary["query"]))["$or"] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))["$or"].GetType() == typeof(ArrayList))
+                {
+                    ((Dictionary<string, Object>)(this.dictionary["query"]))["$or"] = new ArrayList();
+                }
+
+                for (int j = 0; j < value.Count; j++)
+                {
+                    var obj = new Dictionary<string, Object>();
+                    obj[columnName[i].ToString()] = new Dictionary<string, Object>();
+                    ((Dictionary<string, Object>)obj[columnName[i].ToString()])["$regex"] = ".*" + value[j] + ".*";
+                    ((ArrayList)((Dictionary<string, Object>)(this.dictionary["query"]))["$or"]).Add(obj);
+                }
+            }
+            return this;
+        }
+
         //GeoPoint near query
         public CloudQuery near(string columnName, CB.CloudGeoPoint geoPoint, double maxDistance, double minDistance)
         {

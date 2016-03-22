@@ -163,6 +163,32 @@ namespace CB
             return (((ArrayList)(this.Get("roles"))).IndexOf(role.ID) >= 0);
         }
 
+        public static async Task<object> ResetPassword(string email)
+        {
+            if (email == null)
+            {
+                throw new CB.Exception.CloudBoostException("Email is required");
+            }
+
+            var param = new Dictionary<string, Object>();
+            param["email"] = email;
+
+            string url = CB.CloudApp.ApiUrl + "/user/" + CB.CloudApp.AppID + "/resetPassword"; ;
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, param, false);
+            return result;
+        }
+
+        public static async Task<object> ChangePassword(string oldPassword, string newPassword)
+        {
+            var param = new Dictionary<string, Object>();
+            param["oldPassword"] = oldPassword;
+            param["newPassword"] = newPassword;
+
+            string url = CB.CloudApp.ApiUrl + "/user/" + CB.CloudApp.AppID + "/changePassword"; ;
+            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, param, false);
+            return result;
+        }
+
         public async Task<CloudUser> AddToRole(CloudRole role)
         {
             if (this.ID == null)
