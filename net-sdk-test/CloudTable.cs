@@ -199,6 +199,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -222,6 +223,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
 
@@ -246,6 +248,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -265,6 +268,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
 
@@ -289,6 +293,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.Fail("Cannot save a table when required of a column is changed.");
             }
 
@@ -313,6 +318,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
 
@@ -335,6 +341,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
 

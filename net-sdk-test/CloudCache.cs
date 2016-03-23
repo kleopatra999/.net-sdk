@@ -33,7 +33,7 @@ namespace CB.Test
         {
             var cache = new CB.CloudCache("student");
             var response = await cache.SetAsync("test1", "sample");
-            if (response == "sample")
+            if (response.ToString() == "sample")
             {
                 Assert.IsTrue(true);
             }
@@ -60,7 +60,7 @@ namespace CB.Test
             if ((int)response == 1)
             {
                 response = await cache.DeleteItemAsync("test1");
-                if (response == "test1")
+                if (response.ToString() == "test1")
                 {
                     response = await cache.GetAsync("test1");
                     if (response == null)
@@ -78,7 +78,7 @@ namespace CB.Test
         {
             var cache = new CB.CloudCache("student");
             var response = await cache.CreateAsync();
-            if(response == "student")
+            if(response.ToString() == "student")
             {
                  Assert.IsTrue(true);
             }
@@ -95,7 +95,7 @@ namespace CB.Test
             var cache = new CB.CloudCache("student");
             var result = await cache.SetAsync("test1", data);
             data = (Dictionary<string, Object>)result;
-            if (data["name"] == "Ranjeet" && data["sex"] == "male" && (int)data["age"] == 24)
+            if (data["name"].ToString() == "Ranjeet" && data["sex"].ToString() == "male" && (int)data["age"] == 24)
             {
                 var count = await cache.GetItemsCountAsync();
                 if ((int)count >= 1)
@@ -116,7 +116,7 @@ namespace CB.Test
             var cache = new CB.CloudCache("student");
             var response = await cache.SetAsync("test1", data);
             data = (Dictionary<string, Object>)response;
-            if (data["name"] == "Ranjeet")
+            if (data["name"].ToString() == "Ranjeet")
             {
                 Assert.IsTrue(true);
             }
@@ -134,12 +134,12 @@ namespace CB.Test
             var cache = new CB.CloudCache("student");
             var response = await cache.SetAsync("test1", data);
             result = (Dictionary<string, Object>)response;
-            if (result["name"] == "Ranjeet" && result["sex"] == "male" && (int)result["age"] == 24)
+            if (result["name"].ToString() == "Ranjeet" && result["sex"].ToString() == "male" && (int)result["age"] == 24)
             {
                 data["name"] = "sample2";
                 response = await cache.SetAsync("test1", data);
                 result = (Dictionary<string, Object>)response;
-                if (result["name"] == "sample2" && result["sex"] == "male" && (int)result["age"] == 24)
+                if (result["name"].ToString() == "sample2" && result["sex"].ToString() == "male" && (int)result["age"] == 24)
                 {
                     response = await CB.CloudCache.GetAllAsync();
                     Assert.IsTrue(true);
@@ -159,7 +159,7 @@ namespace CB.Test
             var cache = new CB.CloudCache("student");
             var response = await cache.SetAsync("test1", data);
             result = (Dictionary<string, Object>)response;
-            if (result["name"] == "Ranjeet" && result["sex"] == "male" && (int)result["age"] == 24)
+            if (result["name"].ToString() == "Ranjeet" && result["sex"].ToString() == "male" && (int)result["age"] == 24)
             {
                 response = await cache.GetInfoAsync();
                 CB.CloudCache obj = (CB.CloudCache)response;

@@ -26,14 +26,14 @@ namespace CB.Test
 
         void anotherAction(Object result)
         {
-            if (result == "data")
+            if (result.ToString() == "data")
             {
                 CB.CloudNotification.Publsh("sample", "data");
                 Assert.IsTrue(true);
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Error wrong data received");
+                Assert.Fail("Error wrong data received");
             }
         }
 

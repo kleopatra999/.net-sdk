@@ -41,6 +41,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -85,6 +86,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
             
@@ -101,6 +103,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -192,6 +195,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -208,6 +212,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -230,6 +235,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -259,6 +265,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -326,6 +333,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
 
@@ -351,6 +359,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -395,6 +404,7 @@ namespace CB.Test
             }
             catch (CB.Exception.CloudBoostException e)
             {
+                Console.WriteLine(e);
                 Assert.IsTrue(true);
             }
         }
@@ -602,7 +612,7 @@ namespace CB.Test
             var obj = new CB.CloudObject("Sample");
             obj.Set("name","ranjeet");
             obj = await obj.SaveAsync();
-            if (obj.Get("name") == "ranjeet")
+            if (obj.Get("name").ToString() == (string)"ranjeet")
                 Assert.IsTrue(true);
             else
                 Assert.IsFalse(true);
@@ -618,7 +628,9 @@ namespace CB.Test
             obj.Set("password","password");
             obj.Set("email",email);
             obj = await obj.SaveAsync();
-            if (obj.Get("password") != "password")
+            string pass = Convert.ToString(obj.Get("password"));
+            string val = "password";
+            if (pass != (string)val)
                 Assert.IsTrue(true);
             else
                 Assert.IsFalse(false);

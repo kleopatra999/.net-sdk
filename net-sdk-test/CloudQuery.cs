@@ -22,7 +22,7 @@ namespace CB.Test
             var obj = new CB.CloudObject("student1");
             obj.Set("name", "ranjeet");
             await obj.SaveAsync();
-            if (obj.Get("name") == "ranjeet")
+            if (obj.Get("name").ToString() == "ranjeet")
             {
                 Assert.IsTrue(true);
             }
@@ -117,13 +117,13 @@ namespace CB.Test
             var response = (List<CB.CloudObject>)await query.FindAsync();
             for(int i=0; i<response.Count; i++){
                 if(response[i].Get("name") == null){
-                    throw new CB.Exception.CloudBoostException("Name does not exists");
+                    Assert.Fail("Name does not exists");
                 }
             }
             if(response.Count > 0)
                 Assert.IsTrue(true);
             else
-                throw new CB.Exception.CloudBoostException("object could not queried properly");
+                Assert.Fail("object could not queried properly");
         }
 
         [Test] 
@@ -173,7 +173,7 @@ namespace CB.Test
             var query = new CB.CloudQuery("student1");
             query.EqualTo("name", "sampleName");
             var response = await query.FindOneAsync();
-            if (response.Get("name") == "sampleName")
+            if (response.Get("name").ToString() == "sampleName")
             {
                 Assert.IsTrue(true);
             }
@@ -196,9 +196,9 @@ namespace CB.Test
             {
                 for (int i = 0; i < response.Count; i++)
                 {
-                    if (response[i].Get("name") != "sampleName")
+                    if (response[i].Get("name").ToString() != "sampleName")
                     {
-                        throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
+                        Assert.Fail("should retrieve saved data with particular value");
                     }
                 }
                 Assert.IsTrue(true);
@@ -228,7 +228,7 @@ namespace CB.Test
                     {
                         if (subject[j] != "java" && subject[j] != "python")
                         {
-                            throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
+                            Assert.Fail("should retrieve saved data with particular value");
                         }
                     }
                 }
@@ -253,7 +253,7 @@ namespace CB.Test
                     string name = (string)response[i].Get("name");
                     if ( name.StartsWith("s") == false)
                     {
-                        throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value ");
+                        Assert.Fail("should retrieve saved data with particular value ");
                     }
                 }
                 Assert.IsTrue(true);
@@ -278,7 +278,7 @@ namespace CB.Test
                     int data = (int)response[i].Get("age");
                     if (data <= 10)
                     {
-                        throw new CB.Exception.CloudBoostException("received value less than the required value");
+                        Assert.Fail("received value less than the required value");
                     }
                 }
                 Assert.IsTrue(true);
@@ -302,7 +302,7 @@ namespace CB.Test
                     int data = (int)response[i].Get("age");
                     if (data < 15)
                     {
-                        throw new CB.Exception.CloudBoostException("received value less than the required value");
+                        Assert.Fail("received value less than the required value");
                     }
                 }
                 Assert.IsTrue(true);
@@ -326,7 +326,7 @@ namespace CB.Test
                     int data = (int)response[i].Get("age");
                     if (data >= 20)
                     {
-                        throw new CB.Exception.CloudBoostException("received value greater than the required value");
+                        Assert.Fail("received value greater than the required value");
                     }
                 }
                 Assert.IsTrue(true);
@@ -350,7 +350,7 @@ namespace CB.Test
                     int data = (int)response[i].Get("age");
                     if (data > 15)
                     {
-                        throw new CB.Exception.CloudBoostException("received value greater than the required value");
+                        Assert.Fail("received value greater than the required value");
                     }
                 }
                 Assert.IsTrue(true);
@@ -391,7 +391,7 @@ namespace CB.Test
                             }
                             else
                             {
-                                throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
+                                Assert.Fail("should retrieve saved data with particular value");
                             }
                         }
                     }
@@ -419,7 +419,7 @@ namespace CB.Test
    
                     if (age > data)
                     {
-                        throw new CB.Exception.CloudBoostException("received value greater than the required value");
+                        Assert.Fail("received value greater than the required value");
                     }
                     age = data;
                 }
@@ -446,7 +446,7 @@ namespace CB.Test
 
                     if (age < data)
                     {
-                        throw new CB.Exception.CloudBoostException("received value greater than the required value");
+                        Assert.Fail("received value greater than the required value");
                     }
                     age = data;
                 }
@@ -472,7 +472,7 @@ namespace CB.Test
 
                     if (age.Contains(data) == true)
                     {
-                        throw new CB.Exception.CloudBoostException("received item with duplicate age");
+                        Assert.Fail("received item with duplicate age");
                     }
                     age.Add(data);
                 }
@@ -492,7 +492,7 @@ namespace CB.Test
             await obj.SaveAsync();
             var query = new CB.CloudQuery("student1");
             var response = await query.GetAsync(obj.ID);
-            if (response.Get("name") == "abcd")
+            if (response.Get("name").ToString() == "abcd")
             {
                 Assert.IsTrue(true);
             }
@@ -514,7 +514,7 @@ namespace CB.Test
                 {
                     if (response[i].Get("age") == null)
                     {
-                        throw new CB.Exception.CloudBoostException("received wrong data");
+                        Assert.Fail("received wrong data");
                     }
                 }
                 Assert.IsTrue(true);
@@ -534,7 +534,7 @@ namespace CB.Test
                 {
                     if (response[i].Get("age") != null)
                     {
-                        throw new CB.Exception.CloudBoostException("received wrong data");
+                        Assert.Fail("received wrong data");
                     }
                 }
                 Assert.IsTrue(true);
@@ -562,7 +562,7 @@ namespace CB.Test
                     CB.CloudObject relObj = (CB.CloudObject)response[i].Get("newColumn");
                     if (relObj.ID == obj1.ID)
                     {
-                        throw new CB.Exception.CloudBoostException("Should not get the id in not equal to");
+                        Assert.Fail("Should not get the id in not equal to");
                     }
                     Assert.IsTrue(true);
                 }
@@ -598,7 +598,7 @@ namespace CB.Test
             obj.Set("password", "password");
             obj.Set("email", Util.Methods._makeEmail());
             await obj.SaveAsync();
-            if (obj.Get("password") != "password")
+            if (obj.Get("password").ToString() != "password")
             {
                 var query = new CB.CloudQuery("User");
                 query.EqualTo("password", "password");
@@ -610,7 +610,7 @@ namespace CB.Test
                 }
                 else
                 {
-                    throw new CB.Exception.CloudBoostException("Cannot get items");
+                    Assert.Fail("Cannot get items");
                 }
             }
             Assert.IsFalse(true);
@@ -625,7 +625,8 @@ namespace CB.Test
             obj.Set("password", "password");
             obj.Set("email", username);
             await obj.SaveAsync();
-            if (obj.Get("password") != "password")
+            string pass = obj.Get("password").ToString();
+            if (!pass.Equals("password"))
             {
                 var query1 = new CB.CloudQuery("User");
                 query1.EqualTo("password", "password");
