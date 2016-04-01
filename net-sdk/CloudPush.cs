@@ -18,8 +18,7 @@ namespace CB
         private const string ChannelUriDefault = null;
         private string _channelUri;
         private PushNotificationChannel _channel;
-        private static const string TAG = "CBPush";
-        private static const string EXTRA_MESSAGE = "";
+       
 
         public ArrayList Channel
         {
@@ -120,13 +119,17 @@ namespace CB
             }
         }
 
+        
         public void CBPushNotificationReceived(PushCallback callback)
         {
-            _channel.PushNotificationReceived += (PushNotificationChannel sender, PushNotificationReceivedEventArgs args) =>
+         
+            
+           _channel.PushNotificationReceived += (PushNotificationChannel sender, PushNotificationReceivedEventArgs args) =>
             {
                 callback(sender, args);
             };
         }
+
         public async Task<string> UpdateChannelUri()
         {
             var retries = 3;
