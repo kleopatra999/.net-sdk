@@ -11,6 +11,7 @@
     <AssemblyName>net-sdk</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetPlatformVersion>8.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +56,7 @@
     <Reference Include="WebSocket4Net">
       <HintPath>..\packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
     </Reference>
+    <Reference Include="Windows" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACL.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="CloudGeoPoint.cs" />
     <Compile Include="CloudNotification.cs" />
     <Compile Include="CloudObject.cs" />
+    <Compile Include="CloudPush.cs" />
     <Compile Include="CloudQuery.cs" />
     <Compile Include="CloudQueue.cs" />
     <Compile Include="CloudRole.cs" />

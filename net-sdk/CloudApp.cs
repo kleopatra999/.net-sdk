@@ -10,6 +10,7 @@ namespace CB
 {
 
     public delegate void Callback(Object result);
+    public delegate void PushCallback(Object data1, Object data2);
 
     public class CloudApp
     {
