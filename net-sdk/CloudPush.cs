@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace CB
 {
-    class CloudPush
+    public class CloudPush
     {
         internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         private const string ChannelUriKey = "";
@@ -19,6 +19,10 @@ namespace CB
         private string _channelUri;
         private PushNotificationChannel _channel;
        
+        public CloudPush()
+        {
+            
+        }
 
         public ArrayList Channel
         {
@@ -130,7 +134,7 @@ namespace CB
             };
         }
 
-        public async Task<string> UpdateChannelUri()
+        public async Task<string> InitAsync()
         {
             var retries = 3;
             var difference = 10; // In seconds

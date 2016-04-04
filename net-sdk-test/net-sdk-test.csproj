@@ -66,6 +66,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="CloudPush.cs" />
     <Compile Include="CloudTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CloudObject.cs" />
