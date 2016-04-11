@@ -177,6 +177,30 @@ namespace CB
             }
         }
 
+        public Dictionary<string, Object> Query
+        {
+            get
+            {
+                return (Dictionary<string, Object>)dictionary["query"];
+            }
+            set
+            {
+                dictionary["query"] = value;
+            }
+        }
+
+        public Dictionary<string, Object> Sort
+        {
+            get
+            {
+                return (Dictionary<string, Object>)dictionary["sort"];
+            }
+            set
+            {
+                dictionary["sort"] = value;
+            }
+        }
+
         public int Skip
         {
             get

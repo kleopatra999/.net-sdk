@@ -17,6 +17,7 @@ namespace CB
         private const string ChannelUriKey = "";
         private const string ChannelUriDefault = null;
         private string _channelUri;
+        private CB.CloudQuery query;
         private PushNotificationChannel _channel;
        
         public CloudPush()
@@ -36,11 +37,11 @@ namespace CB
             }
         }
 
-        public string Message
+        public Dictionary<string, object> Message
         {
             get
             {
-                return this.dictionary["message"].ToString();
+                return (Dictionary<string, object>)this.dictionary["message"];
             }
             set
             {
@@ -48,10 +49,39 @@ namespace CB
             }
         }
 
-        public async Task<CB.CloudPush> SendAsync()
+
+        public string Type
         {
+            get
+            {
+                return this.dictionary["type"].ToString();
+            }
+            set
+            {
+                this.dictionary["type"] = value;
+            }
+        }
+
+        public CB.CloudQuery Query
+        {
+            get
+            {
+                return query;
+            }
+            set
+            {
+                this.query = value;
+            }
+        }
+
+        public async Task<CB.CloudPush> SendAsync()
+        {           
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", Serialize(this.dictionary));
+            postData.Add("data", Serialize(this.dictionary));
+            postData.Add("query", query.Query);
+            postData.Add("sort", query.Sort);
+            postData.Add("limit", query.Limit);
+            postData.Add("skip", query.Skip);
             string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/send";
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
             return DeSerialize(result, this);
@@ -87,18 +117,18 @@ namespace CB
             return DeSerialize(result, this);
         }
 
-        private async Task<CB.CloudPush> registerForPN(string deviceUri)
+        public async Task registerForPN(string deviceUri, string appname)
         {
             TimeZone timezone = TimeZone.CurrentTimeZone;
-            this.dictionary["timezone"] = timezone;
-            this.dictionary["deviceType"] = "windows";
-            this.dictionary["deviceId"] = null;
-            this.dictionary["deviceUri"] = deviceUri;
-            Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", Serialize(this.dictionary));
-            string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/updateDevice";
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-            return DeSerialize(result, this);
+            var obj = new CB.CloudObject("Device");
+            obj.Set("deviceToken", deviceUri);
+            obj.Set("deviceOS", "windows");
+            obj.Set("timezone", timezone);
+            obj.Set("channels", Channel);
+            Dictionary<string, Object> metadata = new Dictionary<string, object>();
+            metadata.Add("appname", appname);
+            obj.Set("metadata", metadata);
+            await obj.SaveAsync();
         }
 
 
@@ -150,7 +180,7 @@ namespace CB
                     {
                         ChannelUri = _channel.Uri;
                         //register uri to PN Service
-                        await this.registerForPN(ChannelUri);
+                        await this.registerForPN(ChannelUri, "sdkapp");
 
                         this.RaiseChannelUriUpdated();
                         return _channel.Uri;
