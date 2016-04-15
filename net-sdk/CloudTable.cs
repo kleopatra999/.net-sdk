@@ -154,6 +154,7 @@ namespace CB
         public CB.Column UpdateColumn(CB.Column column)
         {
             List<CB.Column> columns = this.Columns;
+
             for (int i = 0; i < columns.Count; i++)
             {
                 if (columns[i].name == column.name)

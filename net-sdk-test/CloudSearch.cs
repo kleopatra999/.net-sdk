@@ -41,7 +41,7 @@ namespace CB.Test
                 Assert.IsTrue(true);
             }else
             {
-                throw new CB.Exception.CloudBoostException("should have retrieved data");
+                Assert.Fail("should have retrieved data");
             }
         }
 
@@ -69,7 +69,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("should have retrieved data");
+                Assert.Fail("should have retrieved data");
             }
         }
 
@@ -207,7 +207,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("should limit the number of results");
+                Assert.Fail("should limit the number of results");
             }
 
         }
@@ -236,12 +236,12 @@ namespace CB.Test
                 }
                 else
                 {
-                    throw new CB.Exception.CloudBoostException("");
+                    Assert.Fail("");
                 }
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("");
+                Assert.Fail("");
             }
         }
 
@@ -257,7 +257,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("");
+                Assert.Fail("");
             }
         }
 
@@ -273,7 +273,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("");
+                Assert.Fail("");
             }
         }
 
@@ -290,7 +290,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("");
+                Assert.Fail("");
             }
         }
 
@@ -307,7 +307,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("");
+                Assert.Fail("");
             }
         }
 
@@ -326,7 +326,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("");
+                Assert.Fail("");
             }
         }
 
@@ -376,7 +376,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Search on both tables with OR failed.");
+                Assert.Fail("Search on both tables with OR failed.");
             }
         }
 
@@ -401,7 +401,7 @@ namespace CB.Test
                 if (list[i].TableName != null)
                 {
                     var name = (string)list[i].TableName;
-                    table = table.Where(val => val != name).ToArray();
+                    table = table.Where(val => val.ToString() != (string)name).ToArray();
                 }
             }
 
@@ -411,7 +411,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Search on both tables with OR failed.");
+                Assert.Fail("Search on both tables with OR failed.");
             }
         }
 
@@ -435,7 +435,7 @@ namespace CB.Test
                 if (list[i].TableName != null)
                 {
                     var name = (string)list[i].TableName;
-                    table = table.Where(val => val != name).ToArray();
+                    table = table.Where(val => val.ToString() != (string)name).ToArray();
                 }
             }
 
@@ -445,7 +445,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Search on both tables with OR failed.");
+                Assert.Fail("Search on both tables with OR failed.");
             }
         }
 
@@ -472,7 +472,7 @@ namespace CB.Test
                 if (list[i].TableName != null)
                 {
                     var name = (string)list[i].TableName;
-                    table = table.Where(val => val != name).ToArray();
+                    table = table.Where(val => val.ToString() != (string)name).ToArray();
                 }
             }
 
@@ -482,7 +482,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Search on both tables with OR failed.");
+                Assert.Fail("Search on both tables with OR failed.");
             }
         }
 

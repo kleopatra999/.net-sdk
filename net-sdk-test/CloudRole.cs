@@ -34,7 +34,7 @@ namespace CB.Test
             var result = (List<CB.CloudObject>)await query.FindAsync();
             if (result == null)
             {
-                throw new CB.Exception.CloudBoostException("Should retrieve the cloud role");
+                Assert.Fail("Should retrieve the cloud role");
             }
             Assert.IsTrue(true);
         }

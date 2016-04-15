@@ -9,6 +9,13 @@ namespace CB.Test
     public class CloudFile
     {
         [Test]
+        public void x001_InitAppWithClientKey()
+        {
+            CB.Test.Util.Keys.InitWithClientKey();
+            Assert.IsTrue(true);
+        }
+
+        [Test]
         public void saveFileDataAndName()
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(".net cloudfile testing!");
@@ -39,7 +46,7 @@ namespace CB.Test
                 }
                 else
                 {
-                    throw new CB.Exception.CloudBoostException("Did not get the file object back.");
+                    Assert.Fail("Did not get the file object back.");
                 }
             }
         }
@@ -58,7 +65,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Unable to get the url");
+                Assert.Fail("Unable to get the url");
             }
         }
 
@@ -79,13 +86,13 @@ namespace CB.Test
                 }
                 else
                 {
-                    throw new CB.Exception.CloudBoostException("File delete error");
+                    Assert.Fail("File delete error");
                 }
                 
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Unable to get the url");
+                Assert.Fail("Unable to get the url");
             }
         }
 
@@ -104,7 +111,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Unable to get the url");
+                Assert.Fail("Unable to get the url");
             }
         }
 
@@ -147,7 +154,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Unable to fetch the file");
+                Assert.Fail("Unable to fetch the file");
             }
         }
 
@@ -189,7 +196,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Unable to get ACL working");
+                Assert.Fail("Unable to get ACL working");
             }
         }
 
@@ -205,7 +212,7 @@ namespace CB.Test
             var result = await response.GetFileContentAsync();
             if (result != null)
             {
-                throw new CB.Exception.CloudBoostException("Should not retrieve file");
+                Assert.Fail("Should not retrieve file");
             }
             else
             {
@@ -225,7 +232,7 @@ namespace CB.Test
             response = await response.DeleteAsync();
             if (response != null)
             {
-                throw new CB.Exception.CloudBoostException("Should not retrieve file");
+                Assert.Fail("Should not retrieve file");
             }
             else
             {

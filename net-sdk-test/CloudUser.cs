@@ -25,7 +25,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Error Creating User");
+                Assert.Fail("Error Creating User");
             }
         }
 
@@ -50,7 +50,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Error Creating User");
+                Assert.Fail("Error Creating User");
             }
         }
 
@@ -71,7 +71,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Error Creating User");
+                Assert.Fail("Error Creating User");
             }
         }
         [Test]
@@ -94,7 +94,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("user login error");
+                Assert.Fail("user login error");
             }
         }
 
@@ -143,7 +143,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Error Creating User");
+                Assert.Fail("Error Creating User");
             }
         }
 
@@ -163,7 +163,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("Unable to retrieve User");
+                Assert.Fail("Unable to retrieve User");
             }
         }
 

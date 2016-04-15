@@ -37,7 +37,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
+                Assert.Fail("should retrieve saved data with particular value");
             }
         }
 
@@ -58,7 +58,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
+                Assert.Fail("should retrieve saved data with particular value");
             }
         }
 
@@ -79,7 +79,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
+                Assert.Fail("should retrieve saved data with particular value");
             }
         }
 
@@ -97,7 +97,7 @@ namespace CB.Test
             }
             else
             {
-                throw new CB.Exception.CloudBoostException("should retrieve saved data with particular value");
+                Assert.Fail("should retrieve saved data with particular value");
             }
         }
 

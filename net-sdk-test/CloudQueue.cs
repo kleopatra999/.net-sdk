@@ -80,7 +80,7 @@ namespace CB.Test
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
             var response = await queue.addMessageAsync("sample");
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 response.message = "Hey!";
                 List<object> list = new List<object>();
@@ -112,10 +112,10 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 var result = await queue.getMessageAsync();
-                if (result.message == "sample")
+                if (result.message.ToString() == "sample")
                 {
                     Assert.IsTrue(true);
                 }
@@ -132,13 +132,13 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 var result = await queue.PeekMessageAsync();
-                if (result.message == "sample")
+                if (result.message.ToString() == "sample")
                 {
                     var result1 = await queue.PeekMessageAsync();
-                    if (result.message == "sample")
+                    if (result.message.ToString() == "sample")
                     {
                         Assert.IsTrue(true);
                     }
@@ -157,19 +157,19 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample1")
+            if (response.message.ToString() == "sample1")
             {
                 message = new CB.QueueMessage("sample2");
                 list = new List<object>();
                 list.Add(message);
                 response = await queue.addMessageAsync(list);
-                if (response.message == "sample2")
+                if (response.message.ToString() == "sample2")
                 {
                     response = await queue.getMessageAsync();
-                    if (response.message == "sample1")
+                    if (response.message.ToString() == "sample1")
                     {
                         response = await queue.getMessageAsync();
-                        if (response.message == "sample2")
+                        if (response.message.ToString() == "sample2")
                         {
                             Assert.IsTrue(true);
                         }
@@ -190,13 +190,13 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample1")
+            if (response.message.ToString() == "sample1")
             {
                 message = new CB.QueueMessage("sample2");
                 list = new List<object>();
                 list.Add(message);
                 response = await queue.addMessageAsync(list);
-                if (response.message == "sample2")
+                if (response.message.ToString() == "sample2")
                 {
                     response = await queue.PeekMessageAsync(2);
                     //should return array of QueueMessage
@@ -215,13 +215,13 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample1")
+            if (response.message.ToString() == "sample1")
             {
                 message = new CB.QueueMessage("sample2");
                 list = new List<object>();
                 list.Add(message);
                 response = await queue.addMessageAsync(list);
-                if (response.message == "sample2")
+                if (response.message.ToString() == "sample2")
                 {
                     response = await queue.getMessageAsync(2);
                     //should return array of QueueMessage
@@ -240,7 +240,7 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample1")
+            if (response.message.ToString() == "sample1")
             {
                 response = await queue.getMessageAsync();
                 Assert.IsTrue(true);
@@ -256,10 +256,10 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 response = await queue.getMessageAsync();
-                if (response.message == "sample")
+                if (response.message.ToString() == "sample")
                 {
                     Assert.IsTrue(true);
                 }
@@ -277,10 +277,10 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 response = await queue.getMessageById(response.id);
-                if (response.message == "sample")
+                if (response.message.ToString() == "sample")
                 {
                     Assert.IsTrue(true);
                 }
@@ -298,7 +298,7 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 response = await queue.getMessageById("sample");
                 if (response == null)
@@ -319,7 +319,7 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 var result = await queue.DeleteMessageAsync(response.id);
                 if (result != null && result.id == response.id)
@@ -340,7 +340,7 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 var result = await queue.DeleteMessageAsync(response);
                 if (result != null && result.id == response.id)
@@ -361,7 +361,7 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(message);
             var response = await queue.addMessageAsync(list);
-            if (response.message == "sample")
+            if (response.message.ToString() == "sample")
             {
                 var result = await queue.DeleteMessageAsync(response);
                 if (result != null && result.id == response.id)

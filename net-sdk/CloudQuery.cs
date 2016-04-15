@@ -177,6 +177,30 @@ namespace CB
             }
         }
 
+        public Dictionary<string, Object> Query
+        {
+            get
+            {
+                return (Dictionary<string, Object>)dictionary["query"];
+            }
+            set
+            {
+                dictionary["query"] = value;
+            }
+        }
+
+        public Dictionary<string, Object> Sort
+        {
+            get
+            {
+                return (Dictionary<string, Object>)dictionary["sort"];
+            }
+            set
+            {
+                dictionary["sort"] = value;
+            }
+        }
+
         public int Skip
         {
             get
@@ -588,17 +612,18 @@ namespace CB
             var findResult = await findTask;
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(findResult);
             var countResult = await countTask;
-            var count = (int)countResult;
+            int count = (int)countResult;
             int totalPages = 0;
-            if (count != null)
+
+            if (countResult != null)
             {
                 count = 0;
-                totalPages = 0;
             }
             else
             {
                 totalPages = (int)(count / this.Limit);
             }
+            
             if (totalPages < 0)
             {
                 totalPages = 0;

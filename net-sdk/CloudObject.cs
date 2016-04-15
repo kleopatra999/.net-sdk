@@ -163,18 +163,14 @@ namespace CB
                 return (bool)dictionary["_isSearchable"];
             }
             set
-            {
-                if (value != null)
+            {  
+                if (value.GetType() == typeof(bool))
                 {
-                    if (value.GetType() == typeof(bool))
-                    {
-                        dictionary["_isSearchable"] = value;
-                        _IsModified(this, "_isSearchable");
-                    }
-                    else
-                        throw new Exception.CloudBoostException("Value is not of type bool");
+                    dictionary["_isSearchable"] = value;
+                    _IsModified(this, "_isSearchable");
                 }
-                
+                else
+                    throw new Exception.CloudBoostException("Value is not of type bool");
             }
 
         }
@@ -324,7 +320,7 @@ namespace CB
 
             var query = new CloudQuery(dictionary["_tableName"].ToString());
 
-            if (dictionary["_type"] == "file")
+            if (dictionary["_type"].ToString() == "file")
             {
                 query = new CloudQuery("_File");
             }
