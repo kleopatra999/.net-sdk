@@ -37,35 +37,17 @@ namespace CB
             set { apiUrl = value; }
         }
 
-        private static string serviceUrl;
-
-        public static string ServiceURL
-        {
-            get
-            {
-                if (serviceUrl != null)
-                {
-                    return serviceUrl;
-                }
-                else
-                {
-                    return @"https://service.cloudboost.io";
-                }
-            }
-            set { serviceUrl = value; }
-        }
-
         public static string AppID { get; set; }
         public static string AppKey { get; set; }
 
-        public static void init(string appId, string appKey)
+        public static void Init(string appId, string appKey)
         {
             log = LogManager.GetLogger(typeof(CloudApp));
             AppID = appId;
             AppKey = appKey;
         }
 
-        public static void init(string apiUrl, string serviceUrl, string appId, string appKey)
+        public static void Init(string apiUrl, string appId, string appKey)
         {
             if (apiUrl.EndsWith("/"))
             {
@@ -78,7 +60,7 @@ namespace CB
         }
 
         
-        public static void onConnect()
+        public static void OnConnect()
         {
             _socket.On(Socket.EVENT_CONNECT, () =>
             {
@@ -87,22 +69,21 @@ namespace CB
             });
 		}	
 		
-	    public static void connect()
+	    public static void Connect()
         {
             _socket.Connect();
 	    }
 
-	    public static void disconnect()
+	    public static void Disconnect()
         {
             _socket.Disconnect();
 	    }
 
-	    public static void onDisconnect()
+	    public static void OnDisconnect()
         {
             _socket.On(Socket.EVENT_DISCONNECT, () =>
             {
                 _socket.Emit("disconnected");
-
             });
 	    }
     }

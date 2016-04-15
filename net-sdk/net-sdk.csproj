@@ -7,8 +7,8 @@
     <ProjectGuid>{EC564616-2D85-471E-B73D-75B2410DBF8C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>net_sdk</RootNamespace>
-    <AssemblyName>net-sdk</AssemblyName>
+    <RootNamespace>CloudBoost</RootNamespace>
+    <AssemblyName>CloudBoost</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
