@@ -56,7 +56,7 @@ namespace CB
             }
             set
             {
-                if (dictionary["queueType"] != "push")
+                if (dictionary["queueType"].ToString() != "push")
                     throw new CB.Exception.CloudBoostException("Queue Type should be push to set this property");
 
                 dictionary["retry"] = retry;

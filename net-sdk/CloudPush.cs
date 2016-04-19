@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Windows.Networking.PushNotifications;
 using Windows.Storage;
 using System.Xml;
-using Windows.Networking;
-using Windows.Foundation;
+using System.Runtime;
 
 namespace CB
 {

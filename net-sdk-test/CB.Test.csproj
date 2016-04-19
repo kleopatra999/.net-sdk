@@ -6,8 +6,8 @@
     <ProjectGuid>{F429E56E-1E2F-42A1-9458-79F43F86C7CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>net_sdk_test</RootNamespace>
-    <AssemblyName>net-sdk-test</AssemblyName>
+    <RootNamespace>CB.Test</RootNamespace>
+    <AssemblyName>CB.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -72,9 +72,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\net-sdk\CloudBoost.csproj">
+    <ProjectReference Include="..\net-sdk\CB.csproj">
       <Project>{ec564616-2d85-471e-b73d-75b2410dbf8c}</Project>
-      <Name>CloudBoost</Name>
+      <Name>CB</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

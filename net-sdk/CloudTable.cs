@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CB.Exception;
-using System.Text.RegularExpressions;
-using CB.Util;
+
 
 namespace CB
 {
@@ -163,7 +162,6 @@ namespace CB
                 }
 
                 this.Columns = columns;
-                break;
             }
 
             throw new CB.Exception.CloudBoostException("Invalid Column");

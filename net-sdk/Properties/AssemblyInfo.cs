@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CloudBoost")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("SDK to build .NET apps on CloudBoost.io. CloudBoost is one complete platform to build your apps. It includes data-storage, search, realtime, cache, queues and a whole lot more.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HackerBay, Inc.")]
 [assembly: AssemblyProduct("CloudBoost")]
