@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net-sdk", "net-sdk\net-sdk.csproj", "{EC564616-2D85-471E-B73D-75B2410DBF8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudBoost", "net-sdk\CloudBoost.csproj", "{EC564616-2D85-471E-B73D-75B2410DBF8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net-sdk-test", "net-sdk-test\net-sdk-test.csproj", "{F429E56E-1E2F-42A1-9458-79F43F86C7CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudBoost.Test", "net-sdk-test\CloudBoost.Test.csproj", "{F429E56E-1E2F-42A1-9458-79F43F86C7CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

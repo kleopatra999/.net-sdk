@@ -9,7 +9,6 @@ namespace CB
 {
     public class ACL
     {
-
         internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public ACL()
         { 

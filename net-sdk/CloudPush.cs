@@ -1,68 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Networking.PushNotifications;
 using Windows.Storage;
-using Windows.Foundation;
 using System.Xml;
+using Windows.Networking;
+using Windows.Foundation;
 
 namespace CB
 {
-    public class CloudPush
+    public static class CloudPush
     {
-        internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
+        internal static Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         private const string ChannelUriKey = "";
         private const string ChannelUriDefault = null;
-        private string _channelUri;
-        private CB.CloudQuery query;
-        private PushNotificationChannel _channel;
-       
-        public CloudPush()
-        {
-            
-        }
+        private static string _channelUri;
+        private static CB.CloudQuery query;
+        private static PushNotificationChannel _channel;
 
-        public ArrayList Channel
+        public static ArrayList Channel
         {
             get
             {
-                return ((ArrayList)this.dictionary["channel"]);
+                return ((ArrayList)dictionary["channel"]);
             }
             set
             {
-                this.dictionary["channel"] = value;
+               dictionary["channel"] = value;
             }
         }
 
-        public Dictionary<string, object> Message
+        public static Dictionary<string, object> Message
         {
             get
             {
-                return (Dictionary<string, object>)this.dictionary["message"];
+                return (Dictionary<string, object>)dictionary["message"];
             }
             set
             {
-                this.dictionary["message"] = value;
+                dictionary["message"] = value;
             }
         }
 
 
-        public string Type
+        public static string Type
         {
             get
             {
-                return this.dictionary["type"].ToString();
+                return dictionary["type"].ToString();
             }
             set
             {
-                this.dictionary["type"] = value;
+                dictionary["type"] = value;
             }
         }
 
-        public CB.CloudQuery Query
+        public static CB.CloudQuery Query
         {
             get
             {
@@ -70,54 +64,53 @@ namespace CB
             }
             set
             {
-                this.query = value;
+                query = value;
             }
         }
 
-        public async Task<CB.CloudPush> SendAsync()
+        public static async void SendAsync()
         {           
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("data", Serialize(this.dictionary));
+            postData.Add("data", Serialize(dictionary));
             postData.Add("query", query.Query);
             postData.Add("sort", query.Sort);
             postData.Add("limit", query.Limit);
             postData.Add("skip", query.Skip);
             string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/send";
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-            return DeSerialize(result, this);
-
+            DeSerialize(result);
         }
 
-        public async Task<CB.CloudPush> SubscribeAsync(ArrayList list)
+        public async static void SubscribeAsync(ArrayList list)
         {
-            this.dictionary["channelList"] = list;
+            dictionary["channelList"] = list;
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", Serialize(this.dictionary));
-            string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/subscribe/" + this.dictionary["registrationId"];
+            postData.Add("document", Serialize(dictionary));
+            string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/subscribe/" + dictionary["registrationId"];
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-            return DeSerialize(result, this);
+            DeSerialize(result);
         }
 
-        public async Task<ArrayList> SubscribedChannelListAsync()
+        public async static Task<ArrayList> SubscribedChannelListAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", Serialize(this.dictionary));
-            string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/subscribe/list/" + this.dictionary["registrationId"];
+            postData.Add("document", Serialize(dictionary));
+            string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/subscribe/list/" + dictionary["registrationId"];
             ArrayList result = (ArrayList)await Util.CloudRequest.SendObject(Util.CloudRequest.Method.POST, url, postData, false);
             return result;
         }
 
-        public async Task<CB.CloudPush> UnsubscribeAsync(ArrayList list)
+        public async static void UnsubscribeAsync(ArrayList list)
         {
-            this.dictionary["channelList"] = list;
+            dictionary["channelList"] = list;
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", Serialize(this.dictionary));
-            string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/unsubscribe/" + this.dictionary["registrationId"];
+            postData.Add("document", Serialize(dictionary));
+            string url = CB.CloudApp.ApiUrl + "/push/" + CB.CloudApp.AppID + "/unsubscribe/" + dictionary["registrationId"];
             var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-            return DeSerialize(result, this);
+            DeSerialize(result);
         }
 
-        public async Task registerForPN(string deviceUri, string appname)
+        public async static Task RegisterForPushNotification(string deviceUri, string appname)
         {
             TimeZone timezone = TimeZone.CurrentTimeZone;
             var obj = new CB.CloudObject("Device");
@@ -125,19 +118,16 @@ namespace CB
             obj.Set("deviceOS", "windows");
             obj.Set("timezone", timezone);
             obj.Set("channels", Channel);
-            Dictionary<string, Object> metadata = new Dictionary<string, object>();
-            metadata.Add("appname", appname);
-            obj.Set("metadata", metadata);
             await obj.SaveAsync();
         }
 
 
-        public void PushService()
+        public static void PushService()
         {
-            this._channelUri = LocalSettingsLoad(ApplicationData.Current.LocalSettings, ChannelUriKey, ChannelUriDefault);
+            _channelUri = LocalSettingsLoad(ApplicationData.Current.LocalSettings, ChannelUriKey, ChannelUriDefault);
         }
 
-        public string ChannelUri
+        public static string ChannelUri
         {
             get 
             {
@@ -147,24 +137,22 @@ namespace CB
             {
                 if (_channelUri != value)
                 {
-                    this._channelUri = value;
+                    _channelUri = value;
                     LocalSettingsStore(ApplicationData.Current.LocalSettings, ChannelUriKey, value);
                 }
             }
         }
 
         
-        public void CBPushNotificationReceived(PushCallback callback)
+        public static void PushNotificationReceived(PushCallback callback)
         {
-         
-            
            _channel.PushNotificationReceived += (PushNotificationChannel sender, PushNotificationReceivedEventArgs args) =>
             {
                 callback(sender, args);
             };
         }
 
-        public async Task<string> InitAsync()
+        public static async Task<string> InitAsync()
         {
             var retries = 3;
             var difference = 10; // In seconds
@@ -175,14 +163,15 @@ namespace CB
                 try
                 {
                     _channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+                    //_channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
                     //_channel.PushNotificationReceived += OnPushNotificationReceived;
                     if (!_channel.Uri.Equals(ChannelUri))
                     {
                         ChannelUri = _channel.Uri;
                         //register uri to PN Service
-                        await this.registerForPN(ChannelUri, "sdkapp");
+                        await RegisterForPushNotification(ChannelUri, "sdkapp");
 
-                        this.RaiseChannelUriUpdated();
+                        RaiseChannelUriUpdated();
                         return _channel.Uri;
                     }
                 }
@@ -197,41 +186,41 @@ namespace CB
             return null;
         }
 
-        private void OnPushNotificationReceived(PushNotificationChannel sender, PushNotificationReceivedEventArgs args)
+        private static void OnPushNotificationReceived(PushNotificationChannel sender, PushNotificationReceivedEventArgs args)
         {
             switch (args.NotificationType)
             {
                 case PushNotificationType.Badge:
-                    this.OnBadgeNotificationReceived(args.BadgeNotification.Content.GetXml());
+                    OnBadgeNotificationReceived(args.BadgeNotification.Content.GetXml());
                     break;
 
                 case PushNotificationType.Tile:
-                    this.OnTileNotificationReceived(args.TileNotification.Content.GetXml());
+                    OnTileNotificationReceived(args.TileNotification.Content.GetXml());
                     break;
 
                 case PushNotificationType.Toast:
-                    this.OnToastNotificationReceived(args.ToastNotification.Content.GetXml());
+                    OnToastNotificationReceived(args.ToastNotification.Content.GetXml());
                     break;
 
                 case PushNotificationType.Raw:
-                    this.OnRawNotificationReceived(args.RawNotification.Content);
+                    OnRawNotificationReceived(args.RawNotification.Content);
                     break;
             }
 
             args.Cancel = true;
         }
 
-        public void OnBadgeNotificationReceived(string notificationContent)
+        public static void OnBadgeNotificationReceived(string notificationContent)
         {
             // Code when a badge notification is received when app is running
         }
 
-        public void OnTileNotificationReceived(string notificationContent)
+        public static void OnTileNotificationReceived(string notificationContent)
         {
             // Code when a tile notification is received when app is running
         }
 
-        public void OnToastNotificationReceived(string notificationContent)
+        public static void OnToastNotificationReceived(string notificationContent)
         {
             // Code when a toast notification is received when app is running
 
@@ -245,17 +234,17 @@ namespace CB
             //ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
         }
 
-        private void OnRawNotificationReceived(string notificationContent)
+        private static void OnRawNotificationReceived(string notificationContent)
         {
             // Code when a raw notification is received when app is running
         }
 
-        public event EventHandler<EventArgs> ChannelUriUpdated;
-        private void RaiseChannelUriUpdated()
+        public static event EventHandler<EventArgs> ChannelUriUpdated;
+        private static void RaiseChannelUriUpdated()
         {
             if (ChannelUriUpdated != null)
             {
-                ChannelUriUpdated(this, new EventArgs());
+                ChannelUriUpdated(null, new EventArgs());
             }
         }
 
@@ -301,7 +290,7 @@ namespace CB
         }
 
         //Serialize
-        protected static Dictionary<string, Object> Serialize(Dictionary<string, Object> data)
+        private static Dictionary<string, Object> Serialize(Dictionary<string, Object> data)
         {
             Dictionary<string, Object> dic = new Dictionary<string, object>();
 
@@ -320,7 +309,7 @@ namespace CB
             return dic;
         }
 
-        internal static CB.CloudPush DeSerialize(Dictionary<string, Object> data, CB.CloudPush obj)
+        private static void DeSerialize(Dictionary<string, Object> data)
         {
             Dictionary<string, Object> dic = new Dictionary<string, object>();
 
@@ -332,12 +321,10 @@ namespace CB
                 }
                 else
                 {
-                    obj.dictionary[param.Key] = param.Value;
+                    dictionary[param.Key] = param.Value;
                 }
 
             }
-
-            return obj;
         }
     }
 }

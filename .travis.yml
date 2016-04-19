@@ -8,7 +8,7 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - cd net-sdk && nuget pack net-sdk.nuspec -Version 1.0.4 -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg '68c4ae5d-8365-4d27-9066-ca29a9f0198d' -verbosity detailed
+    - cd net-sdk && nuget pack net-sdk.nuspec -Version 1.0.4 -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg 'dbb9424a-7913-4c63-b59d-2c3525eb2fb6' -verbosity detailed
   on:
     branch: master
   

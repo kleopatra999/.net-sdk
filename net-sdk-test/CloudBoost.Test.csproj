@@ -69,13 +69,13 @@
     <Compile Include="Util\Util.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\net-sdk\net-sdk.csproj">
-      <Project>{ec564616-2d85-471e-b73d-75b2410dbf8c}</Project>
-      <Name>net-sdk</Name>
-    </ProjectReference>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="..\net-sdk\CloudBoost.csproj">
+      <Project>{ec564616-2d85-471e-b73d-75b2410dbf8c}</Project>
+      <Name>CloudBoost</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
