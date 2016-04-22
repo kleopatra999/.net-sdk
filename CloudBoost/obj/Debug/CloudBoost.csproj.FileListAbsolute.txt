@@ -1,0 +1,13 @@
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\obj\Debug\CloudBoost.csprojResolveAssemblyReference.cache
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\CloudBoost.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\CloudBoost.pdb
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\EngineIoClientDotNet.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\log4net-loggly.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\log4net.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\SocketIoClientDotNet.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\WebSocket4Net.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\log4net.xml
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\obj\Debug\CloudBoost.dll
+C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\obj\Debug\CloudBoost.pdb
