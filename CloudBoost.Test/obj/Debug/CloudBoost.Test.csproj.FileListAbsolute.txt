@@ -17,3 +17,21 @@ C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost.Test\bin\De
 C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
 C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost.Test\obj\Debug\CloudBoost.Test.dll
 C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost.Test\obj\Debug\CloudBoost.Test.pdb
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\CloudBoost.Test.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\CloudBoost.Test.pdb
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\CloudBoost.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\log4net-loggly.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\log4net.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\Newtonsoft.Json.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\nunit.framework.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\SocketIoClientDotNet.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\EngineIoClientDotNet.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\WebSocket4Net.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\CloudBoost.pdb
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\log4net.xml
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\Newtonsoft.Json.xml
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\nunit.framework.xml
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\obj\Debug\CloudBoost.Test.csprojResolveAssemblyReference.cache
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\obj\Debug\CloudBoost.Test.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\obj\Debug\CloudBoost.Test.pdb

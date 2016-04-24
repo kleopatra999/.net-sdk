@@ -60,10 +60,10 @@ namespace CB.Test
             Util.Keys.InitWithMasterKey();
 
             var age = new CB.Column("Age");
-            age.dataType = CB.DataType.Number.ToString();
+            age.DataType = CB.DataType.Number.ToString();
 
             var name = new CB.Column("Name");
-            name.dataType = CB.DataType.Text.ToString();
+            name.DataType = CB.DataType.Text.ToString();
 
             CB.CloudTable obj = new CB.CloudTable("Employee");
 
@@ -80,9 +80,9 @@ namespace CB.Test
         {
             var obj = new CB.CloudTable("Company");
             var Revenue = new CB.Column("Revenue");
-            Revenue.dataType = CB.DataType.Number.ToString();
+            Revenue.DataType = CB.DataType.Number.ToString();
             var Name = new CB.Column("Name");
-            Name.dataType =CB.DataType.Text.ToString();
+            Name.DataType =CB.DataType.Text.ToString();
             obj.AddColumn(Revenue);
             obj.AddColumn(Name);
            
@@ -97,9 +97,9 @@ namespace CB.Test
             Util.Keys.InitWithMasterKey();
             var obj = new CB.CloudTable("Address");
             var City = new CB.Column("City");
-            City.dataType = CB.DataType.Text.ToString();
+            City.DataType = CB.DataType.Text.ToString();
             var PinCode = new CB.Column("PinCode");
-            PinCode.dataType = CB.DataType.Number.ToString();
+            PinCode.DataType = CB.DataType.Number.ToString();
             obj.AddColumn(City);
             obj.AddColumn(PinCode);
             obj = await obj.SaveAsync();
@@ -121,7 +121,7 @@ namespace CB.Test
             obj = await CB.CloudTable.GetAsync(obj);
 
             var column1 = new CB.Column("Name11", CB.DataType.Relation.ToString(), true, false);
-            column1.relatedTo = tableName2;
+            column1.RelatedTo = tableName2;
 
             obj.AddColumn(column1);
 
@@ -218,7 +218,7 @@ namespace CB.Test
             table.AddColumn(column1);
             obj = await obj.SaveAsync();
 
-            obj.Columns.FirstOrDefault().name = "Sample";
+            obj.Columns.FirstOrDefault().Name = "Sample";
 
             try
             {
@@ -243,7 +243,7 @@ namespace CB.Test
             table.AddColumn(column1);
             obj = await obj.SaveAsync();
 
-            obj.Columns.FirstOrDefault().dataType = CB.DataType.Number.ToString();
+            obj.Columns.FirstOrDefault().DataType = CB.DataType.Number.ToString();
 
             try
             {
@@ -263,7 +263,7 @@ namespace CB.Test
 
             var obj = new CB.CloudTable(tableName);
 
-            obj.Columns.First(o => o.name == "id").unique = false;
+            obj.Columns.First(o => o.Name == "id").Unique = false;
 
             try
             {
@@ -288,7 +288,7 @@ namespace CB.Test
 
             obj = await obj.SaveAsync();
 
-            obj.Columns.First(o => o.name == "Name1").required = false;
+            obj.Columns.First(o => o.Name == "Name1").Required = false;
 
             try
             {
@@ -313,7 +313,7 @@ namespace CB.Test
 
             obj = await obj.SaveAsync();
 
-            obj.Columns.First(o => o.name == "Name1").unique = true;
+            obj.Columns.First(o => o.Name == "Name1").Unique = true;
 
             try
             {

@@ -50,7 +50,7 @@ namespace CB.Test
         {
             var custom = new CB.CloudTable("CustomRelation");
             var newColumn1 = new CB.Column("newColumn7");
-            newColumn1.dataType = CB.DataType.Relation.ToString();
+            newColumn1.DataType = CB.DataType.Relation.ToString();
             custom.AddColumn(newColumn1);
             await custom.SaveAsync();
             var loc = new CB.CloudGeoPoint(17.7, 80.0);

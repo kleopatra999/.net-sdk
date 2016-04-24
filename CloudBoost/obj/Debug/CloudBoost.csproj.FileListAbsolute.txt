@@ -11,3 +11,15 @@ C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\l
 C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\obj\Debug\CloudBoost.dll
 C:\Users\Nawaz Dhandala\Desktop\CloudBoost SDK\CloudBoost\CloudBoost\obj\Debug\CloudBoost.pdb
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\CloudBoost.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\CloudBoost.pdb
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\EngineIoClientDotNet.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\log4net-loggly.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\log4net.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\Newtonsoft.Json.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\SocketIoClientDotNet.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\WebSocket4Net.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\log4net.xml
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\Newtonsoft.Json.xml
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\obj\Debug\CloudBoost.dll
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\obj\Debug\CloudBoost.pdb
