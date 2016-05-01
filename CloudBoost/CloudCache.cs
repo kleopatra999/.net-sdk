@@ -47,7 +47,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/" + key;
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
 
             return result;
         }
@@ -59,7 +59,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/item/" + key;
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -73,7 +73,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/create";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
             return result;
         }
@@ -85,7 +85,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + key + "/item";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -99,7 +99,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -113,7 +113,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/items/count";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
             return result;
         }
 
@@ -124,7 +124,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID;
 
-            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, url, postData, true);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, url, postData);
 
             List<object> list = new List<object>();
             for (int i = 0; i < result.Count; i++)
@@ -142,7 +142,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/clear";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -156,7 +156,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -171,7 +171,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID;
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, true);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
             Dictionary<string, object> dictionary = (Dictionary<string, Object>)result;
             var obj = new CloudCache(dictionary["name"].ToString());

@@ -553,7 +553,7 @@ namespace CB
             postData["query"] = this.dictionary["query"];
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.SendObject(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", this.dictionary, false);
+            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", this.dictionary);
             return (int)result;
         }
 
@@ -566,7 +566,7 @@ namespace CB
             postData["sort"] = this.dictionary["sort"];
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, "/" + this.dictionary["tableName"] + "/distinct", postData, false);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, "/" + this.dictionary["tableName"] + "/distinct", postData);
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
             return list;
         }
@@ -580,7 +580,7 @@ namespace CB
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
 
-            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", postData, false);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", postData);
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
             return list;
         }
@@ -604,10 +604,10 @@ namespace CB
                 this.Limit = totalItemsInPage;
             }
 
-            var findTask = Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary, false);
+            var findTask = Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary);
             var countObj = new CB.CloudQuery(this.dictionary["tableName"].ToString());
             countObj.dictionary = this.dictionary;
-            var countTask = Util.CloudRequest.SendObject(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", countObj.dictionary, false);
+            var countTask = Util.CloudRequest.Send <object> (Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", countObj.dictionary);
             await Task.WhenAll(findTask, countTask);
             var findResult = await findTask;
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(findResult);
@@ -643,7 +643,7 @@ namespace CB
             postData["select"] = this.dictionary["select"];
             postData["limit"] = 1;
             postData["skip"] = 0;
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/get/"+ objectId, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/get/"+ objectId, postData);
             var obj = new CloudObject(result["name"].ToString());
             obj.dictionary = result;
             return obj;
@@ -656,7 +656,7 @@ namespace CB
             postData["select"] = this.dictionary["select"];
             postData["sort"] = this.dictionary["sort"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/findOne" , postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/findOne" , postData);
             var obj = new CloudObject(result["name"].ToString());
             obj.dictionary = result;
             return obj;

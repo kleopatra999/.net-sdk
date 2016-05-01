@@ -683,7 +683,7 @@ namespace CB
             }
             
             var url = CB.CloudApp.ApiUrl + "/data/" + CB.CloudApp.AppID + "/" + collectionName + "/search"; ;
-            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.POST, url, this.dictionary, false);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, url, this.dictionary);
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
             return list;
         }

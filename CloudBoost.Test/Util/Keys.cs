@@ -12,13 +12,13 @@ namespace CB.Test.Util
         public static void InitWithMasterKey()
         {
             InitAppID();
-            CloudApp.AppKey = "2a30e91b-9492-44c3-b52f-8b0c6576c6e2";
+            CloudApp.AppKey = "aedb79b1-dbf1-44b5-8359-39496db1df87";
         }
 
         public static void InitWithClientKey()
         {
             InitAppID();
-            CloudApp.AppKey = "ea992f8c-497c-4ab2-a430-32e9ef26f515";
+            CloudApp.AppKey = "cfc1c255-6bfe-49e6-a46e-26906107fc4e";
         }
 
         public static void InitAppID()

@@ -128,7 +128,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/file/" + CloudApp.AppID + "/" + this.ID;
 
-            var result = await Util.CloudRequest.SendObject(Util.CloudRequest.Method.DELETE, url, postData, false);
+            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.DELETE, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
             this.Url = null;
@@ -144,7 +144,7 @@ namespace CB
 
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             var url = CloudApp.ApiUrl + "/file/" + CloudApp.AppID + "/" + this.ID;
-            var result = await Util.CloudRequest.SendObject(Util.CloudRequest.Method.GET, this.Url, postData, false);
+            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.GET, this.Url, postData);
             return result;
         }
     }
