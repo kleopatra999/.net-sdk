@@ -168,7 +168,7 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
             Dictionary<string, object> dic = (Dictionary<string, Object>)result;
             var qMessage = new CB.QueueMessage(dic["message"]);
             qMessage.dictionary = dic;
@@ -210,11 +210,10 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/getMessage";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-
-            Dictionary<string, Object> dic = (Dictionary<string, Object>)result;
-            var qMessage = new CB.QueueMessage(dic["message"]);
-            qMessage.dictionary = dic;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
+            
+            var qMessage = new CB.QueueMessage(result["message"]);
+            qMessage.dictionary = result;
             return qMessage;
         }
 
@@ -225,11 +224,10 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/getMessage";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-
-            Dictionary<string, Object> dic = (Dictionary<string, Object>)result;
-            var qMessage = new CB.QueueMessage(dic["message"]);
-            qMessage.dictionary = dic;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
+            
+            var qMessage = new CB.QueueMessage(result["message"]);
+            qMessage.dictionary = result;
             return qMessage;
         }
 
@@ -240,9 +238,9 @@ namespace CB
     
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message/" + id;
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -253,11 +251,10 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message" + id;
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-
-            Dictionary<string, Object> dic = (Dictionary<string, Object>)result;
-            var qMessage = new CB.QueueMessage(dic["message"]);
-            qMessage.dictionary = dic;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
+            
+            var qMessage = new CB.QueueMessage(result["message"]);
+            qMessage.dictionary = result;
             return qMessage;
         }
 
@@ -267,9 +264,9 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -282,9 +279,9 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/create";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -298,9 +295,9 @@ namespace CB
 
             var Url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/subscriber";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, Url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, Url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -314,9 +311,9 @@ namespace CB
 
             var Url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/subscriber";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, Url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, Url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -329,10 +326,9 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/peekMessage";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-
-            Dictionary<string, Object> dic = (Dictionary<string, Object>)result;
-            var qMessage = new CB.QueueMessage(dic["message"]);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
+            
+            var qMessage = new CB.QueueMessage(result["message"]);
             return qMessage;
         }
 
@@ -344,10 +340,9 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/peekMessage";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
-            Dictionary<string, Object> dic = (Dictionary<string, Object>)result;
-            var qMessage = new CB.QueueMessage(dic["message"]);
+            var qMessage = new CB.QueueMessage(result["message"]);
             return qMessage;
         }
         
@@ -359,9 +354,9 @@ namespace CB
 
             var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -374,9 +369,9 @@ namespace CB
 
             var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/clear";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -392,9 +387,9 @@ namespace CB
 
             var url =  CB.CloudApp.ApiUrl+ "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/" + id +"/refresh-message-timeout";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            this.dictionary = result;
 
             return this;
         }
@@ -414,17 +409,15 @@ namespace CB
             
             var url =  CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message/"+ _id;
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
             if (result == null)
             {
                 return null;
             }
-
-            Dictionary<string, Object> dic = (Dictionary<string, Object>)result;
-
-            var qMessage = new CB.QueueMessage(dic["message"]);
-            qMessage.dictionary = dic;
+            
+            var qMessage = new CB.QueueMessage(result["message"]);
+            qMessage.dictionary = result;
             return qMessage;
         }
         
@@ -434,11 +427,9 @@ namespace CB
 
             var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/";
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, postData, false);
-
-            var dic = (Dictionary<string, Object>)result;
-
-            var queue = new CB.CloudQueue(dic["name"].ToString(), null);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
+            
+            var queue = new CB.CloudQueue(result["name"].ToString(), null);
 
             return queue;
         }

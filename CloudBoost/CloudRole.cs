@@ -43,9 +43,9 @@ namespace CB
 
         public static async Task<CloudRole> GetRole(string roleName)
         {
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, "/role/getRole/" + roleName, null, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, "/role/getRole/" + roleName, null);
             var role = new CloudRole(roleName);
-            role.dictionary = (Dictionary<string, Object>)result;
+            role.dictionary = result;
             return role;
         }
     }

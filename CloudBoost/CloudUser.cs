@@ -101,8 +101,8 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/signup", postData, false);
-            this.dictionary = (Dictionary<string, Object>)result;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/signup", postData);
+            this.dictionary = result;
             return this;
         }
 
@@ -121,8 +121,8 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData, false);
-            this.dictionary = (Dictionary<string, Object>)result;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData);
+            this.dictionary = result;
             CloudUser.Current = this; //set this user as current logged in user.
             return this;
         }
@@ -147,8 +147,8 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData, false);
-            this.dictionary = (Dictionary<string, Object>)result;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData);
+            this.dictionary = result;
             CloudUser.Current = null; //set this user as current logged in user.
             return this;
         }
@@ -174,7 +174,7 @@ namespace CB
             param["email"] = email;
 
             string url = CB.CloudApp.ApiUrl + "/user/" + CB.CloudApp.AppID + "/resetPassword"; ;
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, param, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, param);
             return result;
         }
 
@@ -185,7 +185,7 @@ namespace CB
             param["newPassword"] = newPassword;
 
             string url = CB.CloudApp.ApiUrl + "/user/" + CB.CloudApp.AppID + "/changePassword"; ;
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.POST, url, param, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, param);
             return result;
         }
 
@@ -200,8 +200,8 @@ namespace CB
             postData.Add("user", this);
             postData.Add("role", role);
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/addToRole", postData, false);
-            this.dictionary = (Dictionary<string, Object>)result;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/addToRole", postData);
+            this.dictionary = result;
             return this;
 
         }
@@ -217,8 +217,8 @@ namespace CB
             postData.Add("user", this);
             postData.Add("role", role);
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/removeFromRole", postData, false);
-            this.dictionary = (Dictionary<string, Object>)result;
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/removeFromRole", postData);
+            this.dictionary = result;
             return this;
         }
     }

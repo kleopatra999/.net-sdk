@@ -23,3 +23,4 @@ C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\log4net.xm
 C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\bin\Debug\Newtonsoft.Json.xml
 C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\obj\Debug\CloudBoost.dll
 C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\obj\Debug\CloudBoost.pdb
+C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost\obj\Debug\CloudBoost.csprojResolveAssemblyReference.cache

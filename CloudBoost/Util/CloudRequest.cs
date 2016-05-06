@@ -20,7 +20,7 @@ namespace CB.Util
             DELETE
         }
 
-        internal static async Task<Dictionary<string, Object>> Send(Method method, string url, Dictionary<string, Object> postData, Boolean isServiceUrl)
+        internal static async Task<T> Send<T>(Method method, string url, Dictionary<string, Object> postData)
         {
             try
             {
@@ -36,28 +36,49 @@ namespace CB.Util
                     postData.Add("key", CloudApp.AppKey);
                     var jsonObj = Util.Serializer.Serialize(postData);
                     var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
-                    Console.WriteLine(data);
+                    // Console.WriteLine(data);
                     request.Method = method.ToString();
                     request.ContentType = "application/json";
                     request.ContentLength = data.Length;
                     /*using (var stream = request.GetRequestStream())
                     {
                         stream.Write(data, 0, data.Length);
-                    }*/
+                    }
                     using (Stream stream = await request.GetRequestStreamAsync())
                     {
                         byte[] byteArray = ASCIIEncoding.UTF8.GetBytes(jsonObj);
                         await stream.WriteAsync(byteArray, 0, byteArray.Length);
                         await stream.FlushAsync();
                         //stream.Write(data, 0, data.Length);
-                    }
+                    }*/
                 }
 
                 var response = await request.GetResponseAsync();
 
                 var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
 
-                return Util.Serializer.Deserialize(responseString);
+                if (responseString.GetType() == typeof(Dictionary<string, Object>))
+                {
+                    object val = Util.Serializer.Deserialize(responseString);
+                    return (T)Convert.ChangeType(val, typeof(T));
+                }
+
+                else if (responseString.GetType() == typeof(List<Dictionary<string, Object>>))
+                {
+                    object val = Util.Serializer.DeserializeArrayType(responseString);
+                    return (T)Convert.ChangeType(val, typeof(T));
+                }
+
+                else if (responseString.GetType() == typeof(object))
+                {
+                    return (T)Convert.ChangeType(responseString, typeof(T));
+                }
+
+                else {
+                    object val = Util.Serializer.Serialize(null);
+                    return (T)Convert.ChangeType(val, typeof(T));
+                }
+
             }
             catch (System.Exception e)
             {
@@ -65,95 +86,7 @@ namespace CB.Util
                 throw new CB.Exception.CloudBoostException(e.ToString());
             }
         }
-
-        internal static async Task<List<Dictionary<string, Object>>> SendArray(Method method, string url, Dictionary<string, Object> postData, Boolean isServiceUrl)
-        {
-            try
-            {
-                CB.PrivateMethods.Validate();
-
-                var request = (HttpWebRequest)WebRequest.Create(url);
-
-                if (method == Method.POST || method == Method.PUT || method == Method.DELETE)
-                {
-                    if (postData == null)
-                        postData = new Dictionary<string, object>();
-
-                    postData.Add("key", CloudApp.AppKey);
-                    var jsonObj = Util.Serializer.Serialize(postData);
-                    var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
-                    Console.WriteLine(data);
-                    request.Method = method.ToString();
-                    request.ContentType = "application/json";
-                    request.ContentLength = data.Length;
-                    using (Stream stream = await request.GetRequestStreamAsync())
-                    {
-                        byte[] byteArray = ASCIIEncoding.UTF8.GetBytes(jsonObj);
-                        await stream.WriteAsync(byteArray, 0, byteArray.Length);
-                        await stream.FlushAsync();
-                        //stream.Write(data, 0, data.Length);
-                    }
-                }
-
-                var response = await request.GetResponseAsync();
-
-               var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
-                /*string responseString;
-                using(var response = (HttpWebResponse)await request.GetResponseAsync());
-                using (Stream streamResponse = response.GetResponseStream())
-                using (StreamReader streamReader = new StreamReader(streamResponse))
-                {
-                    responseString = await streamReader.ReadToEndAsync();
-                }*/
-                return Util.Serializer.DeserializeArrayType(responseString);
-                 
-            }
-            catch (System.Exception e)
-            {
-                //CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
-                throw new CB.Exception.CloudBoostException(e.ToString());
-            }
-        }
-
-        internal static async Task<object> SendObject(Method method, string url, Dictionary<string, Object> postData, Boolean isServiceUrl)
-        {
-            try
-            {
-                CB.PrivateMethods.Validate();
-
-                var request = (HttpWebRequest)WebRequest.Create(url);
-
-                if (method == Method.POST || method == Method.PUT || method == Method.DELETE)
-                {
-                    if (postData == null)
-                        postData = new Dictionary<string, object>();
-
-                    postData.Add("key", CloudApp.AppKey);
-                    var jsonObj = Util.Serializer.Serialize(postData);
-                    var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
-                    Console.WriteLine(data);
-                    request.Method = method.ToString();
-                    request.ContentType = "application/json";
-                    request.ContentLength = data.Length;
-                    using (var stream = request.GetRequestStream())
-                    {
-                        stream.Write(data, 0, data.Length);
-                    }
-                }
-
-                var response = await request.GetResponseAsync();
-
-                var responseString = new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd();
-
-                return responseString;
-            }
-            catch (System.Exception e)
-            {
-                //CB.CloudApp.log.Error(".NET - CB.Util.CloudRequest.Send", e);
-                throw new CB.Exception.CloudBoostException(e.ToString());
-            }
-        }
-
+        
         internal static async Task<Dictionary<string, Object>> SendFile(Method method, string url, CB.CloudFile cf)
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();

@@ -289,7 +289,7 @@ namespace CB
             postData.Add("document", CB.CloudObject.Serialize(this.dictionary));
             string url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
             
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.PUT, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
 
             return CB.CloudObject.DeSerialize(result, this);
         }
@@ -302,7 +302,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
 
-            var result = await Util.CloudRequest.Send(Util.CloudRequest.Method.DELETE, url, postData, false);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
 
@@ -342,7 +342,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + ((CB.CloudObject)array[0]).TableName;
 
-            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.PUT, url, postData, false);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.PUT, url, postData);
 
             List<CloudObject> objects = new List<CloudObject>();
 
@@ -370,7 +370,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + ((CB.CloudObject)array[0]).TableName;
 
-            var result = await Util.CloudRequest.SendArray(Util.CloudRequest.Method.DELETE, url, postData, false);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.DELETE, url, postData);
 
             List<CloudObject> objects = new List<CloudObject>();
 
