@@ -9,10 +9,12 @@ namespace CB
     public class CloudCache
     {
         internal Dictionary<string, Object> dictionary = new Dictionary<string, object>();
+
         protected List<Object> items = new List<Object>();
+
         public CloudCache(string cacheName)
         {
-            if (cacheName == " ")
+            if (String.IsNullOrWhiteSpace(cacheName))
             {
                 throw new CB.Exception.CloudBoostException("Cannot create a cache with empty name");
             }
@@ -21,7 +23,6 @@ namespace CB
             dictionary.Add("name", cacheName);
             dictionary.Add("size", "");
             dictionary.Add("items", items);
-
         }
         public string Name
         {
@@ -34,9 +35,26 @@ namespace CB
                 dictionary["name"] = value;
             }
         }
-        public Object Get(string name)
-        { 
-            return dictionary[name];
+
+        public string Size
+        {
+            get
+            {
+                return dictionary["size"].ToString();
+            }
+        }
+
+
+        public async Task<object> GetAsync(string key)
+        {
+            Dictionary<string, Object> postData = new Dictionary<string, object>();
+            postData.Add("key", CB.CloudApp.AppKey);
+
+            var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/" + key;
+
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
+
+            return result;
         }
 
         public async Task<object> SetAsync(string key, Object value)
@@ -78,19 +96,6 @@ namespace CB
             return result;
         }
 
-        public async Task<CloudCache> GetAsync(string key)
-        {
-            Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("key", CB.CloudApp.AppKey);
-
-            var url = CB.CloudApp.ApiUrl + "/cache/" + CB.CloudApp.AppID + "/" + dictionary["name"] + key + "/item";
-
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
-
-            this.dictionary = (Dictionary<string, Object>)result;
-
-            return this;
-        }
 
         public async Task<CloudCache> GetInfoAsync()
         {
@@ -162,9 +167,8 @@ namespace CB
 
             return this;
         }
-
        
-        public static async Task<CloudCache> DeleteAllAsync()
+        public static async void DeleteAllAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("key", CB.CloudApp.AppKey);
@@ -173,11 +177,10 @@ namespace CB
 
             var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
 
-            Dictionary<string, object> dictionary = (Dictionary<string, Object>)result;
-            var obj = new CloudCache(dictionary["name"].ToString());
-            obj.dictionary = dictionary;
+            //Dictionary<string, object> dictionary = (Dictionary<string, Object>)result;
+            //var obj = new CloudCache(dictionary["name"].ToString());
+            //obj.dictionary = dictionary;
 
-            return obj;
         }
 
     }

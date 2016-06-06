@@ -163,7 +163,7 @@ namespace CB.Test
             {
                 response = await cache.GetInfoAsync();
                 CB.CloudCache obj = (CB.CloudCache)response;
-                string size = obj.Get("size").ToString();
+                string size = obj.Size.ToString();
                 if (size.Contains("kb"))
                 {
                     Assert.IsTrue(true);

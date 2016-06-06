@@ -28,7 +28,7 @@ namespace CB.Test
         {
             if (result.ToString() == "data")
             {
-                CB.CloudNotification.Publsh("sample", "data");
+                CB.CloudNotification.Publish("sample", "data");
                 Assert.IsTrue(true);
             }
             else

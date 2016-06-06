@@ -57,9 +57,8 @@ namespace CB
         }
 
         public CloudTable(string tableName)
-        {  //new table constructor
-
-            //CB.PrivateMethods._tableValidation(tableName);
+        {  
+            CB.PrivateMethods._TableValidation(tableName);
             this.Name = tableName;
             this.dictionary["appId"] = CB.CloudApp.AppID;
             this.dictionary["_type"] = "table";
@@ -79,12 +78,12 @@ namespace CB
                 this.MaxCount = 9999;
             }
 
-            this.Columns = CB.CloudTable._defaultColumns(this.Type);
+            this.Columns = CB.CloudTable._DefaultColumns(this.Type);
         }
 
         public void AddColumn(CB.Column column)
         {
-            //if (CB.Column._columnValidation(column, this))
+            //if (CB.Column._ColumnValidation(column, this))
                 this.Columns.Add(column);
         }
 
@@ -92,7 +91,7 @@ namespace CB
         {
             for (int i = 0; i < columns.Count; i++)
             {
-                if (CB.Column._columnValidation(columns[i], this))
+                if (CB.Column._ColumnValidation(columns[i], this))
                     this.Columns.Add(columns[i]);
             }
         }
@@ -103,7 +102,7 @@ namespace CB
             if (!column.IsDeletable)
                 throw new CloudBoostException(column.Name + " cannot be deleted.");
 
-                if (CB.Column._columnValidation(column, this))
+                if (CB.Column._ColumnValidation(column, this))
             {
                 this.Columns.Remove(column);
             }
@@ -118,7 +117,7 @@ namespace CB
             if (column == null)
                 throw new CB.Exception.CloudBoostException("Column with name " + columnName + " cannot be found.");
 
-            if (CB.Column._columnValidation(column, this))
+            if (CB.Column._ColumnValidation(column, this))
             {
                 this.Columns.Remove(column);
             }
@@ -129,7 +128,7 @@ namespace CB
             //yet to test
             for (var i = 0; i < columns.Count; i++)
             {
-                if (CB.Column._columnValidation(columns[i], this))
+                if (CB.Column._ColumnValidation(columns[i], this))
                 {
                     this.Columns.Remove(columns[i]);
                 }
@@ -209,12 +208,12 @@ namespace CB
             return (CB.CloudTable)this;
         }
 
-        internal static List<CB.Column> _defaultColumns(string tableType)
+        internal static List<CB.Column> _DefaultColumns(string tableType)
         {
             List<CB.Column> list = new List<Column>();
 
             var id = new CB.Column("id");
-            id.DataType = DataType.Id.ToString();
+            id.DataType = DataType.ID.ToString();
             id.Required = true;
             id.Unique = true;
             id.IsDeletable = false;

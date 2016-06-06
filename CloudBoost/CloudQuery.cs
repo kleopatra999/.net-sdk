@@ -470,7 +470,7 @@ namespace CB
         }
 
         //GeoPoint near query
-        public CloudQuery near(string columnName, CB.CloudGeoPoint geoPoint, double maxDistance, double minDistance)
+        public CloudQuery Near(string columnName, CB.CloudGeoPoint geoPoint, double maxDistance, double minDistance)
         {
             if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null)
             {

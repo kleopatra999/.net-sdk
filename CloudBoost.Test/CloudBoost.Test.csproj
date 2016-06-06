@@ -43,9 +43,9 @@
       <HintPath>..\packages\log4net-loggly.7.1.0\lib\net40\log4net-loggly.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
@@ -74,7 +74,6 @@
     <Compile Include="CloudQuery.cs" />
     <Compile Include="CloudQueue.cs" />
     <Compile Include="CloudRole.cs" />
-    <Compile Include="CloudSearch.cs" />
     <Compile Include="CloudTable.cs" />
     <Compile Include="CloudUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +87,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

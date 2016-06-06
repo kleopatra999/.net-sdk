@@ -27,7 +27,7 @@ namespace CB
             this._type = "column";
             if (String.IsNullOrWhiteSpace(columnName))
             {
-                CB.Column._columnNameValidation(columnName);
+                CB.Column._ColumnNameValidation(columnName);
                 this.Name = columnName;
             }
 
@@ -48,7 +48,7 @@ namespace CB
             this._type = "column";
             if (String.IsNullOrWhiteSpace(columnName))
             {
-                CB.Column._columnNameValidation(columnName);
+                CB.Column._ColumnNameValidation(columnName);
                 this.Name = columnName;
             }
 
@@ -62,7 +62,7 @@ namespace CB
             this.IsRenamable = false;
         }
 
-        internal static bool _columnValidation(CB.Column column, CB.CloudTable cloudtable) 
+        internal static bool _ColumnValidation(CB.Column column, CB.CloudTable cloudtable) 
         {
             var defaultColumn = new List<string>();
             defaultColumn.Add("id");
@@ -91,7 +91,7 @@ namespace CB
                 return false;
         }
 
-        internal static void _columnNameValidation (string columnName)
+        internal static void _ColumnNameValidation (string columnName)
         {
             var defaultColumn = new string[] { "id", "_id", "createdAt", "updatedAt", "ACL", "expires" };
 

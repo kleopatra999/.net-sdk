@@ -23,11 +23,11 @@ namespace CB.Test
             var queueMessage = new CB.QueueMessage("data");
             var tomorrow = new DateTime();
             tomorrow.AddDays(1);
-            queueMessage.expires = tomorrow;
+            queueMessage.Expires = tomorrow;
             List<object> list = new List<object>();
             list.Add(queueMessage);
-            var response = await queue.addMessageAsync(list);
-            var result = await queue.getMessageAsync();
+            var response = await queue.AddMessageAsync(list);
+            var result = await queue.GetMessageAsync();
             Assert.IsTrue(true);
         }
 
@@ -35,7 +35,7 @@ namespace CB.Test
         public async Task addDataIntoQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            await queue.addMessageAsync("sample");
+            await queue.AddMessageAsync("sample");
             Assert.IsTrue(true);
 
         }
@@ -56,10 +56,10 @@ namespace CB.Test
             var queueMessage = new CB.QueueMessage("data");
             var tomorrow = new DateTime();
             tomorrow.AddDays(1);
-            queueMessage.expires = tomorrow;
+            queueMessage.Expires = tomorrow;
             List<object> list = new List<object>();
             list.Add(queueMessage);
-            var response = await queue.addMessageAsync(list);
+            var response = await queue.AddMessageAsync(list);
             Assert.IsTrue(true);
         }
 
@@ -68,10 +68,10 @@ namespace CB.Test
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
             var queueMessage = new CB.QueueMessage("data");
-            queueMessage.expires = new DateTime();
+            queueMessage.Expires = new DateTime();
             List<object> list = new List<object>();
             list.Add(queueMessage);
-            await queue.addMessageAsync(list);
+            await queue.AddMessageAsync(list);
             Assert.IsTrue(true);
         }
 
@@ -79,13 +79,13 @@ namespace CB.Test
         public async Task updateDataIntoTheQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var response = await queue.addMessageAsync("sample");
-            if (response.message.ToString() == "sample")
+            var response = await queue.AddMessageAsync("sample");
+            if (response.Message.ToString() == "sample")
             {
-                response.message = "Hey!";
+                response.Message = "Hey!";
                 List<object> list = new List<object>();
                 list.Add(response);
-                await queue.updateMessageAsync(list);
+                await queue.UpdateMessageAsync(list);
                 Assert.IsTrue(true);
             }
         }
@@ -99,8 +99,8 @@ namespace CB.Test
             List<object> list = new List<object>();
             list.Add(queueMessage1);
             list.Add(queueMessage2);
-            var response = await queue.addMessageAsync(list);
-            //should return array of queuemessage
+            var response = await queue.AddMessageAsync(list);
+            //should return array of queueMessage
             Assert.IsTrue(true);
         }
 
@@ -108,14 +108,14 @@ namespace CB.Test
         public async Task addAndGetDataFromTheQueue()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
+            var Message = new CB.QueueMessage("sample");
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
-                var result = await queue.getMessageAsync();
-                if (result.message.ToString() == "sample")
+                var result = await queue.GetMessageAsync();
+                if (result.Message.ToString() == "sample")
                 {
                     Assert.IsTrue(true);
                 }
@@ -128,17 +128,17 @@ namespace CB.Test
         public async Task shouldPeek()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
+            var Message = new CB.QueueMessage("sample");
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
                 var result = await queue.PeekMessageAsync();
-                if (result.message.ToString() == "sample")
+                if (result.Message.ToString() == "sample")
                 {
                     var result1 = await queue.PeekMessageAsync();
-                    if (result.message.ToString() == "sample")
+                    if (result.Message.ToString() == "sample")
                     {
                         Assert.IsTrue(true);
                     }
@@ -153,23 +153,23 @@ namespace CB.Test
         public async Task shouldGetMessageInFIFO()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample1");
+            var Message = new CB.QueueMessage("sample1");
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample1")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample1")
             {
-                message = new CB.QueueMessage("sample2");
+                Message = new CB.QueueMessage("sample2");
                 list = new List<object>();
-                list.Add(message);
-                response = await queue.addMessageAsync(list);
-                if (response.message.ToString() == "sample2")
+                list.Add(Message);
+                response = await queue.AddMessageAsync(list);
+                if (response.Message.ToString() == "sample2")
                 {
-                    response = await queue.getMessageAsync();
-                    if (response.message.ToString() == "sample1")
+                    response = await queue.GetMessageAsync();
+                    if (response.Message.ToString() == "sample1")
                     {
-                        response = await queue.getMessageAsync();
-                        if (response.message.ToString() == "sample2")
+                        response = await queue.GetMessageAsync();
+                        if (response.Message.ToString() == "sample2")
                         {
                             Assert.IsTrue(true);
                         }
@@ -186,17 +186,17 @@ namespace CB.Test
         public async Task shouldPeekTwoMessageSameTime()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample1");
+            var Message = new CB.QueueMessage("sample1");
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample1")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample1")
             {
-                message = new CB.QueueMessage("sample2");
+                Message = new CB.QueueMessage("sample2");
                 list = new List<object>();
-                list.Add(message);
-                response = await queue.addMessageAsync(list);
-                if (response.message.ToString() == "sample2")
+                list.Add(Message);
+                response = await queue.AddMessageAsync(list);
+                if (response.Message.ToString() == "sample2")
                 {
                     response = await queue.PeekMessageAsync(2);
                     //should return array of QueueMessage
@@ -211,19 +211,19 @@ namespace CB.Test
         public async Task shouldGetTwoMessageSameTime()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample1");
+            var Message = new CB.QueueMessage("sample1");
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample1")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample1")
             {
-                message = new CB.QueueMessage("sample2");
+                Message = new CB.QueueMessage("sample2");
                 list = new List<object>();
-                list.Add(message);
-                response = await queue.addMessageAsync(list);
-                if (response.message.ToString() == "sample2")
+                list.Add(Message);
+                response = await queue.AddMessageAsync(list);
+                if (response.Message.ToString() == "sample2")
                 {
-                    response = await queue.getMessageAsync(2);
+                    response = await queue.GetMessageAsync(2);
                     //should return array of QueueMessage
                     Assert.IsTrue(true);
                 }
@@ -236,13 +236,13 @@ namespace CB.Test
         public async Task shouldNotGetMessageWithDelay()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
+            var Message = new CB.QueueMessage("sample");
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample1")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample1")
             {
-                response = await queue.getMessageAsync();
+                response = await queue.GetMessageAsync();
                 Assert.IsTrue(true);
             }
         }
@@ -251,15 +251,15 @@ namespace CB.Test
         public async Task shouldAbleToGetMessageAfterDelay()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
-            message.delay = 1;
+            var Message = new CB.QueueMessage("sample");
+            Message.Delay = 1;
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
-                response = await queue.getMessageAsync();
-                if (response.message.ToString() == "sample")
+                response = await queue.GetMessageAsync();
+                if (response.Message.ToString() == "sample")
                 {
                     Assert.IsTrue(true);
                 }
@@ -272,15 +272,15 @@ namespace CB.Test
         public async Task shouldGetMessageWithId()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
-            message.delay = 1;
+            var Message = new CB.QueueMessage("sample");
+            Message.Delay = 1;
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
-                response = await queue.getMessageById(response.id);
-                if (response.message.ToString() == "sample")
+                response = await queue.GetMessageByID(response.ID);
+                if (response.Message.ToString() == "sample")
                 {
                     Assert.IsTrue(true);
                 }
@@ -293,14 +293,14 @@ namespace CB.Test
         public async Task shouldGetNullForInvalidMessageId()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
-            message.delay = 1;
+            var Message = new CB.QueueMessage("sample");
+            Message.Delay = 1;
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
-                response = await queue.getMessageById("sample");
+                response = await queue.GetMessageByID("sample");
                 if (response == null)
                 {
                     Assert.IsTrue(true);
@@ -314,15 +314,15 @@ namespace CB.Test
         public async Task shouldDeleteMessageWithMessageId()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
-            message.delay = 1;
+            var Message = new CB.QueueMessage("sample");
+            Message.Delay = 1;
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
-                var result = await queue.DeleteMessageAsync(response.id);
-                if (result != null && result.id == response.id)
+                var result = await queue.DeleteMessageAsync(response.ID);
+                if (result != null && result.ID == response.ID)
                 {
                     Assert.IsTrue(true);
                 }
@@ -335,15 +335,15 @@ namespace CB.Test
         public async Task shouldDeleteMessageByPassingQueueMessageToFunction()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
-            message.delay = 1;
+            var Message = new CB.QueueMessage("sample");
+            Message.Delay = 1;
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
                 var result = await queue.DeleteMessageAsync(response);
-                if (result != null && result.id == response.id)
+                if (result != null && result.ID == response.ID)
                 {
                     Assert.IsTrue(true);
                 }
@@ -356,17 +356,17 @@ namespace CB.Test
         public async Task shouldNotGetMessageAfterItWasDeleted()
         {
             var queue = new CB.CloudQueue(Util.Methods._makeString());
-            var message = new CB.QueueMessage("sample");
-            message.delay = 1;
+            var Message = new CB.QueueMessage("sample");
+            Message.Delay = 1;
             List<object> list = new List<object>();
-            list.Add(message);
-            var response = await queue.addMessageAsync(list);
-            if (response.message.ToString() == "sample")
+            list.Add(Message);
+            var response = await queue.AddMessageAsync(list);
+            if (response.Message.ToString() == "sample")
             {
                 var result = await queue.DeleteMessageAsync(response);
-                if (result != null && result.id == response.id)
+                if (result != null && result.ID == response.ID)
                 {
-                    var obj = queue.getMessageById(response.id);
+                    var obj = queue.GetMessageByID(response.ID);
                     if(obj == null)
                         Assert.IsTrue(true);
                 }
@@ -385,7 +385,7 @@ namespace CB.Test
             var response = await queue.AddSubscriberAsync(list);
             for (int i = 0; i < list.Count; i++)
             {
-                if (response.subscribers.Contains(url[i]) == false)
+                if (response.Subscribers.Contains(url[i]) == false)
                 {
                     Assert.IsTrue(true);
                 }
@@ -403,7 +403,7 @@ namespace CB.Test
             var response = await queue.RemoveSubscriberAsync(list);
             for (int i = 0; i < list.Count; i++)
             {
-                if (response.subscribers.Contains(url[i]) == false)
+                if (response.Subscribers.Contains(url[i]) == false)
                 {
                     Assert.IsTrue(true);
                 }
@@ -421,10 +421,10 @@ namespace CB.Test
             var response = await queue.AddSubscriberAsync(list);
             for (int i = 0; i < list.Count; i++)
             {
-                if (response.subscribers.Count == 1)
+                if (response.Subscribers.Count == 1)
                 {
                     var result = await queue.RemoveSubscriberAsync(list);
-                    if (response.subscribers.Count == 0)
+                    if (response.Subscribers.Count == 0)
                     {
                         Assert.IsTrue(true);
                     }

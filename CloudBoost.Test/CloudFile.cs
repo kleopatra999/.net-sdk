@@ -34,13 +34,13 @@ namespace CB.Test
             string type = "txt";
             var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
-            if (file.Url != null)
+            if (file.URL != null)
             {
                 var obj = new CB.CloudObject("Company");
                 obj.Set("File", file);
                 await obj.SaveAsync();
                 var fileObj = (CB.CloudFile)obj.Get("File");
-                if (fileObj.Url != null)
+                if (fileObj.URL != null)
                 {
                     Assert.IsTrue(true);
                 }
@@ -59,7 +59,7 @@ namespace CB.Test
             string type = "txt";
             var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
-            if (file.Url != null)
+            if (file.URL != null)
             {
                 Assert.IsTrue(true);
             }
@@ -77,10 +77,10 @@ namespace CB.Test
             string type = "txt";
             var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
-            if (file.Url != null)
+            if (file.URL != null)
             {
                 await file.DeleteAsync();
-                if (file.Url == null)
+                if (file.URL == null)
                 {
                     Assert.IsTrue(true);
                 }
@@ -104,7 +104,7 @@ namespace CB.Test
             string type = "txt";
             var file = new CB.CloudFile(data, name, type);
             await file.SaveAsync();
-            if (file.Url != null)
+            if (file.URL != null)
             {
                 await file.GetFileContentAsync();
                 Assert.IsTrue(true);
@@ -148,7 +148,7 @@ namespace CB.Test
             obj.Set("name", "abcd");
             await obj.SaveAsync();
             var fileObj = (CB.CloudFile)obj.Get("file");
-            if (fileObj.Url != null)
+            if (fileObj.URL != null)
             {
                 Assert.IsTrue(true);
             }

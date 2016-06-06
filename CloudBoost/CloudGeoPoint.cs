@@ -12,7 +12,6 @@ namespace CB
         protected double[] coordinates = new double[2];
         public CloudGeoPoint(double longitude, double latitude)
         {
-            
             dictionary.Add("_type", "point");
             dictionary.Add("_isModified", true);
             if((latitude >= -90.0 && latitude <= 90.0) && (longitude >= -180.0 && longitude <= 180.0))
@@ -112,14 +111,12 @@ namespace CB
 
         public double DistanceInKMs(CB.CloudGeoPoint point)
         {
-
             int earthRedius = 6371; //in Kilometer
             return earthRedius * greatCircleFormula(point);
         }
 
         public double DistanceInMiles(CB.CloudGeoPoint point)
         {
-
             int earthRedius = 3959; // in Miles
             return earthRedius * greatCircleFormula(point);
 
@@ -127,7 +124,6 @@ namespace CB
 
         public double DistanceInRadians(CB.CloudGeoPoint point)
         {
-
             return this.greatCircleFormula(point);
         }
 
@@ -152,7 +148,6 @@ namespace CB
         private double toRad(double number)
         {
             return number * Math.PI / 180;
-           
         }
     }
 }

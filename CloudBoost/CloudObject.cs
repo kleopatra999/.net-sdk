@@ -10,10 +10,6 @@ namespace CB
     public class CloudObject
     {
         internal Dictionary<string, Object> dictionary { set; get; }
-        public CloudObject()
-        {
-
-        }
 
         public CloudObject(string tableName)
         {
@@ -156,34 +152,6 @@ namespace CB
             }
 
         }
-        public bool IsSearchable
-        {
-            get
-            {
-                return (bool)dictionary["_isSearchable"];
-            }
-            set
-            {  
-                if (value.GetType() == typeof(bool))
-                {
-                    dictionary["_isSearchable"] = value;
-                    _IsModified(this, "_isSearchable");
-                }
-                else
-                    throw new Exception.CloudBoostException("Value is not of type bool");
-            }
-
-        }
-
-        public Object Get(string columnName)
-        { //for getting data of a particular column
-
-            if (columnName == "ID" || columnName == "IsSearchable")
-                columnName = "_" + ((char)columnName.ToCharArray()[0]).ToString().ToLower() + columnName.Substring(1);
-
-
-            return dictionary[columnName];
-        }
 
         public void Set(string columnName, Object value)
         {
@@ -204,6 +172,11 @@ namespace CB
 
             dictionary[columnName] = value;
             _IsModified(this, columnName);
+        }
+
+        public Object Get(string columnName)
+        {
+            return dictionary[columnName];
         }
 
         public void Unset(string columnName)

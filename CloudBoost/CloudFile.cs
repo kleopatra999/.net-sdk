@@ -38,7 +38,7 @@ namespace CB
             }
         }
 
-        public string Url
+        public string URL
         {
             get
             {
@@ -109,16 +109,15 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/file/" + CloudApp.AppID;
 
-            var result = Util.CloudRequest.SendFile(Util.CloudRequest.Method.PUT, url, this);
-
-            this.dictionary = (Dictionary<string, Object>) await result;
+            //var result = Util.CloudRequest.SendFile(Util.CloudRequest.Method.PUT, url, this);
+            //this.dictionary = (Dictionary<string, Object>) await result;
 
             return this;
         }
 
         public async Task<CloudFile> DeleteAsync()
         {
-            if(this.Url == null)
+            if(this.URL == null)
             {
                 throw new CB.Exception.CloudBoostException("You cannot delete a file which does not have an URL");
             }
@@ -131,20 +130,20 @@ namespace CB
             var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.DELETE, url, postData);
 
             this.dictionary = (Dictionary<string, Object>)result;
-            this.Url = null;
+            this.URL = null;
             return this;
         }
 
         public async Task<Object> GetFileContentAsync()
         {
-            if (this.Url == null)
+            if (this.URL == null)
             {
                 throw new CB.Exception.CloudBoostException("You cannot delete a file which does not have an URL");
             }
 
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             var url = CloudApp.ApiUrl + "/file/" + CloudApp.AppID + "/" + this.ID;
-            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.GET, this.Url, postData);
+            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.GET, this.URL, postData);
             return result;
         }
     }

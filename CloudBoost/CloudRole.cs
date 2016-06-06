@@ -38,7 +38,6 @@ namespace CB
                 else
                     throw new Exception.CloudBoostException("Value is not of type string");
             }
-
         }
 
         public static async Task<CloudRole> GetRole(string roleName)

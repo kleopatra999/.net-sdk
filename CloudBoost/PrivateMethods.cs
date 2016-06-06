@@ -10,20 +10,7 @@ namespace CB
 {
     class PrivateMethods
     {
-        internal static bool Validate()
-        {
-            if (String.IsNullOrEmpty(CB.CloudApp.AppID) || String.IsNullOrEmpty(CB.CloudApp.AppKey))
-            {
-                throw new Exception.CloudBoostException("AppID / AppKey is missing.");
-            }
-
-            if (String.IsNullOrEmpty(CB.CloudApp.ApiUrl))
-            {
-                throw new Exception.CloudBoostException("API URL is missing.");
-            }
-
-            return true;
-        }
+       
 
         public static bool ColumnValidation(Column column, CloudTable cloudtable)
         {
@@ -78,7 +65,7 @@ namespace CB
             return true;
         }
 
-        internal static void _tableValidation(string tableName)
+        internal static void _TableValidation(string tableName)
         {
             if (String.IsNullOrWhiteSpace(tableName)) //if table name is empty
                 throw new CB.Exception.CloudBoostException("Table name cannot be empty");

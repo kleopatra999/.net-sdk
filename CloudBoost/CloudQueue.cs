@@ -48,7 +48,7 @@ namespace CB
         }
 
 
-        public string retry
+        public string Retry
         {
             get
             {
@@ -59,12 +59,12 @@ namespace CB
                 if (dictionary["queueType"].ToString() != "push")
                     throw new CB.Exception.CloudBoostException("Queue Type should be push to set this property");
 
-                dictionary["retry"] = retry;
+                dictionary["retry"] = Retry;
                 _IsModified(this, "retry");
             }
         }
 
-        public int size
+        public int Size
         {
             get
             {
@@ -79,7 +79,7 @@ namespace CB
             }
         }
 
-        public string name
+        public string Name
         {
             get
             {
@@ -87,7 +87,7 @@ namespace CB
             }
         }
 
-        public List<Object> subscribers
+        public List<Object> Subscribers
         {
             get
             {
@@ -95,7 +95,7 @@ namespace CB
             }
         }
 
-        public string type
+        public string Type
         {
             get
             {
@@ -121,7 +121,7 @@ namespace CB
             }
         }
 
-        public string id
+        public string ID
         {
             get
             {
@@ -129,7 +129,7 @@ namespace CB
             }
         }
 
-        public DateTime createdAt
+        public DateTime CreatedAt
         {
             get
             {
@@ -137,7 +137,7 @@ namespace CB
             }
         }
 
-        public DateTime updatedAt
+        public DateTime UpdatedAt
         {
             get
             {
@@ -145,7 +145,7 @@ namespace CB
             }
         }
 
-        public DateTime expires
+        public DateTime Expires
         {
             get
             {
@@ -153,7 +153,7 @@ namespace CB
             }
         }
 
-        public async Task<QueueMessage> addMessageAsync(List<Object> queueMessage)
+        public async Task<QueueMessage> AddMessageAsync(List<Object> queueMessage)
         {
             List<Object> messages = new List<Object>();
             for (int i = 0; i < queueMessage.Count; i++)
@@ -175,14 +175,14 @@ namespace CB
             return qMessage;
         }
 
-        public async Task<CB.QueueMessage> addMessageAsync(string queueMessage)
+        public async Task<CB.QueueMessage> AddMessageAsync(string queueMessage)
         {
             List<Object> message = new List<Object>();
             message.Add(queueMessage);
-            return await addMessageAsync(message);
+            return await AddMessageAsync(message);
         }
 
-        public async Task<CB.QueueMessage> updateMessageAsync(List<Object> queueMessage)
+        public async Task<CB.QueueMessage> UpdateMessageAsync(List<Object> queueMessage)
         {
             List<Object> messages = new List<Object>();
             for (int i = 0; i < queueMessage.Count; i++)
@@ -191,18 +191,18 @@ namespace CB
                 messages.Add(queueMessage.ElementAt(i));
             }
 
-            return await this.addMessageAsync(queueMessage);
+            return await this.AddMessageAsync(queueMessage);
 
         }
 
-        public async Task<CB.QueueMessage> updateMessageAsync(string queueMessage)
+        public async Task<CB.QueueMessage> UpdateMessageAsync(string queueMessage)
         {
             List<Object> message = new List<Object>();
             message.Add(queueMessage);
-            return await updateMessageAsync(message);
+            return await UpdateMessageAsync(message);
         }
 
-        public async Task<CB.QueueMessage> getMessageAsync(int count)
+        public async Task<CB.QueueMessage> GetMessageAsync(int count)
         {
             var thisObj = this;
             Dictionary<string, Object> postData = new Dictionary<string, object>();
@@ -217,7 +217,7 @@ namespace CB
             return qMessage;
         }
 
-        public async Task<CB.QueueMessage> getMessageAsync()
+        public async Task<CB.QueueMessage> GetMessageAsync()
         {
             var thisObj = this;
             Dictionary<string, Object> postData = new Dictionary<string, object>();
@@ -231,12 +231,12 @@ namespace CB
             return qMessage;
         }
 
-        public async Task<CloudQueue> getAllMessagesAsync()
+        public async Task<CloudQueue> GetAllMessagesAsync()
         {
             var thisObj = this;
             Dictionary<string, Object> postData = new Dictionary<string, object>();
     
-            var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message/" + id;
+            var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message/" + ID;
 
             var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, postData);
 
@@ -245,7 +245,7 @@ namespace CB
             return this;
         }
 
-        public async Task<CB.QueueMessage> getMessageById(string id)
+        public async Task<CB.QueueMessage> GetMessageByID(string id)
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
 
@@ -378,14 +378,14 @@ namespace CB
 
         public async Task<CloudQueue> RefreshMessageTimeoutAsync(QueueMessage id, DateTime timeout)
         {
-            if(id.id == null){
+            if(id.ID == null){
                 throw new CB.Exception.CloudBoostException("Queue Message should have an id");
             }
             
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("timeout", timeout);
 
-            var url =  CB.CloudApp.ApiUrl+ "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/" + id +"/refresh-message-timeout";
+            var url =  CB.CloudApp.ApiUrl+ "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/" + ID +"/refresh-message-timeout";
 
             var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
 
@@ -399,7 +399,7 @@ namespace CB
             string _id;
             if (id.GetType() == typeof(CB.QueueMessage))
             {
-                _id = ((QueueMessage)id).id;
+                _id = ((QueueMessage)id).ID;
             }
             else
             {
@@ -495,7 +495,7 @@ namespace CB
             dictionary.Add("_isModified", true);
         }
 
-        public object message
+        public object Message
         {
             get
             {
@@ -522,7 +522,7 @@ namespace CB
 
         }
 
-        public string id
+        public string ID
         {
             get
             {
@@ -530,7 +530,7 @@ namespace CB
             }
         }
 
-        public DateTime createdAt
+        public DateTime CreatedAt
         {
             get
             {
@@ -543,7 +543,7 @@ namespace CB
             }
         }
 
-        public DateTime updatedAt
+        public DateTime UpdatedAt
         {
             get
             {
@@ -556,7 +556,7 @@ namespace CB
             }
         }
 
-        public DateTime expires
+        public DateTime Expires
         {
             get
             {
@@ -569,7 +569,7 @@ namespace CB
             }
         }
 
-        public DateTime timeout
+        public DateTime Timeout
         {
             get
             {
@@ -582,7 +582,7 @@ namespace CB
             }
         }
 
-        public int delay
+        public int Delay
         {
             get
             {

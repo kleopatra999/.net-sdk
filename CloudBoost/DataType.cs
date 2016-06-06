@@ -8,6 +8,6 @@ namespace CB
 {
     public enum DataType
     {
-        Text, Number, EncryptedText, File, GeoPoint, URL, Email, Boolean, DateTime, Object, Relation, List, Id,ACL
+        Text, Number, EncryptedText, File, GeoPoint, URL, Email, Boolean, DateTime, Object, Relation, List, ID, ACL
     }
 }
