@@ -27,20 +27,16 @@ namespace CB
 
         }
 
-        public CloudObject(string tableName, string id)
-        {
-            dictionary.Add("_tableName", tableName);
-            dictionary.Add("_type", "custom");
-            dictionary.Add("ACL", (new CB.ACL()));
-            dictionary["_modifiedColumns"] = new ArrayList();
-            dictionary.Add("_isModified", false);
-        }
-
         public CB.ACL ACL
         {
             get
             {
-                return (CB.ACL)dictionary["ACL"];
+                if (dictionary.ContainsKey("ACL") == true && dictionary["ACL"] != null)
+                {
+                    return (CB.ACL)dictionary["ACL"];
+                }
+
+                return null;
             }
             set
             {
@@ -58,7 +54,13 @@ namespace CB
         {
             get
             {
-                return (string)dictionary["_id"];
+                if (dictionary.ContainsKey("_id") == true && dictionary["_id"]!=null)
+                {
+                    return (string)dictionary["_id"];
+                }
+
+                return null;
+                
             }
             set
             {
@@ -73,11 +75,14 @@ namespace CB
 
         }
 
-        public DateTime CreatedAt
+        public DateTime? CreatedAt
         {
             get
             {
-                return (DateTime)dictionary["createdAt"];
+                if (dictionary.ContainsKey("createdAt") && dictionary["createdAt"] != null)
+                    return (DateTime)dictionary["createdAt"];
+                else
+                    return null;
             }
             set
             {
@@ -97,7 +102,10 @@ namespace CB
         {
             get
             {
-                return (string)dictionary["_tableName"];
+                if (dictionary.ContainsKey("_tableName") && dictionary["_tableName"] != null)
+                    return (string)dictionary["_tableName"];
+                else
+                    return null;
             }
             set
             {
@@ -112,11 +120,14 @@ namespace CB
 
         }
 
-        public DateTime UpdatedAt
+        public DateTime? UpdatedAt
         {
             get
             {
-                return (DateTime)dictionary["updatedAt"];
+                if (dictionary.ContainsKey("updatedAt") && dictionary["updatedAt"] != null)
+                    return (DateTime)dictionary["updatedAt"];
+                else
+                    return null;
             }
             set
             {
@@ -131,23 +142,21 @@ namespace CB
 
         }
 
-        public DateTime Expires
+        public DateTime? Expires
         {
             get
             {
-                return (DateTime)dictionary["expires"];
+                if (dictionary.ContainsKey("expires")==true && dictionary["expires"]!=null)
+                    return (DateTime)dictionary["expires"];
+                else
+                    return null;
             }
             set
             {
                 if (value != null)
                 {
-                    if (value.GetType() == typeof(DateTime))
-                    {
-                        dictionary["expires"] = value;
-                        _IsModified(this, "expires");
-                    }
-                    else
-                        throw new Exception.CloudBoostException("Value is not of type DateTime");
+                    dictionary["expires"] = value;
+                    _IsModified(this, "expires");
                 }                
             }
 
@@ -176,7 +185,18 @@ namespace CB
 
         public Object Get(string columnName)
         {
-            return dictionary[columnName];
+            if (dictionary.ContainsKey(columnName))
+                return dictionary[columnName];
+            else
+                return null;
+        }
+
+        public T Get<T>(string columnName)
+        {
+            if (dictionary.ContainsKey(columnName))
+                return (T)Convert.ChangeType(dictionary[columnName], typeof(T));
+            else
+                return default(T);
         }
 
         public void Unset(string columnName)
@@ -253,31 +273,35 @@ namespace CB
                 throw new CB.Exception.CloudBoostException(columnName + " is a keyword. Please choose a different column name.");
             }
 
-            this.dictionary[columnName] = new CB.CloudObject(objectTableName, objectId);
+            this.dictionary[columnName] = new CB.CloudObject(objectTableName);
             _IsModified(this, columnName);
         }
         public async Task<CloudObject> SaveAsync()
         {
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", CB.CloudObject.Serialize(this.dictionary));
+            postData["document"] = dictionary;
             string url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
-            
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
 
-            return CB.CloudObject.DeSerialize(result, this);
+            Dictionary<string, Object> result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
+
+            this.dictionary = result;
+
+            return this;
         }
 
         public async Task<CloudObject> DeleteAsync()
         {
 
             Dictionary<string, Object> postData = new Dictionary<string, object>();
-            postData.Add("document", CB.CloudObject.Serialize(this.dictionary));
+            postData.Add("document", this.dictionary);
+            postData.Add("method", "DELETE");
+       
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
 
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.DELETE, url, postData);
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
 
-            this.dictionary = (Dictionary<string, Object>)result;
+            dictionary = result;
 
             return this;
         }
@@ -287,8 +311,6 @@ namespace CB
             if (dictionary["_id"] == null)
             {
                 throw new Exception.CloudBoostException("Can't fetch an object which is not saved");
-             
-                //return this;
             }
 
             var query = new CloudQuery(dictionary["_tableName"].ToString());
@@ -309,7 +331,7 @@ namespace CB
             var array = new ArrayList();
             for (int i = 0; i < objectArray.Count; i++)
             {
-                array.Add(CB.CloudObject.Serialize(((CB.CloudObject)objectArray[i]).dictionary));
+                array.Add(((CloudObject)objectArray[i]).dictionary);
             }
             postData.Add("document", array);
 
@@ -323,7 +345,7 @@ namespace CB
 
             for (int i = 0; i < objectList.Count; i++)
             {
-                var obj = new CloudObject(objectList[i]["_tableName"].ToString(), objectList[i]["_id"].ToString());
+                var obj = new CloudObject(objectList[i]["_tableName"].ToString());
                 obj.dictionary = objectList[i];
                 objects.Add(obj);
             }
@@ -337,7 +359,7 @@ namespace CB
             var array = new ArrayList();
             for (int i = 0; i < objectArray.Count; i++)
             {
-                array.Add(CB.CloudObject.Serialize(((CB.CloudObject)objectArray[i]).dictionary));
+                array.Add(((CloudObject)objectArray[i]).dictionary);
             }
             postData.Add("document", array);
 
@@ -351,7 +373,7 @@ namespace CB
 
             for (int i = 0; i < objectList.Count; i++)
             {
-                var obj = new CloudObject(objectList[i]["_tableName"].ToString(), objectList[i]["_id"].ToString());
+                var obj = new CloudObject(objectList[i]["_tableName"].ToString());
                 obj.dictionary = objectList[i];
                 objects.Add(obj);
             }
@@ -359,65 +381,6 @@ namespace CB
             return objects;
         }
 
-        protected static Dictionary<string, Object> Serialize(Dictionary<string, Object> data){
-            Dictionary<string, Object> dic = new Dictionary<string, object>();
-
-            foreach (var param in data)
-            {
-                if (param.Key == "ACL")
-                {
-                    dic["ACL"] = ((CB.ACL)param.Value).dictionary; 
-                }
-                else if (param.Key == "expires")
-                {
-                    dic["expires"] = null;
-                }
-                else if (param.Key == "isSearchable")
-                {
-                }
-                else if ((param.Value).GetType() == typeof(CB.CloudObject))
-                {
-                    dic[param.Key] = CB.CloudObject.Serialize(((CB.CloudObject)param.Value).dictionary);
-                }
-                else
-                {
-                    dic[param.Key] = param.Value;
-                }
-
-            }
-            return dic;
-        }
-
-        internal static CB.CloudObject DeSerialize(Dictionary<string, Object> data, CB.CloudObject obj)
-        {
-            Dictionary<string, Object> dic = new Dictionary<string, object>();
-
-            foreach (var param in data)
-            {
-                if (param.Key == "ACL")
-                {
-                    var acl = new CB.ACL();
-                    //acl.dictionary = ((CB.ACL)param.Value).dictionary;
-                    obj.dictionary[param.Key] = acl;
-                }
-                else if (param.Key == "expires")
-                {
-
-                }
-                else if ((param.Value).GetType() == typeof(CB.CloudObject))
-                {
-                    var cbObj = new CB.CloudObject(((CB.CloudObject)param.Value).TableName);
-                    obj.dictionary[param.Key] = CB.CloudObject.DeSerialize(((CB.CloudObject)param.Value).dictionary, cbObj);
-                }
-                else
-                {
-                    obj.dictionary[param.Key] = param.Value;
-                }
-
-            }
-            
-            return obj;
-        }
         protected static void _IsModified(CB.CloudObject cbObj, string columnName)
         {
             cbObj.dictionary["_isModified"] = true;

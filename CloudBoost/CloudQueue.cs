@@ -68,11 +68,18 @@ namespace CB
         {
             get
             {
-                if (dictionary["size"] != null)
+                try
                 {
-                    return (int)dictionary["size"];
+                    if (dictionary["size"] != null)
+                    {
+                        return (int)dictionary["size"];
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-                else
+                catch (System.Exception e)
                 {
                     return 0;
                 }
@@ -153,7 +160,7 @@ namespace CB
             }
         }
 
-        public async Task<QueueMessage> AddMessageAsync(List<Object> queueMessage)
+        public async Task<QueueMessage> AddMessageAsync(List<CB.QueueMessage> queueMessage)
         {
             List<Object> messages = new List<Object>();
             for (int i = 0; i < queueMessage.Count; i++)
@@ -175,30 +182,51 @@ namespace CB
             return qMessage;
         }
 
+        public async Task<QueueMessage> AddMessageAsync(CB.QueueMessage queueMessage)
+        {
+            
+
+            dictionary["messages"] =  queueMessage.Message;
+
+            Dictionary<string, Object> postData = new Dictionary<string, object>();
+            postData.Add("document", this);
+
+            var url = CB.CloudApp.ApiUrl + "/queue/" + CB.CloudApp.AppID + "/" + dictionary["name"] + "/message";
+
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
+            Dictionary<string, object> dic = (Dictionary<string, Object>)result;
+            var qMessage = new CB.QueueMessage(dic["message"]);
+            qMessage.dictionary = dic;
+            return qMessage;
+        }
+
         public async Task<CB.QueueMessage> AddMessageAsync(string queueMessage)
         {
-            List<Object> message = new List<Object>();
-            message.Add(queueMessage);
+            CB.QueueMessage message = new CB.QueueMessage();
+            message.Message = queueMessage;
             return await AddMessageAsync(message);
         }
 
-        public async Task<CB.QueueMessage> UpdateMessageAsync(List<Object> queueMessage)
+        public async Task<CB.QueueMessage> UpdateMessageAsync(List<CB.QueueMessage> queueMessage)
         {
             List<Object> messages = new List<Object>();
             for (int i = 0; i < queueMessage.Count; i++)
             {
-                //TODO: check for message id
                 messages.Add(queueMessage.ElementAt(i));
             }
 
             return await this.AddMessageAsync(queueMessage);
+        }
 
+        public async Task<CB.QueueMessage> UpdateMessageAsync(CB.QueueMessage queueMessage)
+        {
+            return await this.AddMessageAsync(queueMessage);
         }
 
         public async Task<CB.QueueMessage> UpdateMessageAsync(string queueMessage)
         {
-            List<Object> message = new List<Object>();
-            message.Add(queueMessage);
+            CB.QueueMessage message = new CB.QueueMessage();
+            message.Message = queueMessage;
             return await UpdateMessageAsync(message);
         }
 

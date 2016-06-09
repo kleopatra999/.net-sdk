@@ -8,7 +8,7 @@ namespace CB.Test.Util
 {
     class Methods
     {
-        public static String _makeString()
+        internal static String MakeString()
         {
             char[] chars = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
             StringBuilder sb = new StringBuilder();
@@ -21,10 +21,9 @@ namespace CB.Test.Util
             return sb.ToString();
         }
 
-        public static String _makeEmail()
+        internal static String MakeEmail()
         {
-            string email = CB.Test.Util.Methods._makeString() + "@abc.com";
-
+            string email = CB.Test.Util.Methods.MakeString() + "@abc.com";
             return email;
         }
     }

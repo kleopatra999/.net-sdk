@@ -20,7 +20,7 @@ namespace CB
             ((ArrayList)this.dictionary["_modifiedColumns"]).Add("updatedAt");
             ((ArrayList)this.dictionary["_modifiedColumns"]).Add("ACL");
             ((ArrayList)this.dictionary["_modifiedColumns"]).Add("expires");
-            dictionary.Add("_isModified", true);
+            dictionary["_isModified"] = true;
         }
 
         public string Username
@@ -81,7 +81,7 @@ namespace CB
 
         }
 
-        public async Task<CloudUser> Signup()
+        public async Task<CloudUser> SignupAsync()
         {
             if (this.dictionary["username"] == null)
             {
@@ -106,7 +106,7 @@ namespace CB
             return this;
         }
 
-        public async Task<CloudUser> Login()
+        public async Task<CloudUser> LoginAsync()
         {
             if (this.dictionary["username"] == null)
             {
@@ -127,7 +127,7 @@ namespace CB
             return this;
         }
 
-        public async Task<CloudUser> Logout()
+        public async Task<CloudUser> LogoutAsync()
         {
             if (this.dictionary["username"] == null)
             {
@@ -163,7 +163,7 @@ namespace CB
             return (((ArrayList)(this.Get("roles"))).IndexOf(role.ID) >= 0);
         }
 
-        public static async Task<object> ResetPassword(string email)
+        public static async Task<object> ResetPasswordAsync(string email)
         {
             if (email == null)
             {
@@ -178,7 +178,7 @@ namespace CB
             return result;
         }
 
-        public static async Task<object> ChangePassword(string oldPassword, string newPassword)
+        public static async Task<object> ChangePasswordAsync(string oldPassword, string newPassword)
         {
             var param = new Dictionary<string, Object>();
             param["oldPassword"] = oldPassword;
@@ -189,7 +189,7 @@ namespace CB
             return result;
         }
 
-        public async Task<CloudUser> AddToRole(CloudRole role)
+        public async Task<CloudUser> AddToRoleAsync(CloudRole role)
         {
             if (this.ID == null)
             {
@@ -206,7 +206,7 @@ namespace CB
 
         }
 
-        public async Task<CloudUser> RemoveFromRole(CloudRole role)
+        public async Task<CloudUser> RemoveFromRoleAsync(CloudRole role)
         {
             if (this.ID == null)
             {

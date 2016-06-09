@@ -19,7 +19,7 @@ namespace CB
             ((ArrayList)this.dictionary["_modifiedColumns"]).Add("ACL");
             ((ArrayList)this.dictionary["_modifiedColumns"]).Add("expires");
             ((ArrayList)this.dictionary["_modifiedColumns"]).Add("name");
-            dictionary.Add("_isModified", true);
+            dictionary["_isModified"] = true;
         }
 
         public string Name

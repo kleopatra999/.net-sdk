@@ -12,18 +12,18 @@ namespace CB.Test.Util
         public static void InitWithMasterKey()
         {
             InitAppID();
-            CloudApp.AppKey = "aedb79b1-dbf1-44b5-8359-39496db1df87";
+            CloudApp.AppKey = "e8b6be17-1bc6-4d54-a141-1a67b647851a";
         }
 
         public static void InitWithClientKey()
         {
             InitAppID();
-            CloudApp.AppKey = "cfc1c255-6bfe-49e6-a46e-26906107fc4e";
+            CloudApp.AppKey = "312e7982-32f6-46a9-9f17-fa38ac4587e0";
         }
 
         public static void InitAppID()
         {
-            CloudApp.AppID = "ophskdrnsghu";
+            CloudApp.AppID = "jmbcerpdfnbp";
         }
     }
 }

@@ -40,7 +40,7 @@ namespace CB
 
         public CloudQuery EqualTo(string columnName, Object data)
         {
-            if (columnName == "ID")
+            if (columnName == "ID" || columnName == "id")
             {
                 columnName = "_id";
             }
@@ -553,7 +553,7 @@ namespace CB
             postData["query"] = this.dictionary["query"];
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", this.dictionary);
+            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/count", this.dictionary);
             return (int)result;
         }
 
@@ -566,7 +566,7 @@ namespace CB
             postData["sort"] = this.dictionary["sort"];
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, "/" + this.dictionary["tableName"] + "/distinct", postData);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/distinct", postData);
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
             return list;
         }
@@ -580,7 +580,7 @@ namespace CB
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
 
-            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", postData);
+            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/find", postData);
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
             return list;
         }
@@ -604,10 +604,10 @@ namespace CB
                 this.Limit = totalItemsInPage;
             }
 
-            var findTask = Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/find", this.dictionary);
+            var findTask = Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/ " + this.dictionary["tableName"] + "/find", this.dictionary);
             var countObj = new CB.CloudQuery(this.dictionary["tableName"].ToString());
             countObj.dictionary = this.dictionary;
-            var countTask = Util.CloudRequest.Send <object> (Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/" + this.dictionary["tableName"] + "/count", countObj.dictionary);
+            var countTask = Util.CloudRequest.Send <object> (Util.CloudRequest.Method.POST,  CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/count", countObj.dictionary);
             await Task.WhenAll(findTask, countTask);
             var findResult = await findTask;
             List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(findResult);
@@ -638,14 +638,8 @@ namespace CB
 
         public async Task<CB.CloudObject> GetAsync(string objectId)
         {
-            var postData = new Dictionary<string, Object>();
-            postData["query"] = this.dictionary["query"];
-            postData["select"] = this.dictionary["select"];
-            postData["limit"] = 1;
-            postData["skip"] = 0;
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/get/"+ objectId, postData);
-            var obj = new CloudObject(result["name"].ToString());
-            obj.dictionary = result;
+            this.EqualTo("id", objectId);
+            CB.CloudObject obj = await this.FindOneAsync();
             return obj;
         }
 
@@ -656,8 +650,12 @@ namespace CB
             postData["select"] = this.dictionary["select"];
             postData["sort"] = this.dictionary["sort"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, "/ " + this.dictionary["tableName"] + "/findOne" , postData);
-            var obj = new CloudObject(result["name"].ToString());
+            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/findOne" , postData);
+
+            if (result == null)
+                return null;
+
+            var obj = new CloudObject(result["_tableName"].ToString());
             obj.dictionary = result;
             return obj;
         }

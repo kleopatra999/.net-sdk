@@ -9,30 +9,30 @@ namespace CB
     public class CloudGeoPoint
     {
         internal Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
-        protected double[] coordinates = new double[2];
-        public CloudGeoPoint(double longitude, double latitude)
+        protected decimal[] coordinates = new decimal[2];
+        public CloudGeoPoint(decimal longitude, decimal latitude)
         {
             dictionary.Add("_type", "point");
             dictionary.Add("_isModified", true);
-            if((latitude >= -90.0 && latitude <= 90.0) && (longitude >= -180.0 && longitude <= 180.0))
+            if((latitude >= (decimal)-90.0 && latitude <= (decimal)90.0) && (longitude >= (decimal)-180.0 && longitude <= (decimal)180.0))
             {
                 coordinates[0] = longitude;
-                coordinates[1] = (latitude);
+                coordinates[1] = latitude;
                 dictionary.Add("coordinates", coordinates);
                 dictionary.Add("longitude", longitude);
                 dictionary.Add("latitude", latitude);
             }
             else
             {
-                throw new Exception.CloudBoostException("latitude and longitudes are not in range");
+                throw new Exception.CloudBoostException("Latitude or Longiturde are not in range. Latitude should be in between -90.0 to 90.0 and Longitude should be in between -180 to 180.");
             }
         }
 
-        public double Longitude
+        public decimal Longitude
         {
             get
             {
-                return (double)dictionary["longitude"];
+                return (decimal)dictionary["longitude"];
             }
             set
             {
@@ -51,11 +51,11 @@ namespace CB
             
         }
 
-        public double Latitude
+        public decimal Latitude
         {
             get
             {
-                return (double)dictionary["latitude"];
+                return (decimal)dictionary["latitude"];
             }
             set
             {
@@ -86,7 +86,7 @@ namespace CB
                 if ((double)data >= -90 && (double)data <= -90)
                 {
                     dictionary.Add("latitude", (double)data);
-                    coordinates[1] = (double)data;
+                    coordinates[1] = (decimal)data;
                     dictionary.Add("_isModified", true);
                 }
                 else
@@ -99,7 +99,7 @@ namespace CB
                 if ((double)data >= -180 && (double)data <= -180)
                 {
                     dictionary.Add("longitude", (double)data);
-                    coordinates[0] = (double)data;
+                    coordinates[0] = (decimal)data;
                     dictionary.Add("_isModified", true);
                 }
                 else
@@ -109,38 +109,38 @@ namespace CB
             }
         }
 
-        public double DistanceInKMs(CB.CloudGeoPoint point)
+        public decimal DistanceInKMs(CB.CloudGeoPoint point)
         {
             int earthRedius = 6371; //in Kilometer
             return earthRedius * greatCircleFormula(point);
         }
 
-        public double DistanceInMiles(CB.CloudGeoPoint point)
+        public decimal DistanceInMiles(CB.CloudGeoPoint point)
         {
             int earthRedius = 3959; // in Miles
             return earthRedius * greatCircleFormula(point);
 
         }
 
-        public double DistanceInRadians(CB.CloudGeoPoint point)
+        public decimal DistanceInRadians(CB.CloudGeoPoint point)
         {
             return this.greatCircleFormula(point);
         }
 
-        private double greatCircleFormula(CB.CloudGeoPoint point)
+        private decimal greatCircleFormula(CB.CloudGeoPoint point)
         {
 
-            coordinates = (double[])dictionary["coordinates"];
-            point.coordinates = (double[])point.dictionary["coordinates"];
-            
-            double dLat = toRad(coordinates[1] - point.coordinates[1]);
-            double dLon = toRad(coordinates[0] - point.coordinates[0]);
+            coordinates = (decimal[])dictionary["coordinates"];
+            point.coordinates = (decimal[])point.dictionary["coordinates"];
 
-            double lat1 = toRad(point.coordinates[1]);
-            double lat2 = toRad(coordinates[1]);
+            decimal dLat = (decimal)toRad((double)(coordinates[1] - point.coordinates[1]));
+            decimal dLon = (decimal)toRad((double)(coordinates[0] - point.coordinates[0]));
 
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            decimal lat1 = (decimal)toRad((double)point.coordinates[1]);
+            decimal lat2 = (decimal)toRad((double)coordinates[1]);
+
+            decimal a = (decimal)(Math.Sin((double)dLat / 2) * Math.Sin((double)dLat / 2) + Math.Sin((double)dLon / 2) * Math.Sin((double)dLon / 2) * Math.Cos((double)lat1) * Math.Cos((double)lat2));
+            decimal c = (decimal)(2 * Math.Atan2(Math.Sqrt((double)a), Math.Sqrt(1 - (double)a)));
 
             return c;
         }
