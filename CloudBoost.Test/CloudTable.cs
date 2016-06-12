@@ -3,15 +3,15 @@
 //using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
-//using NUnit.Framework;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 //namespace CB.Test
 //{
-//    [TestFixture]
+//    [TestClass]
 //    public class CloudTable
 //    {
 //        string tableName = "";
 
-//        [Test]
+//        [TestMethod]
 //        public void x001_InitAppWithMasterKey()
 //        {
 //            tableName = CB.Test.Util.Methods.MakeString();
@@ -20,7 +20,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x0_GetAllTables()
 //        {
 //            Util.Keys.InitWithMasterKey();
@@ -37,7 +37,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x002_DeleteTables()
 //        {
 //            Util.Keys.InitWithMasterKey();
@@ -54,7 +54,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x003_CreateEmployeeTable()
 //        {
 //            Util.Keys.InitWithMasterKey();
@@ -75,23 +75,23 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x004_CreateCompanyTable()
 //        {
 //            var obj = new CB.CloudTable("Company");
 //            var Revenue = new CB.Column("Revenue");
 //            Revenue.DataType = CB.DataType.Number.ToString();
 //            var Name = new CB.Column("Name");
-//            Name.DataType =CB.DataType.Text.ToString();
+//            Name.DataType = CB.DataType.Text.ToString();
 //            obj.AddColumn(Revenue);
 //            obj.AddColumn(Name);
-           
+
 //            obj = await obj.SaveAsync();
 
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x005_CreateAddressTable()
 //        {
 //            Util.Keys.InitWithMasterKey();
@@ -106,7 +106,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x005_ShouldUpdateANewColumnInATable()
 //        {
 
@@ -134,7 +134,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x006_CreateDeleteTable()
 //        {
 //            Util.Keys.InitWithMasterKey();
@@ -146,7 +146,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x007_CreateDeleteTable()
 //        {
 
@@ -160,7 +160,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task x008_AddColumnToTableAfterSave()
 //        {
 
@@ -328,10 +328,10 @@
 
 //        }
 
-        
+
 //        public async Task x012_ShouldNotDeleteTheDefaultColumnOfTheTable()
 //        {
-//            var tableName = CB.Test.Util.Methods.MakeString(); 
+//            var tableName = CB.Test.Util.Methods.MakeString();
 
 //            var obj = new CB.CloudTable(tableName);
 //            obj = await obj.SaveAsync();
@@ -351,8 +351,6 @@
 
 //        }
 
-
 //    }
 //}
 
-   

@@ -11,16 +11,16 @@ namespace CB
     {
         Dictionary<string, Object> dictionary = new Dictionary<string, Object>();
         public CloudQuery(string tableName)
-        { //constructor for the class CloudQueryfd
+        { 
             dictionary["tableName"] = tableName;
             dictionary["query"] = new Dictionary<string, Object>();
             dictionary["$include"] = new ArrayList();
             dictionary["select"] = new Dictionary<string, Object>();
             dictionary["sort"] = new Dictionary<string, Object>();
             dictionary["skip"] = 0;
-            dictionary["limit"] = 20; //limit to 20 documents by default.
+            dictionary["limit"] = 10; //limit to 10 documents by default.
         }
-        // Logical operations
+        
         public static CloudQuery Or(CloudQuery query1, CloudQuery query2)
         {
             if (query1.dictionary["tableName"].ToString()!= query2.dictionary["tableName"].ToString())
@@ -40,10 +40,8 @@ namespace CB
 
         public CloudQuery EqualTo(string columnName, Object data)
         {
-            if (columnName == "ID" || columnName == "id")
-            {
-                columnName = "_id";
-            }
+            _MakeColumnDictionary(ref columnName);
+
             ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = data;
 
             return this;
@@ -51,10 +49,7 @@ namespace CB
 
         public CloudQuery Include(string columnName)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
+            
             ((ArrayList)((Dictionary<string, Object>)(this.dictionary["query"]))["$include"]).Add(columnName);
 
             return this;
@@ -62,15 +57,7 @@ namespace CB
 
         public CloudQuery NotEqualTo(string columnName, Object data)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
-
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
+            _MakeColumnDictionary(ref columnName);
 
             ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$ne"] = data;
 
@@ -79,15 +66,7 @@ namespace CB
 
         public CloudQuery GreaterThan(string columnName, Object data)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
-
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
+            _MakeColumnDictionary(ref columnName);
 
             ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$gt"] = data;
 
@@ -95,15 +74,7 @@ namespace CB
         }
         public CloudQuery GreaterThanEqualTo(string columnName, Object data)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
-
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
+            _MakeColumnDictionary(ref columnName);
 
             ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$gte"] = data;
 
@@ -111,31 +82,15 @@ namespace CB
         }
         public CloudQuery LessThan(string columnName, Object data)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
+            _MakeColumnDictionary(ref columnName);
 
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
-
-            ((Dictionary<string, Object>)(this.dictionary[columnName]))["$lt"] = data;
+            ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$lt"] = data;
 
             return this;
         }
         public CloudQuery LessThanEqualTo(string columnName, Object data)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
-
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
+            _MakeColumnDictionary(ref columnName);
 
             ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$lte"] = data;
 
@@ -146,21 +101,23 @@ namespace CB
         //Sorting
         public CloudQuery OrderByAsc(string columnName)
         {
-            if (columnName == "ID")
+            if (columnName == "ID" || columnName == "id")
             {
                 columnName = "_id";
             }
-           ((Dictionary<string, Object>)(this.dictionary["sort"]))[columnName] = 1;
+
+            ((Dictionary<string, Object>)(this.dictionary["sort"]))[columnName] = 1;
 
             return this;
         }
         public CloudQuery OrderByDesc(string columnName)
         {
-            if (columnName == "ID")
+            if (columnName == "ID" || columnName == "id")
             {
                 columnName = "_id";
             }
-           ((Dictionary<string, Object>)(this.dictionary["sort"]))[columnName] = -1;
+
+            ((Dictionary<string, Object>)(this.dictionary["sort"]))[columnName] = -1;
 
             return this;
         }
@@ -174,30 +131,6 @@ namespace CB
             set
             {
                 dictionary["limit"] = value;
-            }
-        }
-
-        public Dictionary<string, Object> Query
-        {
-            get
-            {
-                return (Dictionary<string, Object>)dictionary["query"];
-            }
-            set
-            {
-                dictionary["query"] = value;
-            }
-        }
-
-        public Dictionary<string, Object> Sort
-        {
-            get
-            {
-                return (Dictionary<string, Object>)dictionary["sort"];
-            }
-            set
-            {
-                dictionary["sort"] = value;
             }
         }
 
@@ -216,7 +149,7 @@ namespace CB
         //select/deselect columns to show
         public CloudQuery SelectColumn(string columnName)
         {
-            if (columnName == "ID")
+            if (columnName == "ID" || columnName == "id")
             {
                 columnName = "_id";
             }
@@ -230,7 +163,7 @@ namespace CB
         {
             for (int i = 0; i < columnNames.Length; i++)
             {
-                if (columnNames[i] == "ID")
+                if (columnNames[i] == "ID" || columnNames[i] == "id")
                 {
                     columnNames[i] = "_id";
                 }
@@ -244,7 +177,7 @@ namespace CB
 
         public CloudQuery DoNotSelectColumn(string columnName)
         {
-            if (columnName == "ID")
+            if (columnName == "ID" || columnName == "id")
             {
                 columnName = "_id";
             }
@@ -259,7 +192,7 @@ namespace CB
         {
             for (int i = 0; i < columnNames.Length; i++)
             {
-                if (columnNames[i] == "ID")
+                if (columnNames[i] == "ID" || columnNames[i] == "id")
                 {
                     columnNames[i] = "_id";
                 }
@@ -272,24 +205,17 @@ namespace CB
 
         public CloudQuery ContainedIn(string columnName, object data)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
+            _MakeColumnDictionary(ref columnName);
 
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
 
-            if(((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$in"] == null)
+            if(!((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]).ContainsKey("$in"))
             {
                 ((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$in"] = new ArrayList();
             }
 
             ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$in"]).Add(data);
 
-            if (((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]) != null && ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$nin"]) != null && ((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$nin"]).GetType() == typeof(ArrayList))
+            if ((((Dictionary<string, Object>)(this.dictionary["query"])).ContainsKey(columnName)) && ((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]).ContainsKey("$nin") && (((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$nin"]).GetType() == typeof(ArrayList))
             {
                 if (((ArrayList)((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$nin"]).IndexOf(data) > -1)
                 {
@@ -313,15 +239,7 @@ namespace CB
 
         public CloudQuery NotContainedIn(string columnName, string data)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
-
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
+            _MakeColumnDictionary(ref columnName);
 
             if (((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$nin"] == null)
             {
@@ -355,51 +273,27 @@ namespace CB
 
         public CloudQuery Exists(string columnName)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
+            _MakeColumnDictionary(ref columnName);
 
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
-
-           ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$exists"] = true;
+            ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$exists"] = true;
 
             return this;
         }
 
         public CloudQuery DoesNotExist(string columnName)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
+            _MakeColumnDictionary(ref columnName);
 
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
-
-           ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$exists"] = false;
+            ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$exists"] = false;
 
             return this;
         }
 
         public CloudQuery ContainsAll(string columnName, Object[] values)
         {
-            if (columnName == "ID")
-            {
-                columnName = "_id";
-            }
+            _MakeColumnDictionary(ref columnName);
 
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
-
-           (((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$all"] = values;
+            (((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$all"] = values;
 
             return this;
         }
@@ -408,39 +302,27 @@ namespace CB
         {
             var regex = '^' + value;
 
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
+            _MakeColumnDictionary(ref columnName);
 
-            if (((Dictionary<string, Object>)(this.dictionary["query"])) != null)
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))["$regex"] = regex;
-                ((Dictionary<string, Object>)(this.dictionary["query"]))["$options"] = "im";
-            }
-
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$regex"] = regex;
+            ((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$options"] = "im";
+            
             return this;
         }
 
         public CloudQuery RegEx(string columnName, string value)
         {
-            if (columnName.ToLower() == "id")
-            {
-                columnName = "_" + columnName;
-            }
-
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName].GetType() == typeof(Dictionary<string, Object>))
-            {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
-            }
+            _MakeColumnDictionary(ref columnName);
 
             if (((Dictionary<string, Object>)(this.dictionary["query"])) != null)
             {
-                ((Dictionary<string, Object>)(this.dictionary["query"]))["$regex"] = value;
+                ((Dictionary<string, Object>)((Dictionary<string, Object>)(this.dictionary["query"]))[columnName])["$regex"] = value;
             }
 
             return this;
         }
+
+       
 
         public CloudQuery SubString(string columnName, ArrayList value)
         {
@@ -453,10 +335,8 @@ namespace CB
         {
             for (int i = 0; i < columnName.Count; i++)
             {
-                if (((Dictionary<string, Object>)(this.dictionary["query"]))["$or"] == null || ((Dictionary<string, Object>)(this.dictionary["query"]))["$or"].GetType() == typeof(ArrayList))
-                {
-                    ((Dictionary<string, Object>)(this.dictionary["query"]))["$or"] = new ArrayList();
-                }
+                var temp = "$or";
+                _MakeColumnDictionary(ref temp);
 
                 for (int j = 0; j < value.Count; j++)
                 {
@@ -466,6 +346,7 @@ namespace CB
                     ((ArrayList)((Dictionary<string, Object>)(this.dictionary["query"]))["$or"]).Add(obj);
                 }
             }
+
             return this;
         }
 
@@ -553,11 +434,10 @@ namespace CB
             postData["query"] = this.dictionary["query"];
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.Send<object>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/count", this.dictionary);
-            return (int)result;
+            return await Util.CloudRequest.Send<int>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/count", this.dictionary);
         }
 
-        public async Task<List<CB.CloudObject>> DistinctAsync(string key)
+        public async Task<ArrayList> DistinctAsync(string key)
         {
             var postData = new Dictionary<string, Object>();
             postData["onKey"] = key;
@@ -566,12 +446,10 @@ namespace CB
             postData["sort"] = this.dictionary["sort"];
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/distinct", postData);
-            List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
-            return list;
+            return await Util.CloudRequest.Send<ArrayList>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/distinct", postData);
         }
 
-        public async Task<List<CB.CloudObject>> FindAsync()
+        public async Task<ArrayList> FindAsync()
         {
             var postData = new Dictionary<string, Object>();
             postData["query"] = this.dictionary["query"];
@@ -579,13 +457,10 @@ namespace CB
             postData["sort"] = this.dictionary["sort"];
             postData["limit"] = this.dictionary["limit"];
             postData["skip"] = this.dictionary["skip"];
-
-            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/find", postData);
-            List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(result);
-            return list;
+            return await Util.CloudRequest.Send<ArrayList>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/find", postData);
         }
 
-        public async Task<Dictionary<string, Object>> PaginateAsync(int pageNo, int totalItemsInPage)
+        public async Task<Dictionary<string, object>> PaginateAsync(int pageNo, int totalItemsInPage)
         {
             if (pageNo > 0)
             {
@@ -607,57 +482,57 @@ namespace CB
             var findTask = Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/ " + this.dictionary["tableName"] + "/find", this.dictionary);
             var countObj = new CB.CloudQuery(this.dictionary["tableName"].ToString());
             countObj.dictionary = this.dictionary;
-            var countTask = Util.CloudRequest.Send <object> (Util.CloudRequest.Method.POST,  CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/count", countObj.dictionary);
+            var countTask = Util.CloudRequest.Send<int>(Util.CloudRequest.Method.POST,  CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/count", countObj.dictionary);
             await Task.WhenAll(findTask, countTask);
             var findResult = await findTask;
-            List<CloudObject> list = CB.PrivateMethods.ToCloudObjectList(findResult);
+           
             var countResult = await countTask;
             int count = (int)countResult;
             int totalPages = 0;
-
-            if (countResult != null)
-            {
-                count = 0;
-            }
-            else
-            {
-                totalPages = (int)(count / this.Limit);
-            }
-            
+            totalPages = (int)(count / this.Limit);
             if (totalPages < 0)
             {
                 totalPages = 0;
             }
-
             var resultObject = new Dictionary<string, Object>();
-            resultObject.Add("objectsList", findResult);
+            resultObject.Add("list", findResult);
             resultObject.Add("count", count);
             resultObject.Add("totalPages", totalPages);
             return resultObject;
         }
 
-        public async Task<CB.CloudObject> GetAsync(string objectId)
+        public async Task<T> GetAsync<T>(string objectId)
         {
             this.EqualTo("id", objectId);
-            CB.CloudObject obj = await this.FindOneAsync();
+            T obj = await this.FindOneAsync<T>();
             return obj;
         }
 
-        public async Task<CloudObject> FindOneAsync()
+        public async Task<T> FindOneAsync<T>()
         {
             var postData = new Dictionary<string, Object>();
             postData["query"] = this.dictionary["query"];
             postData["select"] = this.dictionary["select"];
             postData["sort"] = this.dictionary["sort"];
             postData["skip"] = this.dictionary["skip"];
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/findOne" , postData);
+            return await Util.CloudRequest.Send<T>(Util.CloudRequest.Method.POST, CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + this.dictionary["tableName"] + "/findOne" , postData);
+        }
 
-            if (result == null)
-                return null;
+        /// <summary>
+        /// This fucntion makes the column in the query as a dictionary. 
+        /// </summary>
+        /// <param name="columnName">Name of the column</param>
+        private void _MakeColumnDictionary(ref string columnName)
+        {
+            if (columnName == "ID" || columnName == "id")
+            {
+                columnName = "_id";
+            }
 
-            var obj = new CloudObject(result["_tableName"].ToString());
-            obj.dictionary = result;
-            return obj;
+            if (!((Dictionary<string, Object>)(this.dictionary["query"])).ContainsKey(columnName))
+            {
+                ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
+            }
         }
     }
 }

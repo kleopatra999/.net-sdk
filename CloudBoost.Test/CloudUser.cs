@@ -1,181 +1,168 @@
-﻿//using System;
-//using System.Threading.Tasks;
-//using System.Collections.Generic;
-//using System.Linq;
-//using NUnit.Framework;
+﻿using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//namespace CB.Test
-//{
-//    [TestFixture]
-//    public class CloudUser
-//    {
-//        protected string username = Util.Methods.MakeString();
-//        protected string password = "abcd";
-//        [Test]
-//        public async Task CreateNewUser()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            var obj = new CB.CloudUser();
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            obj.Set("email", Util.Methods.MakeString());
-//            await obj.Signup();
-//            if (obj.Username == username)
-//            {
-//                Assert.IsTrue(true);
-//            }
-//            else
-//            {
-//                Assert.Fail("Error Creating User");
-//            }
-//        }
+namespace CB.Test
+{
+    [TestClass]
+    public class CloudUser
+    {
+        protected string username = Util.Methods.MakeString();
+        protected string password = "abcd";
+        [TestMethod]
+        public async Task CreateNewUser()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            var obj = new CB.CloudUser();
+            obj.Set("username", Util.Methods.MakeEmail());
+            obj.Set("password", Util.Methods.MakeEmail());
+            obj.Set("email", Util.Methods.MakeEmail());
+            await obj.SignupAsync();
+            if (obj.Username!=null)
+            {
+                Assert.IsTrue(true);
+            }
+            else
+            {
+                Assert.Fail("Error Creating User");
+            }
+        }
 
-//        [Test]
-//        public async Task ShouldLogoutUser()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            await CB.CloudUser.Current.Logout();
-//        }
+        [TestMethod]
+        public async Task CreateUserAndGetVersion()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            username = Util.Methods.MakeString();
+            var obj = new CB.CloudUser();
+            obj.Set("username", Util.Methods.MakeEmail());
+            obj.Set("password", Util.Methods.MakeEmail());
+            obj.Set("email", Util.Methods.MakeEmail());
+            await obj.SignupAsync();
+            if ( Int32.Parse(obj.Get("_version").ToString()) >= 0)
+            {
+                Assert.IsTrue(true);
+            }
+            else
+            {
+                Assert.Fail("Error Creating User");
+            }
+        }
 
-//        [Test]
-//        public async Task CreateUserAndGetVersion()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            username = Util.Methods.MakeString();
-//            var obj = new CB.CloudUser();
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            obj.Set("email", Util.Methods.MakeString());
-//            await obj.Signup();
-//            if (obj.Username == username && (int)obj.Get("_version")>=0)
-//            {
-//                Assert.IsTrue(true);
-//            }
-//            else
-//            {
-//                Assert.Fail("Error Creating User");
-//            }
-//        }
+        [TestMethod]
+        public async Task QueryOnUser()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            username = Util.Methods.MakeString();
+            var obj = new CB.CloudUser();
+            obj.Set("username", Util.Methods.MakeEmail());
+            obj.Set("password", Util.Methods.MakeEmail());
+            obj.Set("email", Util.Methods.MakeEmail());
+            await obj.SignupAsync();
+            if (Int32.Parse(obj.Get("_version").ToString()) >= 0)
+            {
+                var query = new CB.CloudQuery("User");
+                var response = await query.GetAsync<CB.CloudUser>(obj.ID);
+                Assert.IsTrue(true);
+            }
+            else
+            {
+                Assert.Fail("Error Creating User");
+            }
+        }
+         
+        [TestMethod]
+        public async Task LoginUser()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            var obj = new CB.CloudUser();
+            obj.Set("username", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("password", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("email", CB.Test.Util.Methods.MakeEmail());
 
-//        [Test]
-//        public async Task QueryOnUser()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            username = Util.Methods.MakeString();
-//            var obj = new CB.CloudUser();
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            obj.Set("email", Util.Methods.MakeString());
-//            await obj.Signup();
-//            if (obj.Username == username && (int)obj.Get("_version") >= 0)
-//            {
-//                var query = new CB.CloudQuery("User");
-//                var response = await query.GetAsync(obj.ID);
-//                Assert.IsTrue(true);
-//            }
-//            else
-//            {
-//                Assert.Fail("Error Creating User");
-//            }
-//        }
-//        [Test]
-//        public async Task LogoutUser()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            await CB.CloudUser.Current.Logout();
-//            Assert.IsTrue(true);
-//        }
+            await obj.SignupAsync();
+            await obj.LogoutAsync();
+            await obj.LoginAsync();
+            if (obj.Username == username && CB.CloudUser.Current !=null)
+            {
+                Assert.IsTrue(true);
+            }
+            else
+            {
+                Assert.Fail("User Login Error");
+            }
+        }
 
-//        [Test]
-//        public async Task LoginUser()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            var obj = new CB.CloudUser();
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            await obj.Login();
-//            if (obj.Username == username)
-//            {
-//               Assert.IsTrue(true);
-//            }
-//            else
-//            {
-//                Assert.Fail("user login error");
-//            }
-//        }
+        [TestMethod]
+        public async Task AssignRoleToUser()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            var roleName = Util.Methods.MakeString();
+            var role = new CB.CloudRole(roleName);
+            role.Set("name", roleName);
+            var obj = new CB.CloudUser();
+            obj.Set("username", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("password", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("email", CB.Test.Util.Methods.MakeEmail());
+            await obj.SignupAsync();
+            await role.SaveAsync();
+            await obj.AddToRoleAsync(role);
+            Assert.IsTrue(true);
+        }
 
-//        [Test]
-//        public async Task AssignRoleToUser()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            var roleName = Util.Methods.MakeString();
-//            var role = new CB.CloudRole(roleName);
-//            role.Set("name",roleName);
-//            var obj = new CB.CloudUser();
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            await obj.Login();
-//            await role.SaveAsync();
-//            await obj.AddToRole(role);
-//            Assert.IsTrue(true);
-//        }
+        [TestMethod]
+        public async Task RemoveRoleAssignRoleToUser()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            var obj = new CB.CloudUser();
+            var roleName = Util.Methods.MakeString();
+            var role = new CB.CloudRole(roleName);
+            role.Set("name", roleName);
+            obj.Set("username", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("password", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("email", CB.Test.Util.Methods.MakeEmail());
+            await obj.SignupAsync();
+            await obj.LogoutAsync();
+            await obj.LoginAsync();
+            await role.SaveAsync();
+            await obj.AddToRoleAsync(role);
+            await CB.CloudUser.Current.RemoveFromRoleAsync(role);
+            Assert.IsTrue(true);
+        }
 
-//        [Test]
-//        public async Task RemoveRoleAssignRoleToUser()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            var obj = new CB.CloudUser();
-//            var roleName = Util.Methods.MakeString();
-//            var role = new CB.CloudRole(roleName);
-//            role.Set("name", roleName);
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            await obj.Login();
-//            await role.SaveAsync();
-//            await obj.AddToRole(role);
-//            await CB.CloudUser.Current.RemoveFromRole(role);
-//            Assert.IsTrue(true);
-//        }
+        [TestMethod]
+        public async Task ShouldEncryptUserPassword()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            var obj = new CB.CloudUser();
+            obj.Set("username", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("password", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("email", Util.Methods.MakeEmail());
+            await obj.SaveAsync();
+            Assert.IsTrue(true);
+        }
 
-//        [Test]
-//        public async Task ShouldEncryptUserPassword()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            var obj = new CB.CloudUser();
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            obj.Set("email", Util.Methods.MakeString());
-//            await obj.SaveAsync();
-//            if (obj.Password == username)
-//            {
-//                Assert.IsTrue(true);
-//            }
-//            else
-//            {
-//                Assert.Fail("Error Creating User");
-//            }
-//        }
+        [TestMethod]
+        public async Task CreateNewUserSave()
+        {
+            CB.Test.Util.Keys.InitWithMasterKey();
+            var obj = new CB.CloudUser();
+            obj.Set("username", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("password", CB.Test.Util.Methods.MakeEmail());
+            obj.Set("email", Util.Methods.MakeEmail());
+            await obj.SaveAsync();
+            var query = new CB.CloudQuery("User");
+            var response = await query.GetAsync<CB.CloudUser>(obj.ID);
+            if (response != null)
+            {
+                Assert.IsTrue(true);
+            }
+            else
+            {
+                Assert.Fail("Unable to retrieve User");
+            }
+        }
 
-//        [Test]
-//        public async Task CreateNewUserSave()
-//        {
-//            CB.Test.Util.Keys.InitWithMasterKey();
-//            var obj = new CB.CloudUser();
-//            obj.Set("username", username);
-//            obj.Set("password", password);
-//            obj.Set("email", Util.Methods.MakeString());
-//            await obj.SaveAsync();
-//            var query = new CB.CloudQuery("User");
-//            var response = await query.GetAsync(obj.ID);
-//            if (response != null)
-//            {
-//                Assert.IsTrue(true);
-//            }
-//            else
-//            {
-//                Assert.Fail("Unable to retrieve User");
-//            }
-//        }
-
-//    }
-//}
+    }
+}

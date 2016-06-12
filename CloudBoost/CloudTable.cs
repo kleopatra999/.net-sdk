@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CB.Exception;
-
+using System.Collections;
 
 namespace CB
 {
@@ -166,15 +166,9 @@ namespace CB
             throw new CB.Exception.CloudBoostException("Invalid Column");
         }
 
-        public static async Task<List<CB.CloudTable>> GetAllAsync()
+        public static async Task<ArrayList> GetAllAsync()
         {
-            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/_getAll", null);
-
-            List<CloudTable> tables = CB.PrivateMethods.ToCloudTableList(result);
-
-            var tableDictionaries = result;
-
-            return tables;
+            return await Util.CloudRequest.Send<ArrayList>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/app/" + CB.CloudApp.AppID + "/_getAll", null);
         }
 
         public static async Task<CB.CloudTable> GetAsync(string tableName)

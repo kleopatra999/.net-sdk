@@ -57,11 +57,17 @@ namespace CB.Util
                         postData = new Dictionary<string, object>();
 
                     postData.Add("key", CloudApp.AppKey);
+                    postData.Add("sdk", ".NET");
                     var jsonObj = JsonConvert.SerializeObject(Util.Serializer.Serialize(postData));
                     var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
                     request.Method = method.ToString();
                     request.ContentType = "application/json";
                     request.ContentLength = data.Length;
+
+                    if (CB.CloudApp.Session!=null)
+                    {
+                        request.Headers.Add("sessionID", CB.CloudApp.Session);
+                    }
 
                     using (Stream stream = await request.GetRequestStreamAsync())
                     {
@@ -73,13 +79,26 @@ namespace CB.Util
 
                 var response = await request.GetResponseAsync();
 
-                var responseString = JsonConvert.DeserializeObject<Dictionary<string, Object>>(new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd());
+                if (response.Headers["sessionID"]!=null)
+                {
+                    CB.CloudApp.Session = response.Headers["sessionID"].ToString();
+                }
 
-                if (response == null)
+                var responseString = JsonConvert.DeserializeObject<object>(new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd());
+
+                if (responseString == null)
                     return default(T);
 
                 object val = Util.Serializer.Deserialize(responseString);
-                return (T)Convert.ChangeType(val, typeof(T));
+
+                try
+                {
+                    return (T)val;    
+                }
+                catch (System.Exception e)
+                {
+                    return (T)Convert.ChangeType(val, typeof(T));
+                }
             }
             catch (WebException e)
             {

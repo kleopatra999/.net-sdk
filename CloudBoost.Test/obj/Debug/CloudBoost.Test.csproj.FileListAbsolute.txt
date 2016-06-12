@@ -35,7 +35,6 @@ C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\bin\Debug\nunit
 C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\obj\Debug\CloudBoost.Test.csprojResolveAssemblyReference.cache
 C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\obj\Debug\CloudBoost.Test.dll
 C:\Users\shivam.gupta\Source\Repos\.net-sdk23-04\CloudBoost.Test\obj\Debug\CloudBoost.Test.pdb
-C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.csprojResolveAssemblyReference.cache
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.Test.dll.config
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.Test.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.Test.pdb
@@ -43,13 +42,13 @@ C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.dl
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\log4net.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\nunit.framework.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Windows.winmd
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\SocketIoClientDotNet.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\EngineIoClientDotNet.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.pdb
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\log4net.xml
-C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\nunit.framework.xml
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.csprojResolveAssemblyReference.cache
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.pdb
-C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Newtonsoft.Json.xml

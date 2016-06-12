@@ -1,21 +1,21 @@
 ﻿//using System;
 //using System.Collections.Generic;
 //using System.Threading.Tasks;
-//using NUnit.Framework;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 //namespace CB.Test
 //{
-//    [TestFixture]
+//    [TestClass]
 //    public class CloudFile
 //    {
-//        [Test]
+//        [TestMethod]
 //        public void x001_InitAppWithClientKey()
 //        {
 //            CB.Test.Util.Keys.InitWithClientKey();
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public void SaveFileDataAndName()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -27,7 +27,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ReturnFileWithCloudObject()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -53,7 +53,7 @@
 //            }
 //        }
         
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldSaveFileAndGiveURL()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -72,7 +72,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task DeleteFileWithDataAndName()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -100,7 +100,7 @@
 //            }
 //        }
 
-//        [Test] 
+//        [TestMethod] 
 //        public async Task SaveAndFetchFile()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -120,7 +120,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task IncludeOverFile()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -141,7 +141,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task SaveFileDataAndNameThenFetch()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -165,7 +165,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task SaveFileAndGetRelation()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -189,7 +189,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task GetFileObjectWithNotReadAccess()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -209,7 +209,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShoudNotGetFileWithNoReadAccess()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -230,7 +230,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldNotDeleteFileNoWriteAccess()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();

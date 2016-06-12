@@ -2,14 +2,14 @@
 //using System.Threading.Tasks;
 //using System.Collections.Generic;
 //using System.Linq;
-//using NUnit.Framework;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 //namespace CB.Test
 //{
-//    [TestFixture]
+//    [TestClass]
 //    public class CloudQueue
 //    {
-//        [Test]
+//        [TestMethod]
 //        public async Task NoQueueInDB()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -17,7 +17,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task GetMessageForFutureExpireDate()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -33,7 +33,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddDataIntoQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -43,7 +43,7 @@
 
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task CreateAndDeleteQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -53,7 +53,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddExpireInQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -68,7 +68,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddCurrentTimeAsExpireDate()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -81,7 +81,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task UpdateDataIntoTheQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -97,7 +97,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddMultipleMessageInQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -112,7 +112,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddAndGetDataFromTheQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -133,7 +133,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldPeek()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -159,7 +159,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldGetMessageInFIFO()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -193,7 +193,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldPeekTwoMessageSameTime()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -219,7 +219,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldGetTwoMessageSameTime()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -245,7 +245,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldNotGetMessageWithDelay()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -261,7 +261,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldAbleToGetMessageAfterDelay()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -283,7 +283,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldGetMessageWithId()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -305,7 +305,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldGetNullForInvalidMessageId()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -327,7 +327,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldDeleteMessageWithMessageId()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -349,7 +349,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldDeleteMessageByPassingQueueMessageToFunction()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -371,7 +371,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldNotGetMessageAfterItWasDeleted()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -395,7 +395,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldAddSubscriberToQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -414,7 +414,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldMultipleSubscriberToTheQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -433,7 +433,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task ShouldRemoveSubscriberFromTheQueue()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();

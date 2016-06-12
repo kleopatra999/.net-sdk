@@ -4,21 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CB.Test
 {
-    [TestFixture]
+    [TestClass]
     public class CloudObject
     {
-        [Test]
+        [TestMethod]
         public void x001_InitAppWithClientKey()
         {
             CB.Test.Util.Keys.InitWithClientKey();
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveDataInDateField()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -28,7 +28,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task DoNotSaveIncorrectEmail()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -46,7 +46,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveEmail()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -57,7 +57,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveDataInCloudObjectWithoutFile()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -67,7 +67,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveGeoPoint()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -77,7 +77,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task DoNotSaveStringIntoDate()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -97,7 +97,7 @@ namespace CB.Test
             
         }
 
-        [Test]
+        [TestMethod]
         public void DoNotSetTheId()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -114,7 +114,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task Save()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -133,7 +133,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task UpdateObject()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -164,7 +164,7 @@ namespace CB.Test
 
         }
 
-        [Test]
+        [TestMethod]
         public async Task UpdateSavedObject()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -179,7 +179,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task DeleteObject()
         { 
             CB.Test.Util.Keys.InitWithClientKey();
@@ -190,7 +190,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task RequireFieldTest()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -207,7 +207,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task DoNotSaveWithWrongDataType()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -225,7 +225,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task DuplicationTestInUniqueField()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -248,7 +248,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveArray()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -260,7 +260,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task DoNotSaveWrongDataTypeInArray()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -280,7 +280,7 @@ namespace CB.Test
             }
         }
         
-        [Test]
+        [TestMethod]
         public async Task SaveArrayWithJsonObjects()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -294,7 +294,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveObjectAsRelation()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -307,7 +307,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveRelationWithRelateFunction()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -321,7 +321,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task KeepRelationIntact()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -335,7 +335,7 @@ namespace CB.Test
                 Assert.IsTrue(false);
         }
 
-        [Test]
+        [TestMethod]
         public async Task DoNotSaveWrongRelation()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -357,7 +357,7 @@ namespace CB.Test
 
         }
 
-        [Test]
+        [TestMethod]
         public async Task DoNotSaveDuplicateRelationInUniqueField()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -383,7 +383,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task ShouldModifyListRelationOfSavedObject()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -391,13 +391,13 @@ namespace CB.Test
             obj1.Set("name", "sample");
             var obj2 = new CB.CloudObject("Sample");
             obj2.Set("name", "sample");
-            CB.CloudObject[] objects = { obj1, obj2 };
+            CB.CloudObject[] objs = { obj1, obj2 };
             var obj = new CB.CloudObject("Sample");
             obj.Set("name", "sample");
-            obj.Set("relationArray", objects);
+            obj.Set("relationArray", objs);
             obj = await obj.SaveAsync();
-            CB.CloudObject[] relationArray = (CB.CloudObject[])obj.Get("relationArray");
-            if (relationArray.Length != 2)
+            ArrayList relationArray = (ArrayList)obj.Get("relationArray");
+            if (relationArray.Count != 2)
             {
                 Assert.IsFalse(true);
             }
@@ -406,7 +406,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveArrayOfCloudObjects()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -445,7 +445,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task ShouldNotDuplicateValuesInListAfterUpdate()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -456,14 +456,14 @@ namespace CB.Test
             ArrayList objects = new ArrayList(){ obj, obj };
             obj1.Set("newColumn7", objects);
             obj1 = await obj1.SaveAsync();
-            CB.CloudObject[] arr = (CB.CloudObject[])obj.Get("newColumn7");
-            if (arr.Length != 2)
+            ArrayList arr = (ArrayList)obj1.Get("newColumn7");
+            if (arr.Count != 2)
             {
                 Assert.IsTrue(true);
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveJsonObjectInColumn()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -477,7 +477,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveListOfNumbers()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -488,7 +488,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveListOfGeoPoint()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -497,7 +497,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveRelation()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -512,7 +512,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task UnsetField()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -539,7 +539,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task MaintainOrderofSavedRelations()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -566,7 +566,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveRequiredNumberWithZero()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -576,7 +576,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task FetchCloudObject()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -584,7 +584,7 @@ namespace CB.Test
             obj1.Set("number", 0);
             obj1 = await obj1.SaveAsync();
             obj1 = await obj1.FetchAsync();
-            if (obj1.Get<int>("number") == 0)
+            if (obj1.Get("number").ToString() == "0")
             {
                 Assert.IsTrue(true);
             }
@@ -596,7 +596,7 @@ namespace CB.Test
         }
       
         //Version Test
-        [Test]
+        [TestMethod]
         public void SetModifiedArray()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -610,7 +610,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveData()
         {
 
@@ -629,7 +629,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task CreateNewUserWithVersion()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -651,7 +651,7 @@ namespace CB.Test
             }
         }
 
-        [Test]
+        [TestMethod]
         public async Task CreateRoleWithVerison()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -664,20 +664,20 @@ namespace CB.Test
                 Assert.IsFalse(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task StoreRelationWithVersion()
         {
             CB.Test.Util.Keys.InitWithClientKey();
             var parent = new CB.CloudObject("Custom4");
             var child = new CB.CloudObject("student1");
-            CB.CloudObject[] arr = { child };
+            ArrayList arr = new ArrayList(){ child };
             child.Set("name","ranjeet");
             parent.Set("newColumn7", arr);
             parent = await parent.SaveAsync();
             Assert.IsTrue(true);
         }
 
-        [Test]
+        [TestMethod]
         public async Task SaveRelationWithoutChildObject()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -691,7 +691,7 @@ namespace CB.Test
         }
 
         //encryption test
-        [Test]
+        [TestMethod]
         public async Task EncryptPassword()
         {
             CB.Test.Util.Keys.InitWithClientKey();
@@ -711,7 +711,7 @@ namespace CB.Test
 
        
         //Expire Test
-        [Test]
+        [TestMethod]
         public async Task SaveObjectAfterExpireIsSet()
         {
             CB.Test.Util.Keys.InitWithClientKey();

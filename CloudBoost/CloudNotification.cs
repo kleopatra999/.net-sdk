@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using Quobject.SocketIoClientDotNet.Client;
+using System.Web.UI.WebControls.WebParts;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace CB
 {
@@ -23,13 +26,17 @@ namespace CB
 
         public static void Publish(string channelName, object data)
         {
+
             Util.CloudRequest.Validate();
             var jsonObj = new Dictionary<string, object>
             {
                 { "channel", CloudApp.AppID + channelName },
                 { "data", data }
             };
-            _socket.Emit("publish-custom-channel", jsonObj);
+            var json = JsonConvert.SerializeObject(Util.Serializer.Serialize(jsonObj));
+            var payload  = Encoding.UTF8.GetBytes(json.ToString());
+            
+            _socket.Emit("publish-custom-channel", payload);
         }
     }
 }

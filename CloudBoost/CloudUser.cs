@@ -83,17 +83,17 @@ namespace CB
 
         public async Task<CloudUser> SignupAsync()
         {
-            if (this.dictionary["username"] == null)
+            if (!this.dictionary.ContainsKey("username"))
             {
                 throw new Exception.CloudBoostException("Username is not set.");
             }
             
-            if (this.dictionary["password"] == null)
+            if (!this.dictionary.ContainsKey("password"))
             {
                 throw new Exception.CloudBoostException("Password is not set.");
             }
 
-            if (this.dictionary["email"] == null)
+            if (!this.dictionary.ContainsKey("email"))
             {
                 throw new Exception.CloudBoostException("Email is not set.");
             }
@@ -101,8 +101,11 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/signup", postData);
-            this.dictionary = result;
+            var result = await Util.CloudRequest.Send<CloudUser>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/signup", postData);
+            this.dictionary = result.dictionary;
+
+            CloudUser.Current = this;
+
             return this;
         }
 
@@ -121,8 +124,8 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData);
-            this.dictionary = result;
+            var result = await Util.CloudRequest.Send<CloudUser>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData);
+            this.dictionary = result.dictionary;
             CloudUser.Current = this; //set this user as current logged in user.
             return this;
         }
@@ -147,8 +150,8 @@ namespace CB
             Dictionary<string, Object> postData = new Dictionary<string, object>();
             postData.Add("document", this);
 
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData);
-            this.dictionary = result;
+            var result = await Util.CloudRequest.Send<CloudUser>(Util.CloudRequest.Method.POST, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/login", postData);
+            this.dictionary = result.dictionary;
             CloudUser.Current = null; //set this user as current logged in user.
             return this;
         }
@@ -163,7 +166,7 @@ namespace CB
             return (((ArrayList)(this.Get("roles"))).IndexOf(role.ID) >= 0);
         }
 
-        public static async Task<object> ResetPasswordAsync(string email)
+        public static async Task<CloudUser> ResetPasswordAsync(string email)
         {
             if (email == null)
             {
@@ -174,18 +177,19 @@ namespace CB
             param["email"] = email;
 
             string url = CB.CloudApp.ApiUrl + "/user/" + CB.CloudApp.AppID + "/resetPassword"; ;
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, param);
+            var result = await Util.CloudRequest.Send<CloudUser>(Util.CloudRequest.Method.POST, url, param);
             return result;
         }
 
-        public static async Task<object> ChangePasswordAsync(string oldPassword, string newPassword)
+        public async Task<CloudUser> ChangePasswordAsync(string oldPassword, string newPassword)
         {
             var param = new Dictionary<string, Object>();
             param["oldPassword"] = oldPassword;
             param["newPassword"] = newPassword;
 
             string url = CB.CloudApp.ApiUrl + "/user/" + CB.CloudApp.AppID + "/changePassword"; ;
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.POST, url, param);
+            var result = await Util.CloudRequest.Send<CloudUser>(Util.CloudRequest.Method.POST, url, param);
+            this.dictionary = result.dictionary;
             return result;
         }
 
@@ -200,8 +204,8 @@ namespace CB
             postData.Add("user", this);
             postData.Add("role", role);
 
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/addToRole", postData);
-            this.dictionary = result;
+            var result = await Util.CloudRequest.Send<CloudUser>(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/addToRole", postData);
+            this.dictionary = result.dictionary;
             return this;
 
         }
@@ -217,8 +221,15 @@ namespace CB
             postData.Add("user", this);
             postData.Add("role", role);
 
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/removeFromRole", postData);
-            this.dictionary = result;
+            var result = await Util.CloudRequest.Send<CloudRole>(Util.CloudRequest.Method.PUT, CB.CloudApp.ApiUrl + "/user/"+CB.CloudApp.AppID+"/removeFromRole", postData);
+            this.dictionary = result.dictionary;
+            return this;
+        }
+
+        public async Task<CloudUser> SaveAsync()
+        {
+            CloudObject result = await base.SaveAsync();
+            this.dictionary = result.dictionary;
             return this;
         }
     }

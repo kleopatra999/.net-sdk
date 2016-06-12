@@ -14,13 +14,52 @@ namespace CB
 
     public class CloudApp
     {
-        internal static String SESSION_ID = null;
+
+        //Local Storage Container.
+        //private static Windows.Storage.ApplicationDataContainer roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
+
+        private static string _session;
 
         private static string apiUrl;
 
         internal static ILog log;
 
         internal static Socket _socket = IO.Socket(CloudApp.ApiUrl);
+
+        internal static string Session
+        {
+            get
+            {
+                //if (_session != null)
+                    return _session;
+                //else
+                //{
+                //    //read from local storage
+                //    if(roamingSettings.Values["session"] !=null)
+                //    {
+                //        _session = roamingSettings.Values["session"].ToString();
+                //        return _session;
+                //    }
+                //    else
+                //    {
+                //        return null;
+                //    }
+                //}
+            }
+            set
+            {
+                if (value == null)
+                {
+                    //roamingSettings.Values["session"] = null;
+                    _session = null;
+                }
+                else
+                {
+                    //roamingSettings.Values["session"] = value;
+                    _session = value;
+                }
+            }
+        }
 
         public static string ApiUrl
         {

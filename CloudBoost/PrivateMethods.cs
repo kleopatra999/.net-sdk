@@ -115,16 +115,16 @@ namespace CB
 
         public static String _getSessionId()
         {
-            String session = CloudApp.SESSION_ID;
+            String session = CloudApp.Session;
             return session;
         }
         public static void _setSessionId(String session)
         {
-            CloudApp.SESSION_ID = session;
+            CloudApp.Session = session;
         }
         public static void _deleteSessionId()
         {
-            CloudApp.SESSION_ID = null;
+            CloudApp.Session = null;
         }
 
         public static void ColumnDataTypeValidation(string dataType)
@@ -147,35 +147,6 @@ namespace CB
             if (index < 0)
                 throw new CB.Exception.CloudBoostException("Invalid data type");
        
-        }
-                
-        internal static List<CloudObject> ToCloudObjectList(List<Dictionary<string, object>> result){
-
-            List<CloudObject> objList = new List<CloudObject>();
-
-            for(int i=0; i<result.Count; i++)
-            {
-                var obj = new CloudObject(result[i]["name"].ToString());
-                obj.dictionary = result[i];
-                objList.Add(obj);
-            }
-
-            return objList;
-        }
-
-        internal static List<CloudTable> ToCloudTableList(List<Dictionary<string, object>> result)
-        {
-
-            List<CloudTable> objList = new List<CloudTable>();
-
-            for (int i = 0; i < result.Count; i++)
-            {
-                var obj = new CloudTable(result[i]["name"].ToString());
-                obj.dictionary = result[i];
-                objList.Add(obj);
-            }
-
-            return objList;
         }
     }
 }

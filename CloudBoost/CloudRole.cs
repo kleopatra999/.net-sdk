@@ -47,5 +47,12 @@ namespace CB
             role.dictionary = result;
             return role;
         }
+
+        public async Task<CloudRole> SaveAsync()
+        {
+            CloudObject result = await base.SaveAsync();
+            this.dictionary = result.dictionary;
+            return this;
+        }
     }
 }

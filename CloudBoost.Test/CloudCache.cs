@@ -2,21 +2,21 @@
 //using System.Linq;
 //using System.Collections.Generic;
 //using System.Threading.Tasks;
-//using NUnit.Framework;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 //namespace CB.Test
 //{
-//    [TestFixture]
+//    [TestClass]
 //    public class CloudCache
 //    {
-//        [Test]
+//        [TestMethod]
 //        public void x001_InitAppWithMasterKey()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddItemToCache()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -29,7 +29,7 @@
 //            Assert.IsTrue(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddString()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -42,7 +42,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task AddNumber()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -55,7 +55,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task DeleteItem()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -77,7 +77,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task CreateCahce()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -90,7 +90,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task GetItemCount()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -112,7 +112,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task GetItemInTheCache()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -130,7 +130,7 @@
 //            Assert.IsFalse(true);
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task GetAllCacheItem()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();
@@ -156,7 +156,7 @@
 //            }
 //        }
 
-//        [Test]
+//        [TestMethod]
 //        public async Task GetInformationAboutCache()
 //        {
 //            CB.Test.Util.Keys.InitWithMasterKey();

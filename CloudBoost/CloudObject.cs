@@ -185,6 +185,9 @@ namespace CB
 
         public Object Get(string columnName)
         {
+            if (columnName == "ID" || columnName == "id")
+                columnName = "_id";
+
             if (dictionary.ContainsKey(columnName))
                 return dictionary[columnName];
             else
@@ -282,9 +285,9 @@ namespace CB
             postData["document"] = dictionary;
             string url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
 
-            Dictionary<string, Object> result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
+            CloudObject result = await Util.CloudRequest.Send<CloudObject>(Util.CloudRequest.Method.PUT, url, postData);
 
-            this.dictionary = result;
+            this.dictionary = ((CloudObject)result).dictionary;
 
             return this;
         }
@@ -299,9 +302,9 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + dictionary["_tableName"];
 
-            var result = await Util.CloudRequest.Send<Dictionary<string, Object>>(Util.CloudRequest.Method.PUT, url, postData);
+            var result = await Util.CloudRequest.Send<CloudObject>(Util.CloudRequest.Method.PUT, url, postData);
 
-            dictionary = result;
+            dictionary = result.dictionary;
 
             return this;
         }
@@ -320,7 +323,7 @@ namespace CB
                 query = new CloudQuery("_File");
             }
 
-            CB.CloudObject obj = await query.GetAsync(dictionary["_id"].ToString());
+            CB.CloudObject obj = await query.GetAsync<CloudObject>(dictionary["_id"].ToString());
 
             return obj;
         }
@@ -337,20 +340,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + ((CB.CloudObject)array[0]).TableName;
 
-            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.PUT, url, postData);
-
-            List<CloudObject> objects = new List<CloudObject>();
-
-            var objectList = (List<Dictionary<string, Object>>)result;
-
-            for (int i = 0; i < objectList.Count; i++)
-            {
-                var obj = new CloudObject(objectList[i]["_tableName"].ToString());
-                obj.dictionary = objectList[i];
-                objects.Add(obj);
-            }
-
-            return objects;
+            return await Util.CloudRequest.Send<List<CloudObject>>(Util.CloudRequest.Method.PUT, url, postData);
         }
 
         public static async Task<List<CloudObject>> DeleteAllAsync(ArrayList objectArray)
@@ -365,20 +355,7 @@ namespace CB
 
             var url = CloudApp.ApiUrl + "/data/" + CloudApp.AppID + "/" + ((CB.CloudObject)array[0]).TableName;
 
-            var result = await Util.CloudRequest.Send<List<Dictionary<string, Object>>>(Util.CloudRequest.Method.DELETE, url, postData);
-
-            List<CloudObject> objects = new List<CloudObject>();
-
-            var objectList = (List<Dictionary<string, Object>>)result;
-
-            for (int i = 0; i < objectList.Count; i++)
-            {
-                var obj = new CloudObject(objectList[i]["_tableName"].ToString());
-                obj.dictionary = objectList[i];
-                objects.Add(obj);
-            }
-
-            return objects;
+            return await Util.CloudRequest.Send<List<CloudObject>>(Util.CloudRequest.Method.DELETE, url, postData);
         }
 
         protected static void _IsModified(CB.CloudObject cbObj, string columnName)
