@@ -1,0 +1,13 @@
+language: csharp
+solution: CloudBoost.sln
+
+script:
+  - xbuild /p:Configuration=Release CloudBoost.sln /p:TargetFrameworkVersion="v4.5" /p:DebugSymbols=False
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - cd CloudBoost && nuget pack CloudBoost.nuspec -Version 1.0.4 -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg $NuGetAPI -verbosity detailed
+  on:
+    branch: master

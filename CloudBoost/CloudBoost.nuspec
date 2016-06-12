@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>cloudboost</id>
+    <version>$version$</version>
+    <title>CB_DoNetSDK</title>
+    <authors>cloudboost.io</authors>
+    <owners>cloudboost.io</owners>
+    <licenseUrl>http://spdx.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/CloudBoost/.net-sdk</projectUrl>
+    <iconUrl>https://cloud.githubusercontent.com/assets/5427704/7724257/b7f45d6c-ff0d-11e4-8f60-06024eaa1508.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a .NET SDK for CloudBoost and it works with ASP.NET, Windows Phone, Universal Apps, Windows Desktop, Silver Light</description>
+    <releaseNotes>This is the first verison of cloudboost.io's dot net</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>cloudboost sdk</tags>
+  </metadata>
+</package>
