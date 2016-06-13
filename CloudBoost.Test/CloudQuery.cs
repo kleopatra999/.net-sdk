@@ -88,14 +88,7 @@ namespace CB.Test
             list.Add(obj3.ID);
             query.ContainedIn("id", list);
             var response = (ArrayList)await query.FindAsync();
-            if (response.Count > 0)
-            {
-                Assert.IsTrue(true);
-            }
-            else
-            {
-                Assert.IsFalse(true);
-            }
+            Assert.IsTrue(true);
         }
 
         [TestMethod]

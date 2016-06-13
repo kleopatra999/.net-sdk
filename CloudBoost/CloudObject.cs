@@ -14,8 +14,16 @@ namespace CB
         public CloudObject(string tableName)
         {
             this.dictionary = new Dictionary<string, Object>();
+
+            if (tableName == "User")
+                dictionary.Add("_type", "user");
+            else if (tableName == "Role")
+                dictionary.Add("_type", "role");
+            else
+                dictionary.Add("_type", "custom");
+
+           
             dictionary.Add("_tableName", tableName);
-            dictionary.Add("_type", "custom");
             dictionary.Add("ACL", new CB.ACL());
             dictionary.Add("expires", null);
             dictionary["_modifiedColumns"] = new ArrayList();

@@ -371,17 +371,17 @@ namespace CB
 
         public CloudQuery Near(string columnName, CB.CloudGeoPoint geoPoint, double maxDistance)
         {
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null)
+            if (!((Dictionary<string, Object>)(this.dictionary["query"])).ContainsKey(columnName))
             {
                 ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
                 Dictionary<string, object> near = new Dictionary<string,object>();
                 Dictionary<string, object> geometry = new Dictionary<string,object>();
-                double[] coordinates = (double[])geoPoint.dictionary["coordinates"];
+                decimal[] coordinates = (decimal[])geoPoint.dictionary["coordinates"];
                 geometry.Add("coordinates", coordinates);
                 geometry.Add("type", "Point");
                 near.Add("$geometry", geometry);
                 near.Add("$maxDistance", maxDistance);
-                near.Add("$minDistance", null);
+                near.Add("$minDistance", 0);
                 ((Dictionary<string, Object>)(((Dictionary<string, Object>)(this.dictionary["query"]))[columnName]))["$near"] = near;
             }
             return this;
@@ -390,13 +390,19 @@ namespace CB
         //GeoPoint geoWithin query
         public CloudQuery GeoWithin(string columnName, CloudGeoPoint[] geoPoint)
         {
-            double[][] coordinates = {};
-            for(int i=0; i<geoPoint.Length; i++)
+            decimal[][] coordinates = new decimal[geoPoint.Length][];
+            for (int i = 0; i < geoPoint.Length; i++)
             {
-                coordinates[i] = (double[])geoPoint[i].dictionary["coordinates"];
+                coordinates[i] = new decimal[2];
+                decimal[] temp = (decimal[])geoPoint[i].dictionary["coordinates"];
+                for (int j = 0; j < temp.Length; j++)
+                {
+                    coordinates[i][j] = temp[j];
+                }
             }
+
             string type = "Polygon";
-            if (((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] == null)
+            if (!((Dictionary<string, Object>)(this.dictionary["query"])).ContainsKey(columnName))
             {
                 ((Dictionary<string, Object>)(this.dictionary["query"]))[columnName] = new Dictionary<string, Object>();
                 Dictionary<string, object> geoWithin = new Dictionary<string,object>();

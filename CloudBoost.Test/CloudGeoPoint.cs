@@ -14,7 +14,7 @@ namespace CB.Test
             CB.Test.Util.Keys.InitWithMasterKey();
             var obj = new CB.CloudObject("Custom5");
             var loc = new CB.CloudGeoPoint((decimal)17.7, (decimal)78.9);
-            obj.Set("location", loc);
+            obj.Set("geopoint", loc);
             await obj.SaveAsync();
             Assert.IsTrue(true);
         }
@@ -31,7 +31,7 @@ namespace CB.Test
             CB.Test.Util.Keys.InitWithMasterKey();
             var query = new CB.CloudQuery("Custom5");
             var loc = new CB.CloudGeoPoint((decimal)17.7, (decimal)78.9);
-            query.Near("location", loc, 400000);
+            query.Near("geopoint", loc, 400000);
             var response = await query.FindAsync();
             if (response.Count > 0)
             {
@@ -112,10 +112,7 @@ namespace CB.Test
             CB.Test.Util.Keys.InitWithMasterKey();
             var obj = new CB.CloudObject("Custom5");
             var loc = new CB.CloudGeoPoint((decimal)17.7, (decimal)78.9);
-            obj.Set("location", loc);
-            await obj.SaveAsync();
-            Assert.IsTrue(true);
-            obj.Set("latitude", 55);
+            obj.Set("geopoint", loc);
             await obj.SaveAsync();
             Assert.IsTrue(true);
         }
