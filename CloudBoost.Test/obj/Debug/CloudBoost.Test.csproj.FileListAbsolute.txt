@@ -39,6 +39,7 @@ C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.Te
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.Test.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.Test.pdb
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\CloudBoost.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\log4net-loggly.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\log4net.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Newtonsoft.Json.dll
@@ -52,4 +53,3 @@ C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Microsoft.Vis
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.csprojResolveAssemblyReference.cache
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.pdb
-C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\log4net-loggly.dll
