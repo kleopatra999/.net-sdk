@@ -1,18 +1,15 @@
 ﻿<?xml version="1.0"?>
-<package >
+<package>
   <metadata>
     <id>cloudboost</id>
-    <version>$version$</version>
+    <version>2.0.1</version>
     <title>CloudBoost</title>
-    <authors>cloudboost.io</authors>
-    <owners>cloudboost.io</owners>
-    <licenseUrl>http://spdx.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/CloudBoost/.net-sdk</projectUrl>
-    <iconUrl>https://cloud.githubusercontent.com/assets/5427704/7724257/b7f45d6c-ff0d-11e4-8f60-06024eaa1508.png</iconUrl>
+    <authors>CloudBoost.io</authors>
+    <owners>CloudBoost.io</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This is a .NET SDK for CloudBoost and it works with ASP.NET, Windows Phone, Universal Apps, Windows Desktop, Silver Light</description>
-    <releaseNotes></releaseNotes>
+    <description>CloudBoost SDK for .NET</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>cloudboost sdk</tags>
+    <tags>cloudboost</tags>
   </metadata>
 </package>
