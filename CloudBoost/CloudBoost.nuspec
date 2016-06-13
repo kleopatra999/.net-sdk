@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>cloudboost</id>
-    <version>2.0.1</version>
+    <version>$version</version>
     <title>CloudBoost</title>
     <authors>CloudBoost.io</authors>
     <owners>CloudBoost.io</owners>
