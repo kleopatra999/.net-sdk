@@ -2,6 +2,7 @@
 <package>
   <metadata>
     <id>cloudboost</id>
+    <version>1.0.0</version>
     <title>CloudBoost</title>
     <authors>CloudBoost.io</authors>
     <owners>CloudBoost.io</owners>
