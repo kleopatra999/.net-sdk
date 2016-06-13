@@ -1,1 +1,1 @@
-cd CloudBoost && nuget pack CloudBoost.nuspec -Version $VERSION -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg $NUGET_API_KEY -verbosity detailed
+cd CloudBoost && nuget pack CloudBoost.nuspec -Version 1.0.4 -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg $NuGetAPI -verbosity detailed

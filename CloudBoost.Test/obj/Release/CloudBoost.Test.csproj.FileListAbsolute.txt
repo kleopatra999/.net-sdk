@@ -1,0 +1,17 @@
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\CloudBoost.Test.dll.config
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\CloudBoost.Test.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\CloudBoost.Test.pdb
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\CloudBoost.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\log4net.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\Newtonsoft.Json.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\Windows.winmd
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\SocketIoClientDotNet.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\EngineIoClientDotNet.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\CloudBoost.pdb
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\log4net.xml
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\Newtonsoft.Json.xml
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Release\CloudBoost.Test.csprojResolveAssemblyReference.cache
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Release\CloudBoost.Test.dll
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Release\CloudBoost.Test.pdb
