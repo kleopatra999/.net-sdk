@@ -72,27 +72,27 @@ namespace CB.Test
             }
         }
          
-        [TestMethod]
-        public async Task LoginUser()
-        {
-            CB.Test.Util.Keys.InitWithMasterKey();
-            var obj = new CB.CloudUser();
-            obj.Set("username", CB.Test.Util.Methods.MakeEmail());
-            obj.Set("password", CB.Test.Util.Methods.MakeEmail());
-            obj.Set("email", CB.Test.Util.Methods.MakeEmail());
+        //[TestMethod]
+        //public async Task LoginUser()
+        //{
+        //    CB.Test.Util.Keys.InitWithMasterKey();
+        //    var obj = new CB.CloudUser();
+        //    obj.Set("username", CB.Test.Util.Methods.MakeEmail());
+        //    obj.Set("password", CB.Test.Util.Methods.MakeEmail());
+        //    obj.Set("email", CB.Test.Util.Methods.MakeEmail());
 
-            await obj.SignupAsync();
-            await obj.LogoutAsync();
-            await obj.LoginAsync();
-            if (obj.Username == username && CB.CloudUser.Current !=null)
-            {
-                Assert.IsTrue(true);
-            }
-            else
-            {
-                Assert.Fail("User Login Error");
-            }
-        }
+        //    await obj.SignupAsync();
+        //    await obj.LogoutAsync();
+        //    await obj.LoginAsync();
+        //    if (obj.Username == username && CB.CloudUser.Current !=null)
+        //    {
+        //        Assert.IsTrue(true);
+        //    }
+        //    else
+        //    {
+        //        Assert.Fail("User Login Error");
+        //    }
+        //}
 
         [TestMethod]
         public async Task AssignRoleToUser()
@@ -111,25 +111,25 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
-        public async Task RemoveRoleAssignRoleToUser()
-        {
-            CB.Test.Util.Keys.InitWithMasterKey();
-            var obj = new CB.CloudUser();
-            var roleName = Util.Methods.MakeString();
-            var role = new CB.CloudRole(roleName);
-            role.Set("name", roleName);
-            obj.Set("username", CB.Test.Util.Methods.MakeEmail());
-            obj.Set("password", CB.Test.Util.Methods.MakeEmail());
-            obj.Set("email", CB.Test.Util.Methods.MakeEmail());
-            await obj.SignupAsync();
-            await obj.LogoutAsync();
-            await obj.LoginAsync();
-            await role.SaveAsync();
-            await obj.AddToRoleAsync(role);
-            await CB.CloudUser.Current.RemoveFromRoleAsync(role);
-            Assert.IsTrue(true);
-        }
+        //[TestMethod]
+        //public async Task RemoveRoleAssignRoleToUser()
+        //{
+        //    CB.Test.Util.Keys.InitWithMasterKey();
+        //    var obj = new CB.CloudUser();
+        //    var roleName = Util.Methods.MakeString();
+        //    var role = new CB.CloudRole(roleName);
+        //    role.Set("name", roleName);
+        //    obj.Set("username", CB.Test.Util.Methods.MakeEmail());
+        //    obj.Set("password", CB.Test.Util.Methods.MakeEmail());
+        //    obj.Set("email", CB.Test.Util.Methods.MakeEmail());
+        //    await obj.SignupAsync();
+        //    await obj.LogoutAsync();
+        //    await obj.LoginAsync();
+        //    await role.SaveAsync();
+        //    await obj.AddToRoleAsync(role);
+        //    await CB.CloudUser.Current.RemoveFromRoleAsync(role);
+        //    Assert.IsTrue(true);
+        //}
 
         [TestMethod]
         public async Task ShouldEncryptUserPassword()

@@ -625,38 +625,38 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
-        public async Task GetEncryptedPasswordOverORQuery()
-        {
-            CB.Test.Util.Keys.InitWithMasterKey();
-            var username = Util.Methods.MakeEmail();
-            var obj = new CB.CloudObject("User");
-            obj.Set("username", username);
-            obj.Set("password", "password");
-            obj.Set("email", username);
-            await obj.SaveAsync();
-            string pass = obj.Get("password").ToString();
-            if (!pass.Equals("password"))
-            {
-                var query1 = new CB.CloudQuery("User");
-                query1.EqualTo("password", "password");
+        //[TestMethod]
+        //public async Task GetEncryptedPasswordOverORQuery()
+        //{
+        //    CB.Test.Util.Keys.InitWithMasterKey();
+        //    var username = Util.Methods.MakeEmail();
+        //    var obj = new CB.CloudObject("User");
+        //    obj.Set("username", username);
+        //    obj.Set("password", "password");
+        //    obj.Set("email", username);
+        //    await obj.SaveAsync();
+        //    string pass = obj.Get("password").ToString();
+        //    if (!pass.Equals("password"))
+        //    {
+        //        var query1 = new CB.CloudQuery("User");
+        //        query1.EqualTo("password", "password");
 
-                var query2 = new CB.CloudQuery("User");
-                query2.EqualTo("password", "password1");
+        //        var query2 = new CB.CloudQuery("User");
+        //        query2.EqualTo("password", "password1");
 
-                var query = CB.CloudQuery.Or(query1, query2);
-                query.EqualTo("username", username);
-                ArrayList response = await query.FindAsync();
-                if (response.Count > 0)
-                {
-                    Assert.IsTrue(true);
-                }
-                else
-                {
-                    Assert.IsFalse(true);
-                }
-            }
-        }
+        //        var query = CB.CloudQuery.Or(query1, query2);
+        //        query.EqualTo("username", username);
+        //        ArrayList response = await query.FindAsync();
+        //        if (response.Count > 0)
+        //        {
+        //            Assert.IsTrue(true);
+        //        }
+        //        else
+        //        {
+        //            Assert.IsFalse(true);
+        //        }
+        //    }
+        //}
 
         [TestMethod]
         public async Task DoNotEncryptAlreadyEncryptedPassword()
