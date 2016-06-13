@@ -15,3 +15,4 @@ C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\Microsoft.V
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Release\CloudBoost.Test.csprojResolveAssemblyReference.cache
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Release\CloudBoost.Test.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Release\CloudBoost.Test.pdb
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Release\log4net-loggly.dll

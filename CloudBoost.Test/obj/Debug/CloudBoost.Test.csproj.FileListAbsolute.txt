@@ -52,3 +52,4 @@ C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\Microsoft.Vis
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.csprojResolveAssemblyReference.cache
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.dll
 C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\obj\Debug\CloudBoost.Test.pdb
+C:\Users\Nawaz Dhandala\Desktop\.net-sdk\CloudBoost.Test\bin\Debug\log4net-loggly.dll
