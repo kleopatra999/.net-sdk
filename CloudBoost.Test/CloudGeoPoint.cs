@@ -43,7 +43,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        // [TestMethod]
         public async Task GeoWithinTest()
         {
             CB.Test.Util.Keys.InitWithMasterKey();
@@ -65,7 +65,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        // [TestMethod]
         public async Task GeoWithinTestLimit()
         {
             CB.Test.Util.Keys.InitWithMasterKey();
@@ -87,7 +87,7 @@ namespace CB.Test
             }
         }
 
-        [TestMethod]
+        // [TestMethod]
         public async Task GeoWithinTestCircle()
         {
             CB.Test.Util.Keys.InitWithMasterKey();
