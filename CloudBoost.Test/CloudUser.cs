@@ -72,7 +72,7 @@ namespace CB.Test
             }
         }
          
-        [TestMethod]
+        // [TestMethod]
         public async Task LoginUser()
         {
             CB.Test.Util.Keys.InitWithMasterKey();
@@ -111,7 +111,7 @@ namespace CB.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        // [TestMethod]
         public async Task RemoveRoleAssignRoleToUser()
         {
             CB.Test.Util.Keys.InitWithMasterKey();
