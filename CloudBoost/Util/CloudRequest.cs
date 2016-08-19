@@ -58,20 +58,19 @@ namespace CB.Util
 
                     postData.Add("key", CloudApp.AppKey);
                     postData.Add("sdk", ".NET");
-                    var jsonObj = JsonConvert.SerializeObject(Util.Serializer.Serialize(postData));
-                    var data = Encoding.ASCII.GetBytes(jsonObj.ToString());
+                    var jsonObj = JsonConvert.SerializeObject(Serializer.Serialize(postData));
+                    byte[] byteArray = Encoding.UTF8.GetBytes(jsonObj);
                     request.Method = method.ToString();
                     request.ContentType = "application/json";
-                    request.ContentLength = data.Length;
+                    request.ContentLength = byteArray.Length;
 
-                    if (CB.CloudApp.Session!=null)
+                    if (CloudApp.Session!=null)
                     {
-                        request.Headers.Add("sessionID", CB.CloudApp.Session);
+                        request.Headers.Add("sessionID", CloudApp.Session);
                     }
 
                     using (Stream stream = await request.GetRequestStreamAsync())
                     {
-                        byte[] byteArray = ASCIIEncoding.UTF8.GetBytes(jsonObj);
                         await stream.WriteAsync(byteArray, 0, byteArray.Length);
                         await stream.FlushAsync();
                     }
@@ -81,7 +80,7 @@ namespace CB.Util
 
                 if (response.Headers["sessionID"]!=null)
                 {
-                    CB.CloudApp.Session = response.Headers["sessionID"].ToString();
+                    CloudApp.Session = response.Headers["sessionID"];
                 }
 
                 var responseString = JsonConvert.DeserializeObject<object>(new StreamReader(((HttpWebResponse)response).GetResponseStream()).ReadToEnd());
